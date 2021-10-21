@@ -1,6 +1,9 @@
 package com.mm.qbot;
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.mm.qbot.strategy.BilibiliStrategy;
+import com.mm.qbot.utlis.BilibiliApi;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpEntity;
@@ -49,6 +52,8 @@ class QbotApplicationTests {
         String url="https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/dynamic_new?uid=1359202&type_list=268435455&current_dynamic_id=583955397224211538&from=weball&platform=web";
 
         HttpHeaders headers = new HttpHeaders();
+        headers.add("user-agent","Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36");
+        headers.add("referer","https://search.bilibili.com/upuser?keyword=%E7%AD%89%E7%AD%89&from_source=web_search");
 
         headers.put(HttpHeaders.COOKIE,cookies);
         HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(null, headers);
@@ -56,8 +61,11 @@ class QbotApplicationTests {
         ResponseEntity<String> res=restTemplate.exchange(url, HttpMethod.GET,httpEntity,String.class);
         System.out.println((res.getBody()));
         JSONObject dyn=JSONObject.parseObject(res.getBody());
-        for (Object card:dyn.getJSONObject("data").getJSONArray("cards")) {
-            
+
+        JSONArray cards = dyn.getJSONObject("data").getJSONArray("cards");
+        for (Object c:cards) {
+            JSONObject card = (JSONObject) c;
+            BilibiliStrategy.dynamicStrategy(card);
         }
         
     }
