@@ -81,6 +81,27 @@ public class BilibiliApi {
 
 
 
+    public JSONObject serachUser(String keyword,String searchType ){
+        HttpHeaders headers=new HttpHeaders();
+        headers.addAll(comHeaders);
+//        headers.put(HttpHeaders.COOKIE,cookies);
+        HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(null, headers);
+        String url="https://api.bilibili.com/x/web-interface/search/type?keyword={keyword}&search_type={search_type}";
+
+
+        Map<String, Object> paramMaps = new HashMap<>();
+        paramMaps.put("keyword", keyword);
+        paramMaps.put("search_type", searchType);
+
+        ResponseEntity<String> res=restTemplate.exchange(url, HttpMethod.GET,httpEntity,String.class,paramMaps);
+        return JSONObject.parseObject(res.getBody());
+    }
+
+
+
+
+
+
 
 
 
