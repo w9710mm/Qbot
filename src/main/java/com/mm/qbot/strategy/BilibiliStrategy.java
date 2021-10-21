@@ -57,7 +57,7 @@ public class BilibiliStrategy {
         pack.put("type", BiliBiliEnum.FORWARD.getValue());
         pack.put("content",card.getJSONObject("item").getString("content"));
 
-        BiliBiliEnum.ARTICLE
+        BiliBiliEnum.getType()
 
 
         pack.put("org_type","");

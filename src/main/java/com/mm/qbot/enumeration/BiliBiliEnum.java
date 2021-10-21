@@ -15,7 +15,21 @@ public enum BiliBiliEnum  implements BaseEnum{
     private Integer id;
     private String value;
 
-     BiliBiliEnum(Integer id, String value) {
+    public static String getType(Integer id) {
+        BiliBiliEnum[] carTypeEnums = values();
+        for (BiliBiliEnum carTypeEnum : carTypeEnums) {
+            if (carTypeEnum.getId().equals(id)) {
+                return carTypeEnum.getValue();
+            }
+        }
+        return null;
+    }
+
+
+
+
+
+    BiliBiliEnum(Integer id, String value) {
             this.id = id;
             this.value = value;
         }
