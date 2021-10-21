@@ -3,6 +3,7 @@ package com.mm.qbot.strategy;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.mm.qbot.enumeration.BiliBiliEnum;
+import org.apache.ibatis.annotations.Case;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,6 +60,12 @@ public class BilibiliStrategy {
         pack.put("url",String.format("https://t.bilibili.com/%s",desc.getString("dynamic_id")));
         pack.put("type", BiliBiliEnum.FORWARD.getValue());
         pack.put("content",card.getJSONObject("item").getString("content"));
+
+
+        switch (desc.getInteger("orig_type"){
+            Case
+
+        }
 
         pack.put("org_type",BiliBiliEnum.getType(desc.getInteger("orig_type")));
         pack.put("org_username",originUser.getJSONObject("info").getString("uname"));
