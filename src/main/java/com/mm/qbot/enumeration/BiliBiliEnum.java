@@ -3,12 +3,12 @@ package com.mm.qbot.enumeration;
 public enum BiliBiliEnum  implements BaseEnum{
 
 
-    FORWARD(1, "转发动态"),
-    PICTURE(2, "图片动态"),
-    WORD(4,"文字动态"),
-    VIDEO(8,"视频投稿"),
-    ARTICLE(6,"文章动态"),
-    LIVE(4308,"直播动态");
+    FORWARD(1, "转发"),
+    PICTURE(2, "图片"),
+    WORD(4,"文字"),
+    VIDEO(8,"视频"),
+    ARTICLE(64,"文章"),
+    LIVE(4308,"直播");
 
 
 

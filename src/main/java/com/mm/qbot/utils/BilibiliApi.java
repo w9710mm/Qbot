@@ -1,4 +1,4 @@
-package com.mm.qbot.utlis;
+package com.mm.qbot.utils;
 import com.alibaba.fastjson.JSONObject;
 
 import org.springframework.http.HttpEntity;

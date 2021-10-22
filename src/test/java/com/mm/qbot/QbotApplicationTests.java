@@ -3,10 +3,8 @@ package com.mm.qbot;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.mm.qbot.strategy.BilibiliStrategy;
-import com.mm.qbot.utlis.BilibiliApi;
-import com.mm.qbot.utlis.QrcodeUtils;
+import com.mm.qbot.utils.QrcodeUtils;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.*;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -100,7 +98,7 @@ class QbotApplicationTests {
 
         String islogin="https://account.bilibili.com/home/userInfo";
         String url="https://passport.bilibili.com/qrcode/getLoginUrl";
-        ResponseEntity<String> QrresponseEntity = restTemplate.getForEntity(url,httpEntity ,String.class);
+        ResponseEntity<String> QrresponseEntity = restTemplate.exchange(url,HttpMethod.GET ,httpEntity,String.class);
 
 
         String user = QrresponseEntity.getBody();

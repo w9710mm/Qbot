@@ -1,4 +1,4 @@
-package com.mm.qbot.utlis;
+package com.mm.qbot.utils;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.WriterException;
