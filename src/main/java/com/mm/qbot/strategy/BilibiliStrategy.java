@@ -2,6 +2,7 @@ package com.mm.qbot.strategy;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.mikuac.shiro.common.utils.MsgUtils;
 import com.mm.qbot.enumeration.BiliBiliEnum;
 import com.mm.qbot.utils.TimeUtils;
 import org.apache.ibatis.annotations.Case;
@@ -14,6 +15,7 @@ import java.util.Map;
 
 public class BilibiliStrategy {
     public static String dynamicStrategy(JSONObject json) {
+
         Integer type = json.getJSONObject("desc").getInteger("type");
         Map<String, Object> res = null;
         switch (type) {
@@ -58,7 +60,8 @@ public class BilibiliStrategy {
     }
 
     private static Map<String, Object> unpackForwarding(JSONObject json) {
-
+        new MsgUtils();
+        MsgUtils msgUtils = null;
         Map<String, Object> pack = new HashMap<>();
 
         JSONObject card = JSONObject.parseObject(json.getString("card"));

@@ -15,15 +15,15 @@ import java.util.List;
 import java.util.Map;
 
 public class BilibiliApi {
-    RestTemplate restTemplate = new RestTemplate();
+    static RestTemplate restTemplate = new RestTemplate();
 
-    private List<String> cookies=new ArrayList<>(){{
+    private static List<String> cookies=new ArrayList<>(){{
         add("SESSDATA=eb841f08%2C1650348175%2C6f67c*a1");
         add("buvid3=5506ADCE-2B87-4DB4-89DC-D49C45C5E6C0148828infoc");
         add("bili_jct=1d33dcf29ffcee20fd4cf2364264e95b");
     }};
 
-    private   MultiValueMap<String, String> comHeaders = new LinkedMultiValueMap<>(){
+    private static MultiValueMap<String, String> comHeaders = new LinkedMultiValueMap<>(){
         {
             add("user-agent","Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36");
             add("referer","https://www.bilibili.com/");
@@ -42,7 +42,7 @@ public class BilibiliApi {
     }
 
 
-    public JSONObject getNewDynamicNum(Integer typeList,Integer offset){
+    public static JSONObject getNewDynamicNum(Integer typeList,Integer offset){
         HttpHeaders headers=new HttpHeaders();
         headers.addAll(comHeaders);
         headers.put(HttpHeaders.COOKIE,cookies);
@@ -59,7 +59,7 @@ public class BilibiliApi {
         return JSONObject.parseObject(res.getBody());
     }
 
-    public JSONObject getNewDynamic(Integer uid,Integer typeList,Integer currentDynamicId, String from,String platform ){
+    public  static JSONObject getNewDynamic(Integer uid,Integer typeList,Integer currentDynamicId, String from,String platform ){
         HttpHeaders headers=new HttpHeaders();
         headers.addAll(comHeaders);
         headers.put(HttpHeaders.COOKIE,cookies);
@@ -81,7 +81,7 @@ public class BilibiliApi {
 
 
 
-    public JSONObject serachUser(String keyword,String searchType ){
+    public static JSONObject serachUser(String keyword,String searchType ){
         HttpHeaders headers=new HttpHeaders();
         headers.addAll(comHeaders);
 //        headers.put(HttpHeaders.COOKIE,cookies);
@@ -98,6 +98,25 @@ public class BilibiliApi {
     }
 
 
+
+
+    public static  JSONObject getVideoByBid(String bid){
+        String url="https://api.bilibili.com/x/web-interface/view?bvid={bvid}";
+        HttpHeaders headers=new HttpHeaders();
+        headers.addAll(comHeaders);
+//        headers.put(HttpHeaders.COOKIE,cookies);
+        HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(null, headers);
+
+
+        Map<String, Object> paramMaps = new HashMap<>();
+        paramMaps.put("bvid", bid);
+
+
+
+        ResponseEntity<String> res=restTemplate.exchange(url, HttpMethod.GET,httpEntity,String.class,paramMaps);
+        return JSONObject.parseObject(res.getBody());
+
+    }
 
 
 
