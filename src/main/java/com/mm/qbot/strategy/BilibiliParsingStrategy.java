@@ -6,8 +6,6 @@ import com.mm.qbot.BilibiliException;
 import com.mm.qbot.utils.BilibiliApi;
 import com.mm.qbot.utils.TimeUtils;
 
-import java.net.URL;
-
 /**
  * @author WWM
  * @version V0.0.1
@@ -28,15 +26,15 @@ public class BilibiliParsingStrategy {
 
     }
 
-    public  static  String ParsingBID(String bid) throws BilibiliException{
+    public  static MsgUtils ParsingBID(String bid) throws BilibiliException{
         JSONObject json = BilibiliApi.getVideoByBid(bid);
         if (json.getInteger("code")!=0){
             throw new  BilibiliException(String.format("获取bid：%s失败",bid));
         }
 
         JSONObject data = json.getJSONObject("data");
-        JSONObject stat = json.getJSONObject("stat");
-        MsgUtils msg=null;
+        JSONObject stat = data.getJSONObject("stat");
+        MsgUtils msg=new MsgUtils();
 
         msg.text(String.format("标题：%s\n",data.getString("title")));
         msg.text(String.format("分区：%s\n",data.getString("tname")));
@@ -58,8 +56,9 @@ public class BilibiliParsingStrategy {
 
 
 
+
 //        video.getInteger()
-        return "test";
+        return msg;
     }
 
 

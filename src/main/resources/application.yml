@@ -3,7 +3,7 @@ server:
 shiro:
   # 插件列表
   plugin-list:
-#    - com.mikuac.example.plugins.PluginOne
+    - com.mm.qbot.controller.BilibiliResolverController
 #    - com.mikuac.example.plugins.PluginTwo
   # WebSocket 配置
   ws-config:
