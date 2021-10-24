@@ -2,7 +2,7 @@ package com.mm.qbot.strategy;
 
 import com.alibaba.fastjson.JSONObject;
 import com.mikuac.shiro.common.utils.MsgUtils;
-import com.mm.qbot.BilibiliException;
+import com.mm.qbot.Exception.BilibiliException;
 import com.mm.qbot.utils.BilibiliApi;
 import com.mm.qbot.utils.TimeUtils;
 

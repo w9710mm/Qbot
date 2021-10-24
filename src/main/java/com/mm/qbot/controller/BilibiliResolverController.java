@@ -5,12 +5,9 @@ import com.mikuac.shiro.core.Bot;
 import com.mikuac.shiro.core.BotPlugin;
 import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
-import com.mm.qbot.BilibiliException;
+import com.mm.qbot.Exception.BilibiliException;
 import com.mm.qbot.strategy.BilibiliParsingStrategy;
-import com.mm.qbot.utils.BilibiliApi;
-import lombok.extern.java.Log;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 
 import java.util.regex.Matcher;
@@ -28,7 +25,9 @@ import java.util.regex.Pattern;
 public class BilibiliResolverController extends BotPlugin {
 
     private final String   bvidMacher= "[Bb][Vv][a-zA-Z0-9]{10}";;
+
     Pattern bvidPattern = Pattern.compile(bvidMacher);
+
 
 
     @Override
@@ -45,6 +44,7 @@ public class BilibiliResolverController extends BotPlugin {
                 e.printStackTrace();
             }
         }
+//        bot.
 
 
         return MESSAGE_IGNORE;

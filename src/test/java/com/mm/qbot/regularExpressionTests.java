@@ -31,6 +31,38 @@ public class regularExpressionTests {
             System.out.println("NO MATCH");
         }
     }
+    @Test
+    void ShortID1(){
+        String line = "https:\\/\\/b23.tv\\/mONXO1";
+        String pattern = "b23\\.tv\\\\/([a-zA-Z0-9]{6})";
 
+        // 创建 Pattern 对象
+        Pattern r = Pattern.compile(pattern);
+        System.out.println(line);
+        // 现在创建 matcher 对象
+        Matcher m = r.matcher(line);
+        if (m.find( )) {
+            System.out.println("Found value: " + m.group(1) );
 
+        } else {
+            System.out.println("NO MATCH");
+        }
+    }
+    @Test
+    void ShortID2(){
+        String line = "https://b23.tv/XRT4wU";
+        String pattern = "b23\\.tv/([a-zA-Z0-9]{6})";
+
+        // 创建 Pattern 对象
+        Pattern r = Pattern.compile(pattern);
+        System.out.println(line);
+        // 现在创建 matcher 对象
+        Matcher m = r.matcher(line);
+        if (m.find( )) {
+            System.out.println("Found value: " + m.group(1) );
+
+        } else {
+            System.out.println("NO MATCH");
+        }
+    }
 }

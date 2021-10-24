@@ -1,4 +1,4 @@
-package com.mm.qbot;
+package com.mm.qbot.Exception;
 
 public class BilibiliException extends Exception {
 

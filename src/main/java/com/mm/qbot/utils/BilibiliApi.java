@@ -1,6 +1,10 @@
 package com.mm.qbot.utils;
 import com.alibaba.fastjson.JSONObject;
 
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -9,6 +13,13 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -119,9 +130,34 @@ public class BilibiliApi {
     }
 
 
+    //获取短链接
+    public static  JSONObject getShortLink(String url){
+        url="https://b23.tv/"+url;
+        HttpHeaders headers=new HttpHeaders();
+        headers.add("user-agent","Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36");
+//        headers.put(HttpHeaders.COOKIE,cookies);
+        headers.add("accpet","text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9");
+        headers.add("cache-control","no-cache");
+        headers.add("cookie","__guid=227137742.4151832539650290700.1620915833928.5356" +
+                "pragma: no-cache");
+        headers.add("sec-fetch-dest","document");
+        headers.add("sec-fetch-mode","navigate");
+        headers.add("sec-fetch-site","none");
+        headers.add("sec-fetch-user","?1");
+        headers.add("upgrade-insecure-requests","1");
+
+        JSONObject result = new JSONObject();
+
+       HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(null, headers);
 
 
 
+
+       ResponseEntity<String> res=restTemplate.postForEntity(url,httpEntity,String.class);
+        System.out.println(res.toString());
+        return JSONObject.parseObject(res.getBody());
+
+    }
 
 
 
