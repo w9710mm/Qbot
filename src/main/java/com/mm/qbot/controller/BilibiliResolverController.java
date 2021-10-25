@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 @Controller
 public class BilibiliResolverController extends BotPlugin {
 
-    private final String   bvidMacher= "[Bb][Vv][a-zA-Z0-9]{10}";;
+    private final String   bvidMacher= "[Bb][Vv][a-zA-Z0-9]{10}";
 
     Pattern bvidPattern = Pattern.compile(bvidMacher);
 

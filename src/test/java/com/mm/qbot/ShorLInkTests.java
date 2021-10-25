@@ -1,5 +1,8 @@
 package com.mm.qbot;
 
+import com.alibaba.fastjson.JSONObject;
+import com.mm.qbot.Exception.BilibiliException;
+import com.mm.qbot.strategy.BilibiliStrategy;
 import com.mm.qbot.utils.BilibiliApi;
 import org.junit.jupiter.api.Test;
 
@@ -19,12 +22,23 @@ public class ShorLInkTests {
 
         String videoShortLink ="7vtUI8";
 
+        //TODO文章短链接需要额外处理
         String articleShortLink="KHwQOk";
+
 
         String forwardShortLink="DBCvoG";
 
 
-        BilibiliApi.getShortLink(forwardShortLink);
+        String forwardShortLink2="4oekHZ";
+
+
+        try {
+            JSONObject dynamicJson = BilibiliApi.getShortLink(videoShortLink);
+            System.out.println(dynamicJson.toJSONString());
+            BilibiliStrategy.dynamicStrategy(dynamicJson.getJSONObject("data").getJSONObject("card"));
+        } catch (BilibiliException e) {
+            e.printStackTrace();
+        }
 
     }
 }

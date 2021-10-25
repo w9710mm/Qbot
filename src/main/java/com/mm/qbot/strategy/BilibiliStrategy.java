@@ -126,7 +126,7 @@ public class BilibiliStrategy {
                 pack.put("title", origin.getString("title"));
                 pack.put("org_content", origin.getString("summary"));
                 JSONArray imgs=origin.getJSONArray("image_urls");
-                if ("".equals(origin.getString("banner_url"))){
+                if (!"".equals(origin.getString("banner_url"))){
                     picUrls.add(origin.getString("banner_url"));
                 }
 

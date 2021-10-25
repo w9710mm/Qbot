@@ -65,4 +65,22 @@ public class regularExpressionTests {
             System.out.println("NO MATCH");
         }
     }
+
+    @Test
+    void dynamicId(){
+        String line = "[https://m.bilibili.com/dynamic/585186330557240439?share_medium=android&share_plat=android&share_session_id=7b857e0d-d64d-4bc8-ac4d-d11b1d4568a6&share_source=COPY&share_tag=s_i&timestamp=1635087786&unique_k=DBCvoG]";
+        String pattern = "([dynamic]|[video])([0-9]+)";
+
+        // 创建 Pattern 对象
+        Pattern r = Pattern.compile(pattern);
+        System.out.println(line);
+        // 现在创建 matcher 对象
+        Matcher m = r.matcher(line);
+        if (m.find( )) {
+            System.out.println("Found value: " + m.group(0) );
+
+        } else {
+            System.out.println("NO MATCH");
+        }
+    }
 }
