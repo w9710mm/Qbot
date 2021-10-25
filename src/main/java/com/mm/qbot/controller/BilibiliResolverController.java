@@ -44,7 +44,8 @@ public class BilibiliResolverController extends BotPlugin {
                 e.printStackTrace();
             }
         }
-//        bot.
+
+
 
 
         return MESSAGE_IGNORE;

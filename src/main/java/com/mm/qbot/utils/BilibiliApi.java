@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class BilibiliApi {
@@ -143,21 +144,41 @@ public class BilibiliApi {
 
 
 
-
        ResponseEntity<String> res=restTemplate.postForEntity(url,httpEntity,String.class);
 
        if (res.getStatusCodeValue()==302) {
 //        res.getHeaders().get("Location").ts;
-           String dynamicId = RegexUtils.regexGroup("([dynamic|video])/([0-9]+)", res.getHeaders().get("Location").toString(), 1);
-           if (dynamicId!=null){
-               String realUrl = String.format("https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/get_dynamic_detail?dynamic_id=%s",dynamicId);
+
+
+           String regex="(dynamic|video|read/mobile)(/)([a-zA-Z0-9]+)";
+
+
+           Pattern pattern = Pattern.compile(regex);
+           Matcher matcher = pattern.matcher(res.getHeaders().get("Location").toString());
+            String realUrl=null;
+           switch (matcher.group(1)){
+               case ("dynamic"):
+                   realUrl=  String.format("https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/get_dynamic_detail?dynamic_id=%s", matcher.group(3));
+               break;
+               case ("video"):
+                   return getVideoByBid(matcher.group(2));
+
+               case ("read/mobile") :
+
+                   //处理文章
+                   break;
+
+               default:
+                   throw new BilibiliException("获取动态url错误：该资源已经失效");
+
+           }
+
                res = restTemplate.exchange(realUrl, HttpMethod.GET, httpEntity, String.class);
                return JSONObject.parseObject(res.getBody());
-           }
-           return null;
+
 
        }else {
-           throw new BilibiliException("获取动态url错误");
+           throw new BilibiliException("获取动态url错误：不是正确的短链接");
        }
     }
 

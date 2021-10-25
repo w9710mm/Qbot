@@ -33,7 +33,7 @@ public class ShorLInkTests {
 
 
         try {
-            JSONObject dynamicJson = BilibiliApi.getShortLink(videoShortLink);
+            JSONObject dynamicJson = BilibiliApi.getShortLink(picShortLink);
             System.out.println(dynamicJson.toJSONString());
             BilibiliStrategy.dynamicStrategy(dynamicJson.getJSONObject("data").getJSONObject("card"));
         } catch (BilibiliException e) {
