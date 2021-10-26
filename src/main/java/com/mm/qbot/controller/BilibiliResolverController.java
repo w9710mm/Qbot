@@ -1,5 +1,6 @@
 package com.mm.qbot.controller;
 
+import com.mikuac.shiro.common.anntation.PrivateMessageHandler;
 import com.mikuac.shiro.common.utils.MsgUtils;
 import com.mikuac.shiro.core.Bot;
 import com.mikuac.shiro.core.BotPlugin;
@@ -45,11 +46,18 @@ public class BilibiliResolverController extends BotPlugin {
             }
         }
 
+        return MESSAGE_IGNORE;
+    }
 
 
+    @PrivateMessageHandler(senderIds = 962349367)
+    public int onPrivateMessge(@NotNull Bot bot, @NotNull PrivateMessageEvent event,Matcher matcher) {
+
+        System.out.println("ok");
 
         return MESSAGE_IGNORE;
     }
+
     @Override
     public int onGroupMessage(@NotNull Bot bot, @NotNull GroupMessageEvent event) {
         new MsgUtils();
