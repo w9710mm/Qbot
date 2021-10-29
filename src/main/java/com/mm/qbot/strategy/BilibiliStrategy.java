@@ -55,7 +55,7 @@ public class BilibiliStrategy {
 
         }
 
-        return "test";
+        return res.toString();
 
     }
 

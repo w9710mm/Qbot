@@ -31,9 +31,9 @@ public class BilibiliApi {
     static RestTemplate restTemplate = new RestTemplate();
 
     private static List<String> cookies=new ArrayList<>(){{
-        add("SESSDATA=eb841f08%2C1650348175%2C6f67c*a1");
+        add("SESSDATA=9c5addb4%2C1650361348%2Ca8187%2Aa1");
         add("buvid3=5506ADCE-2B87-4DB4-89DC-D49C45C5E6C0148828infoc");
-        add("bili_jct=1d33dcf29ffcee20fd4cf2364264e95b");
+        add("bili_jct=ef3982d151ce01f59d8da231b34f5a0a");
     }};
 
     private static MultiValueMap<String, String> comHeaders = new LinkedMultiValueMap<>(){
@@ -57,7 +57,7 @@ public class BilibiliApi {
     }
 
 
-    public static JSONObject getNewDynamicNum(Integer typeList,Integer offset){
+    public static JSONObject getNewDynamicNum(String typeList,String offset){
         HttpHeaders headers=new HttpHeaders();
         headers.addAll(comHeaders);
         headers.put(HttpHeaders.COOKIE,cookies);
@@ -65,7 +65,7 @@ public class BilibiliApi {
         String dynamicSvr = "https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/web_cyclic_num?type_list={type_list}&offset={offset}";
 
 
-        Map<String, Integer> paramMaps = new HashMap<>();
+        Map<String, String> paramMaps = new HashMap<>();
         paramMaps.put("type_list", typeList);
         paramMaps.put("offset", offset);
 
@@ -74,7 +74,7 @@ public class BilibiliApi {
         return JSONObject.parseObject(res.getBody());
     }
 
-    public  static JSONObject getNewDynamic(Integer uid,Integer typeList,Integer currentDynamicId, String from,String platform ){
+    public  static JSONObject getNewDynamic(String uid,String typeList,String currentDynamicId, String from,String platform ){
         HttpHeaders headers=new HttpHeaders();
         headers.addAll(comHeaders);
         headers.put(HttpHeaders.COOKIE,cookies);
@@ -83,7 +83,7 @@ public class BilibiliApi {
                 "&current_dynamic_id={current_dynamic_id}&from={from}&platform={platform}";
 
 
-        Map<String, Object> paramMaps = new HashMap<>();
+        Map<String, String> paramMaps = new HashMap<>();
         paramMaps.put("uid", uid);
         paramMaps.put("type_list", typeList);
         paramMaps.put("current_dynamic_id", currentDynamicId);
