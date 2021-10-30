@@ -3,9 +3,7 @@ package com.mm.qbot.controller;
 import com.mikuac.shiro.common.utils.MsgUtils;
 import com.mikuac.shiro.core.Bot;
 import com.mikuac.shiro.core.BotPlugin;
-import com.mikuac.shiro.dto.action.anntation.GroupMessageHandler;
 import com.mikuac.shiro.dto.action.anntation.PrivateMessageHandler;
-import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
 import com.mm.qbot.Exception.BilibiliException;
 import com.mm.qbot.strategy.BilibiliParsingStrategy;
@@ -14,9 +12,10 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Controller;
 
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.alibaba.fastjson.JSONPatch.OperationType.test;
 
 /**
  * @author WWM
@@ -36,23 +35,28 @@ public class BilibiliResolverController extends BotPlugin {
 
 
 
-    @Override
-    public int onPrivateMessage(@NotNull Bot bot, @NotNull PrivateMessageEvent event) {
+  @PrivateMessageHandler(regex="[Bb][Vv][a-zA-Z0-9]{10}")
+    public int onPrivat1eMessage(@NotNull Bot bot, @NotNull PrivateMessageEvent event,Matcher M) {
         new MsgUtils();
-        String rawMessage = event.getRawMessage();
-        Matcher m  = bvidPattern.matcher(rawMessage);
 
-        if (m.find()){
+
+        if (M.lookingAt()){
             try {
-                MsgUtils msgUtils = BilibiliParsingStrategy.ParsingBID(m.group(0));
+
+                MsgUtils msgUtils = BilibiliParsingStrategy.ParsingBID(M.group(0));
                 bot.sendPrivateMsg(event.getUserId(),msgUtils.build(),false);
             } catch (BilibiliException e) {
                 e.printStackTrace();
             }
         }
-
-        return MESSAGE_IGNORE;
+        TT T=new TT();
+        T.t();
+        return MESSAGE_BLOCK;
     }
+
+
+
+
 
 
 

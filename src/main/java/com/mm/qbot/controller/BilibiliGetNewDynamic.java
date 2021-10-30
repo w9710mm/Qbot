@@ -25,7 +25,7 @@ public class BilibiliGetNewDynamic extends BotPlugin {
         //3.添加定时任务
 
         //或直接指定时间间隔，例如：5秒
-        @Scheduled(fixedRate=1000*60)
+//        @Scheduled(fixedRate=1000*60)
         private void configureTasks() {
 
             JSONObject newDynamic = BilibiliApi.getNewDynamic("1359202", "268435455", currentDynamicId, "weball", "web");
