@@ -2,6 +2,7 @@ package com.mm.qbot;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.mm.qbot.Exception.BilibiliException;
 import com.mm.qbot.strategy.BilibiliStrategy;
 import com.mm.qbot.utils.QrcodeUtils;
 import org.junit.jupiter.api.Test;
@@ -62,7 +63,11 @@ class QbotApplicationTests {
         JSONArray cards = dyn.getJSONObject("data").getJSONArray("cards");
         for (Object c:cards) {
             JSONObject card = (JSONObject) c;
-            BilibiliStrategy.dynamicStrategy(card);
+            try {
+                BilibiliStrategy.dynamicStrategy(card);
+            } catch (BilibiliException e) {
+                e.printStackTrace();
+            }
         }
         
     }
