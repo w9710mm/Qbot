@@ -3,6 +3,7 @@ package com.mm.qbot.controller;
 import com.mikuac.shiro.common.utils.MsgUtils;
 import com.mikuac.shiro.core.Bot;
 import com.mikuac.shiro.core.BotPlugin;
+import com.mikuac.shiro.dto.action.anntation.GroupMessageHandler;
 import com.mikuac.shiro.dto.action.anntation.PrivateMessageHandler;
 import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
 import com.mm.qbot.Exception.BilibiliException;
