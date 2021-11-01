@@ -29,18 +29,15 @@ import java.util.regex.Pattern;
 
 @EnableAsync
 @Controller
-public class BilibiliResolverController extends BotPlugin {
+public class BilibiliCommandController extends BotPlugin {
 
-    public final String   bvidMacher= "[Bb][Vv][a-zA-Z0-9]{10}";
 
-    public Pattern bvidPattern = Pattern.compile(bvidMacher);
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
-  @PrivateMessageHandler(regex="[Bb][Vv][a-zA-Z0-9]{10}")
-    public int onPrivat1eMessage(@NotNull Bot bot, @NotNull PrivateMessageEvent event,Matcher M) {
-        new MsgUtils();
+      @PrivateMessageHandler(regex="[Bb][Vv][a-zA-Z0-9]{10}")
+    public int BvidParsing(@NotNull Bot bot, @NotNull PrivateMessageEvent event,Matcher M) {
 
 
         if (M!=null&&M.lookingAt()){
@@ -55,16 +52,28 @@ public class BilibiliResolverController extends BotPlugin {
                 e.printStackTrace();
             }
         }
-
-
         return MESSAGE_BLOCK;
     }
 
 
+    @PrivateMessageHandler(regex="(订阅动态 )(\\S+)")
+    public int onPrivat1eMessage(@NotNull Bot bot, @NotNull PrivateMessageEvent event,Matcher M) {
 
 
+        if (M!=null&&M.lookingAt()){
+            try {
 
-
+                MsgUtils msgUtils = BilibiliParsingStrategy.ParsingBID(M.group(0));
+                bot.sendPrivateMsg(event.getUserId(),msgUtils.build(),false);
+                LevelDB instance = LevelDB.getInstance();
+                instance.put("1","1");
+//               redisTemplate.opsForValue().set("1",msgUtils.build().getBytes());
+            } catch (BilibiliException e) {
+                e.printStackTrace();
+            }
+        }
+        return MESSAGE_BLOCK;
+    }
 
 
 

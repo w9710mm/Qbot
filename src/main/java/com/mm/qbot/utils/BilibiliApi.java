@@ -1,9 +1,11 @@
 package com.mm.qbot.utils;
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 
 import com.mikuac.shiro.common.utils.RegexUtils;
 import com.mm.qbot.Exception.BilibiliException;
+import com.mm.qbot.enumeration.RelationActionEnum;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -31,11 +33,12 @@ public class BilibiliApi {
     static RestTemplate restTemplate = new RestTemplate();
 
     private static List<String> cookies=new ArrayList<>(){{
-        add("SESSDATA=9c5addb4%2C1650361348%2Ca8187%2Aa1");
-        add("buvid3=5506ADCE-2B87-4DB4-89DC-D49C45C5E6C0148828infoc");
-        add("bili_jct=ef3982d151ce01f59d8da231b34f5a0a");
+        add("SESSDATA=1772f4fa%2C1648774194%2Ce2e12%2Aa1");
+        add("buvid3=972DD461-3A0C-4FEB-B265-CF4102362DC918533infoc");
+        add("bili_jct=2d09cbe5436f446b068bc7f1f6d1be86");
     }};
 
+    private  static  String csrf="2d09cbe5436f446b068bc7f1f6d1be86";
     private static MultiValueMap<String, String> comHeaders = new LinkedMultiValueMap<>(){
         {
             add("user-agent","Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36");
@@ -181,6 +184,35 @@ public class BilibiliApi {
        }else {
            throw new BilibiliException("获取动态url错误：不是正确的短链接");
        }
+    }
+
+
+    public  static JSONObject modifyRelation(Integer uid, RelationActionEnum action){
+
+        String url="https://api.bilibili.com/x/relation/modify";
+
+        HttpHeaders headers=new HttpHeaders();
+        headers.addAll(comHeaders);
+//        headers.put(HttpHeaders.COOKIE,cookies);
+        headers.put(HttpHeaders.COOKIE,cookies);
+
+
+
+        MultiValueMap<String, String> body= new LinkedMultiValueMap< >();
+
+        body.add("fid",String.valueOf(uid));
+        body.add("act", String.valueOf(action.getId()));
+        body.add("re_src", String.valueOf(11));
+        body.add("csrf",csrf);
+        body.add("csrf_token",csrf);
+
+
+        HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(body, headers);
+
+        ResponseEntity<String> exchange = restTemplate.exchange(url, HttpMethod.POST, httpEntity, String.class);
+
+
+       return JSONObject.parseObject(exchange.getBody());
     }
 
 
