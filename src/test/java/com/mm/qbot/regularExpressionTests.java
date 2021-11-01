@@ -90,8 +90,8 @@ public class regularExpressionTests {
     @Test
     void test订阅(){
 
-        String pattern = "(订阅动态 )(\\S+)";
-        String line="订阅动态  嘉然   ";
+        String pattern = "(\\b群订阅动态 )(\\S+)";
+        String line="群订阅动态 嘉然   ";
         // 创建 Pattern 对象
         Pattern r = Pattern.compile(pattern);
         System.out.println(line);
