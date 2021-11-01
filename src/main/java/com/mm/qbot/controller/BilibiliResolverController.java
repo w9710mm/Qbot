@@ -7,6 +7,7 @@ import com.mikuac.shiro.dto.action.anntation.PrivateMessageHandler;
 import com.mikuac.shiro.dto.event.message.PrivateMessageEvent;
 import com.mm.qbot.Exception.BilibiliException;
 import com.mm.qbot.strategy.BilibiliParsingStrategy;
+import com.mm.qbot.utils.BilibiliApi;
 import com.mm.qbot.utils.LevelDB;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,15 +31,15 @@ import java.util.regex.Pattern;
 @Controller
 public class BilibiliResolverController extends BotPlugin {
 
-    public final String   bvidMacher= "[Bb][Vv][a-zA-Z0-9]{10}";
+    public final String   uid= "\\d";
 
-    public Pattern bvidPattern = Pattern.compile(bvidMacher);
+    public Pattern uidPattern = Pattern.compile(uid);
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
 
   @PrivateMessageHandler(regex="[Bb][Vv][a-zA-Z0-9]{10}")
-    public int onPrivat1eMessage(@NotNull Bot bot, @NotNull PrivateMessageEvent event,Matcher M) {
+    public int resolveBvid(@NotNull Bot bot, @NotNull PrivateMessageEvent event,Matcher M) {
         new MsgUtils();
 
 
@@ -59,6 +60,24 @@ public class BilibiliResolverController extends BotPlugin {
         return MESSAGE_BLOCK;
     }
 
+
+    @PrivateMessageHandler(regex="(最新动态 )([\\S]+)")
+    public int resolveNewDynamic(@NotNull Bot bot, @NotNull PrivateMessageEvent event,Matcher m) {
+        new MsgUtils();
+
+
+        if (m!=null&&m.lookingAt()){
+            Matcher matcher = uidPattern.matcher(m.group(2));
+            if(matcher.lookingAt()){
+
+            }else {
+                BilibiliApi.serachUser(matcher.group(),"bili_user");
+            }
+        }
+
+
+        return MESSAGE_BLOCK;
+    }
 
 
 

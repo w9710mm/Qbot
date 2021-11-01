@@ -132,6 +132,8 @@ public class BilibiliStrategy {
             case (8):
                 pack.put("title", origin.getString("title"));
                 pack.put("aid", origin.getString("aid"));
+                pack.put("duration",TimeUtils.changeTimeFormat(card.getInteger("duration")));
+
                 pack.put("org_content", origin.getString("dynamic"));
                 msgUtils.text(String.format("%s：%s\n",pack.get("org_username"),pack.get("org_content")));
                 msgUtils.text(String.format("标题：%s(%s)\n",pack.get("title"),pack.get("aid")));
@@ -139,7 +141,7 @@ public class BilibiliStrategy {
                 pack.put("desc", origin.getString("desc"));
                 msgUtils.text(String.format("简介：%s",pack.get("desc")));
                 pack.put("org_time", TimeUtils.stampToDate(origin.getLong("pubdate") * 1000));
-                msgUtils.text(String.format("发布时间:%s\n",pack.get("org_time")));
+                msgUtils.text(String.format("发布时间:%s (%s)\n",pack.get("org_time"),pack.get("duration")));
                 pack.put("view", origin.getJSONObject("stat").getString("view"));
                 pack.put("like", origin.getJSONObject("stat").getString("like"));
                 pack.put("favorite", origin.getJSONObject("stat").getString("favorite"));
@@ -287,6 +289,7 @@ public class BilibiliStrategy {
         pack.put("coin", card.getJSONObject("stat").getString("coin"));
         pack.put("link",card.getString("short_link_v2"));
         pack.put("count",card.getString("videos"));
+        pack.put("duration",TimeUtils.changeTimeFormat(card.getInteger("duration")));
        picUrls.add(card.getString("pic"));
        pack.put("pics",picUrls);
 
@@ -299,7 +302,7 @@ public class BilibiliStrategy {
         msgUtils.text(String.format("简介：%s\n",pack.get("desc")));
 
 
-        msgUtils.text(String.format("发布时间:%s\n",pack.get("org_time")));
+        msgUtils.text(String.format("发布时间:%s (%s)\n",pack.get("org_time"),pack.get("duration")));
         msgUtils.img(card.getString("pic"));
         msgUtils.text(String.format( "\n%s\n",pack.get("link")));
         return msgUtils;
