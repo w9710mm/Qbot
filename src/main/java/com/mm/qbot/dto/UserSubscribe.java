@@ -33,6 +33,8 @@ public class UserSubscribe {
     //是否订阅视频
     private Boolean isBVideo;
 
+    //是否是群
+    private Boolean isGroup;
     //是否订阅
 }
 

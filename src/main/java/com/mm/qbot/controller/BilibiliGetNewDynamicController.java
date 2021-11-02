@@ -40,7 +40,7 @@ public class BilibiliGetNewDynamicController extends BotPlugin {
 
     //或直接指定时间间隔，例如：5秒
 
-    @Scheduled(initialDelay=1000, fixedRate=5000)
+//    @Scheduled(initialDelay=1000, fixedRate=5000)
     public void configureTasks() {
          Map<Long, Bot> robots = botContainer.robots;
         LevelDB levelDB=LevelDB.getInstance();
