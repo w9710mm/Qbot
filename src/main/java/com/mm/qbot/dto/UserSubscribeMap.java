@@ -13,13 +13,17 @@ import java.util.Map;
  * @date 2021/10/31 23:20
  */
 @Component
-public class UserSubscribes {
+public class UserSubscribeMap {
 
     private static final Map<Long,UserSubscribe> subscribeMap=new HashMap<>();
 
-    private UserSubscribes(){};
+    private UserSubscribeMap(){};
 
-    public Map<Long,UserSubscribe> getSubscribeMap(){
-        return  subscribeMap;
+
+    private static class UserSubscribeMapInstance{
+        private static final UserSubscribeMap Instance=new UserSubscribeMap();
+    }
+    public UserSubscribeMap getSubscribeMap(){
+        return  UserSubscribeMapInstance.Instance;
     }
 }
