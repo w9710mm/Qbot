@@ -14,14 +14,16 @@ import java.util.Map;
  */
 public class BilibiliPushMap {
 
-    MultiValueMap<Long,Long> groupMap =new LinkedMultiValueMap<>();
+   private final MultiValueMap<Long,UserSubscribe>  groupMap =new LinkedMultiValueMap<>();
 
-    MultiValueMap<Long,Long>  privateMap =new LinkedMultiValueMap<>();
+    private final MultiValueMap<Long,UserSubscribe>  privateMap =new LinkedMultiValueMap<>();
 
-    private static BilibiliPushMap bilibiliPushMap=new BilibiliPushMap();
+    private static class  BilibiliPushMapInstance{
+        private static final BilibiliPushMap Instance=new BilibiliPushMap();
+    }
     private BilibiliPushMap(){}
 
-    private BilibiliPushMap getBilibiliPushMap(){
-        return bilibiliPushMap;
+    public  static BilibiliPushMap getBilibiliPushMap(){
+        return BilibiliPushMapInstance.Instance;
     }
 }
