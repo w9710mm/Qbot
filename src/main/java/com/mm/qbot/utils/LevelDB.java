@@ -12,9 +12,7 @@ import org.springframework.stereotype.Component;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 import javax.annotation.Resource;
-import java.io.File;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -62,21 +60,39 @@ public class LevelDB {
 
     //存放数据
     public  void put(String key, String val) {
-        db.put(key.getBytes(charset), val.getBytes(StandardCharsets.UTF_8));
+        db.put(key.getBytes(charset), val.getBytes(charset));
     }
+
+
+
     public  void put(String key, Object val) {
-        db.put(key.getBytes(charset), this.serializer(val));
+
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(val);
+            db.put(key.getBytes(charset), baos.toByteArray());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
     //根据key获取数据
-    public byte[] get(String key) {
-        byte[] val = null;
-        try {
-            val = db.get(key.getBytes(charset));
-        } catch (Exception e) {
-            log.error("levelDB get error", e);
+    public Object get(String key) {
+        byte[] val = db.get(key.getBytes(charset));
+        if (val!=null){
+            try {
+                ByteArrayInputStream bais = new ByteArrayInputStream(val);
+                ObjectInputStream ois = new ObjectInputStream(bais);
+                return ois.readObject();
+            } catch (Exception e) {
+                log.error("levelDB get error", e);
+            }
         }
-        return val;
+
+        return null;
     }
 
     //根据key删除数据

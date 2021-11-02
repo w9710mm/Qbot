@@ -44,7 +44,7 @@ public class BilibiliGetNewDynamicController extends BotPlugin {
     public void configureTasks() {
          Map<Long, Bot> robots = botContainer.robots;
         LevelDB levelDB=LevelDB.getInstance();
-        currentDynamicId= new String(levelDB.get("currentDynamicId"));
+        currentDynamicId= (String)levelDB.get("currentDynamicId");
 
         for (Long aLong : robots.keySet()) {
              Bot  bot = robots.get(aLong);

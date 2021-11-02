@@ -3,7 +3,7 @@ server:
 shiro:
   # 插件列表
   plugin-list:
-    - com.mm.qbot.controller.BilibiliResolverController
+    - com.mm.qbot.controller.BilibiliCommandController
     - com.mm.qbot.controller.BilibiliGetNewDynamicController
 #    - com.mikuac.example.plugins.PluginTwo
   # WebSocket 配置
