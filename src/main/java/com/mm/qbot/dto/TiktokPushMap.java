@@ -7,6 +7,9 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author meme
@@ -22,9 +25,9 @@ import java.io.Serializable;
 public class TiktokPushMap implements Serializable {
 
 
-    private   MultiValueMap<Long,UserSubscribe> groupMap =new LinkedMultiValueMap<>();
+    private Map<Long, Set<Long>> groupMap =new HashMap<>();
 
-    private   MultiValueMap<Long,UserSubscribe>  privateMap =new LinkedMultiValueMap<>() ;
+    private  Map<Long, Set<Long>>  privateMap=new HashMap<>() ;
 
     private TiktokPushMap(){}
 

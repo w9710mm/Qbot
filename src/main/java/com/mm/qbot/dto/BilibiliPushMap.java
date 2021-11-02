@@ -9,7 +9,9 @@ import org.springframework.util.MultiValueMap;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author meme
@@ -25,9 +27,9 @@ import java.util.Map;
 public class BilibiliPushMap implements Serializable {
 
 
-   private  MultiValueMap<Long,UserSubscribe>  groupMap =new LinkedMultiValueMap<>();
+   private  Map<Long, Set<Long>>  groupMap =new HashMap<>();
 
-    private  MultiValueMap<Long,UserSubscribe>  privateMap=new LinkedMultiValueMap<>() ;
+    private  Map<Long, Set<Long>>  privateMap=new HashMap<>() ;
 
 
     private static class  BilibiliPushMapInstance{

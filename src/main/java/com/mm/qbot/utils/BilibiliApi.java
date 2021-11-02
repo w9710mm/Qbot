@@ -187,7 +187,7 @@ public class BilibiliApi {
     }
 
 
-    public  static JSONObject modifyRelation(Integer uid, RelationActionEnum action){
+    public  static JSONObject modifyRelation(Long uid, RelationActionEnum action){
 
         String url="https://api.bilibili.com/x/relation/modify";
 

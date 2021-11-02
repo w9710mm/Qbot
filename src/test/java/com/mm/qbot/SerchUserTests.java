@@ -20,7 +20,7 @@ public class SerchUserTests {
         Matcher matcher = bvidPattern.matcher("最新动态 11   ");
 
 
-        JSONObject object = BilibiliApi.serachUser("散人", "bili_user");
+        JSONObject object = BilibiliApi.serachUser("大事", "bili_user");
 
         System.out.println(object);
     }

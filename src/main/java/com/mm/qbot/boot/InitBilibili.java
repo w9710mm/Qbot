@@ -8,9 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 import org.springframework.util.MultiValueMap;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author meme
@@ -23,56 +21,115 @@ import java.util.Map;
 @Component
 public class InitBilibili {
 
-    private final LevelDB levelDB =LevelDB.getInstance();
+    private final LevelDB levelDB = LevelDB.getInstance();
 
-    private final BilibiliPushMap bilibiliPushMap =BilibiliPushMap.getInstance();
+    private final BilibiliPushMap bilibiliPushMap = BilibiliPushMap.getInstance();
 
-    private final WeiBoPushMap weiBoPushMap =WeiBoPushMap.getInstance();
+    private final WeiBoPushMap weiBoPushMap = WeiBoPushMap.getInstance();
 
-    private final TiktokPushMap tiktokPushMap =TiktokPushMap.getInstance();
+    private final TiktokPushMap tiktokPushMap = TiktokPushMap.getInstance();
 
-    private final UserSubscribeMap userSubscribeMap=UserSubscribeMap.getInstance();
+    private final UserSubscribeMap userSubscribeMap = UserSubscribeMap.getInstance();
 
     @Bean
-    public  void InitPushMap(){
+    public void InitPushMap() {
 
-        MultiValueMap<Long, UserSubscribe> subscribeMap = userSubscribeMap.getSubscribeMap();
+        Map<Long, UserSubscribe> subscribeMap = userSubscribeMap.getSubscribeMap();
 
-        MultiValueMap<Long, UserSubscribe> bilibiliGroupPushMap = bilibiliPushMap.getGroupMap();
+        Map<Long, Set<Long>> bilibiliGroupPushMap = bilibiliPushMap.getGroupMap();
 
-        MultiValueMap<Long, UserSubscribe> bilibiliPrivatePushMap = bilibiliPushMap.getPrivateMap();
+        Map<Long, Set<Long>> bilibiliPrivatePushMap = bilibiliPushMap.getPrivateMap();
 
-        MultiValueMap<Long, UserSubscribe>  weiBoGroupPushMap = weiBoPushMap.getGroupMap();
+        Map<Long, Set<Long>> weiBoGroupPushMap = weiBoPushMap.getGroupMap();
 
-        MultiValueMap<Long, UserSubscribe>  weiBoPrivatePushMap = weiBoPushMap.getPrivateMap();
+        Map<Long, Set<Long>> weiBoPrivatePushMap = weiBoPushMap.getPrivateMap();
 
-        MultiValueMap<Long, UserSubscribe> tiktokGroupPushMap = tiktokPushMap.getGroupMap();
+        Map<Long, Set<Long>> tiktokGroupPushMap = tiktokPushMap.getGroupMap();
 
-        MultiValueMap<Long, UserSubscribe> tiktokPrivatePushMap = tiktokPushMap.getPrivateMap();
+        Map<Long, Set<Long>> tiktokPrivatePushMap = tiktokPushMap.getPrivateMap();
 
 
 
-        for (Map.Entry<Long, List<UserSubscribe>> subscribe : subscribeMap.entrySet()) {
-            List<UserSubscribe> userSubscribes = subscribe.getValue();
-            for (UserSubscribe value:userSubscribes) {
-                List<Long> tikids = value.getTikids();
-                List<Long> weiboids = value.getWeiboids();
-                List<Long> bids = value.getBids();
-                if (value.getIsGroup()){
-                    for (Long id:weiboids) weiBoGroupPushMap.add(id,value);
-                    for (Long id:tikids) tiktokGroupPushMap.add(id,value);
-                    for (Long id:bids) bilibiliGroupPushMap.add(id,value);
-
+        subscribeMap.forEach((key, userSubscribe) -> {
+            Set<Long> tikids = userSubscribe.getTikids();
+            Set<Long> weiboids = userSubscribe.getWeiboids();
+            Set<Long> bids = userSubscribe.getBids();
+            if (userSubscribe.getIsGroup()) {
+                for (Long id : weiboids){
+                    if (!weiBoGroupPushMap.containsKey(id)){
+                        Set<Long> longs=new HashSet<>();
+                        longs.add(key);
+                        weiBoGroupPushMap.put(id,longs);
+                    }
+                    if (weiBoGroupPushMap.containsKey(id)){
+                        Set<Long> longs=weiBoGroupPushMap.get(id);
+                        longs.add(key);
+                    }
                 }
-                if (!value.getIsGroup()){
-
-                    for (Long id:bids) bilibiliPrivatePushMap.add(id, value);
-                    for (Long id:weiboids) weiBoPrivatePushMap.add(id,value);
-                    for (Long id:tikids) tiktokPrivatePushMap.add(id,value);
-
+                for (Long id : tikids){
+                    if (!tiktokGroupPushMap.containsKey(id)){
+                        Set<Long> longs=new HashSet<>();
+                        longs.add(key);
+                        tiktokGroupPushMap.put(id,longs);
+                    }
+                    if (tiktokGroupPushMap.containsKey(id)){
+                        Set<Long> longs=tiktokGroupPushMap.get(id);
+                        longs.add(key);
+                    }
                 }
+                for (Long id : bids){
+                    if (!bilibiliGroupPushMap.containsKey(id)){
+                        Set<Long> longs=new HashSet<>();
+                        longs.add(key);
+                        bilibiliGroupPushMap.put(id,longs);
+                    }
+                    if (bilibiliGroupPushMap.containsKey(id)){
+                        Set<Long> longs=bilibiliGroupPushMap.get(id);
+                        longs.add(key);
+                    }
+                }
+
             }
-        }
-    }
+            if (!userSubscribe.getIsGroup()) {
 
+                for (Long id : bids) {
+                    if (!bilibiliPrivatePushMap.containsKey(id)){
+                        Set<Long> longs=new HashSet<>();
+                        longs.add(key);
+                        bilibiliPrivatePushMap.put(id,longs);
+                    }
+                    if (bilibiliPrivatePushMap.containsKey(id)){
+                        Set<Long> longs=bilibiliPrivatePushMap.get(id);
+                        longs.add(key);
+                    }
+                }
+                for (Long id : weiboids) {
+                    if (!weiBoPrivatePushMap.containsKey(id)){
+                        Set<Long> longs=new HashSet<>();
+                        longs.add(key);
+                        weiBoPrivatePushMap.put(id,longs);
+                    }
+                    if (weiBoPrivatePushMap.containsKey(id)){
+                        Set<Long> longs=weiBoPrivatePushMap.get(id);
+                        longs.add(key);
+                    }
+                }
+                for (Long id : tikids){
+                    if (!tiktokPrivatePushMap.containsKey(id)){
+                        Set<Long> longs=new HashSet<>();
+                        longs.add(key);
+                        tiktokPrivatePushMap.put(id,longs);
+                    }
+                    if (tiktokPrivatePushMap.containsKey(id)){
+                        Set<Long> longs=tiktokPrivatePushMap.get(id);
+                        longs.add(key);
+                    }
+                }
+
+            }
+        });
+
+    }
 }
+
+

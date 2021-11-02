@@ -17,6 +17,6 @@ public class modifyRelationTests {
     void subscribe (){
 
 
-        BilibiliApi.modifyRelation(8386957, RelationActionEnum.SUBSCRIBE);
+        BilibiliApi.modifyRelation(8386957L, RelationActionEnum.SUBSCRIBE);
     }
 }

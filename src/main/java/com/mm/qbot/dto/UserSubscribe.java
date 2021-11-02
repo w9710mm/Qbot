@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.springframework.context.annotation.Bean;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author meme
@@ -25,11 +26,11 @@ public class UserSubscribe {
     private Long id;
 
     //订阅的b用户
-    private List<Long> bids;
+    private Set<Long> bids;
 
-    private List<Long> weiboids;
+    private Set<Long> weiboids;
 
-    private List<Long> Tikids;
+    private Set<Long> Tikids;
     //是否订阅视频
     private Boolean isBVideo;
 

@@ -27,7 +27,7 @@ public class UserSubscribeMap implements Serializable {
     @Getter
     @Setter
 
-    private MultiValueMap<Long,UserSubscribe> subscribeMap =new LinkedMultiValueMap<>();
+    private Map<Long,UserSubscribe> subscribeMap =new HashMap<>();
 
     private UserSubscribeMap(){};
 
