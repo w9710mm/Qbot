@@ -51,16 +51,12 @@ public class BilibiliCommandController extends BotPlugin {
       public int bvidParsingInPrivate(@NotNull Bot bot, PrivateMessageEvent event, Matcher m) {
 
 
-        if (m!=null&&m.lookingAt()){
-            try {
+        if (M!=null&&M.lookingAt()){
 
-                MsgUtils msgUtils = BilibiliParsingStrategy.ParsingBID(m.group(0));
-                if (event!=null) {
-                    bot.sendPrivateMsg(event.getPrivateSender().getUserId(),msgUtils.build(),false);
-                }
-            } catch (BilibiliException e) {
-                e.printStackTrace();
-            }
+            MsgUtils msgUtils = BilibiliParsingStrategy.ParsingBID(M.group(0));
+            if (event!=null&&msgUtils!=null)
+                bot.sendPrivateMsg(event.getPrivateSender().getUserId(),msgUtils.build(),false);
+//               redisTemplate.opsForValue().set("1",msgUtils.build().getBytes());
         }
         return MESSAGE_BLOCK;
     }
@@ -70,16 +66,12 @@ public class BilibiliCommandController extends BotPlugin {
     public int bvidParsingInGroup(@NotNull Bot bot, GroupMessageEvent event, Matcher m) {
 
 
-        if (m!=null&&m.lookingAt()){
-            try {
+        if (M!=null&&M.lookingAt()){
 
-                MsgUtils msgUtils = BilibiliParsingStrategy.ParsingBID(m.group(0));
-                if (event!=null) {
-                    bot.sendGroupMsg(event.getGroupId(),msgUtils.build(),false);
-                }
-            } catch (BilibiliException e) {
-                e.printStackTrace();
-            }
+            MsgUtils msgUtils = BilibiliParsingStrategy.ParsingBID(M.group(0));
+            if (event!=null&&msgUtils!=null)
+                bot.sendGroupMsg(event.getGroupId(),msgUtils.build(),false);
+//               redisTemplate.opsForValue().set("1",msgUtils.build().getBytes());
         }
         return MESSAGE_BLOCK;
     }
@@ -87,48 +79,15 @@ public class BilibiliCommandController extends BotPlugin {
     @PrivateMessageHandler(cmd="(\\b订阅动态 )(\\S+)")
     public void privateSubscribeInPrivate(@NotNull Bot bot, PrivateMessageEvent event, Matcher m) {
 
-
         if (event!=null){
-            Long qid =event.getPrivateSender().getUserId();
-            Long uid = bilibiliService.followUser(m.group(2));
+            long Qid=event.getPrivateSender().getUserId();
+            Long uid = bilibiliService.followUser(M.group(2));
             if (uid==null){
-                bot.sendPrivateMsg(qid,"订阅失败，请检查输入的uid或者昵称是否正确。\n例如：订阅动态 嘉然今天吃什么",false);
+                bot.sendPrivateMsg(Qid,"订阅失败，请检查输入的uid或者昵称是否正确。\n例如：订阅动态 嘉然今天吃什么",false);
                 return;
             }
-            Map<Long, UserSubscribe> subscribeMap = userSubscribeMap.getSubscribeMap();
-            if (!subscribeMap.containsKey(qid)){
-                UserSubscribe userSubscribe=new UserSubscribe();
-                userSubscribe.setId(qid);
-                Set<Long> dis=new HashSet<>();
-                dis.add(uid);
-                userSubscribe.setBids(dis);
-                subscribeMap.put(qid,userSubscribe);
-            }
-            if (subscribeMap.containsKey(qid)){
-                UserSubscribe userSubscribe = subscribeMap.get(qid);
-                Set<Long> bids = userSubscribe.getBids();
-               if (bids==null){
-                   bids=new HashSet<>();
-                   userSubscribe.setBids(bids);
-               }
-               bids.add(uid);
-            }
-
-            Map<Long, Set<Long>> privateMap = bilibiliPushMap.getPrivateMap();
-
-            if (privateMap.containsKey(uid)){
-                Set<Long> longs = privateMap.get(uid);
-                longs.add(qid);
-            }
-            if (!privateMap.containsKey(uid)){
-                Set<Long> longs=new HashSet<>();
-                longs.add(qid);
-                privateMap.put(uid,longs);
-            }
-            bot.sendPrivateMsg(qid,"订阅成功！",false);
-            levelDB.put("userSubscribeMap",userSubscribeMap);
-
-
+            bilibiliService.addSubscribe(Qid,uid,userSubscribeMap,Boolean.FALSE,bilibiliPushMap.getPrivateMap());
+            bot.sendPrivateMsg(Qid,"订阅成功！",false);
         }
     }
 
@@ -136,38 +95,15 @@ public class BilibiliCommandController extends BotPlugin {
     @GroupMessageHandler(cmd="(\\b订阅动态 )(\\S+)")
     public void privateSubscribeInGroup(@NotNull Bot bot, GroupMessageEvent event, Matcher m) {
 
-
         if (event!=null) {
-            Long qid = Long.valueOf(event.getSender().getUserId());
-            Long uid = bilibiliService.followUser(m.group(2));
+            long Qid = Long.parseLong(event.getSender().getUserId());
+            Long uid = bilibiliService.followUser(M.group(2));
             if (uid == null) {
-                bot.sendPrivateMsg(qid, "订阅失败，请检查输入的uid或者昵称是否正确。\n例如：订阅动态 嘉然今天吃什么", false);
+                bot.sendGroupMsg(Qid, "订阅失败，请检查输入的uid或者昵称是否正确。\n例如：订阅动态 嘉然今天吃什么", false);
                 return;
             }
-            Map<Long, UserSubscribe> subscribeMap = userSubscribeMap.getSubscribeMap();
-            if (!subscribeMap.containsKey(qid)) {
-                UserSubscribe userSubscribe = new UserSubscribe();
-                userSubscribe.setId(qid);
-                Set<Long> dis = new HashSet<>();
-                dis.add(uid);
-                userSubscribe.setBids(dis);
-                subscribeMap.put(qid, userSubscribe);
-
-                Map<Long, Set<Long>> privateMap = bilibiliPushMap.getPrivateMap();
-
-                if (privateMap.containsKey(uid)) {
-                    Set<Long> longs = privateMap.get(uid);
-                    longs.add(qid);
-                }
-                if (!privateMap.containsKey(uid)) {
-                    Set<Long> longs = new HashSet<>();
-                    longs.add(qid);
-                    privateMap.put(uid, longs);
-                }
-
-            }
-
-            bot.sendPrivateMsg(qid, "订阅成功！", false);
+            bilibiliService.addSubscribe(Qid,uid,userSubscribeMap,Boolean.FALSE,bilibiliPushMap.getPrivateMap());
+            bot.sendGroupMsg(Qid, "订阅成功！", false);
         }
     }
 
@@ -176,15 +112,15 @@ public class BilibiliCommandController extends BotPlugin {
     @GroupMessageHandler(cmd="(\\b群订阅动态 )(\\S+)")
     public void groupSubscribe(@NotNull Bot bot, GroupMessageEvent event, Matcher M) {
 
-        if (M!=null&&M.lookingAt()){
-            try {
-
-                MsgUtils msgUtils = BilibiliParsingStrategy.ParsingBID(M.group(0));
-                LevelDB instance = LevelDB.getInstance();
-                instance.put("1","1");
-            } catch (BilibiliException e) {
-                e.printStackTrace();
+        if (event!=null) {
+            long Qid =event.getGroupId();
+            Long uid = bilibiliService.followUser(M.group(2));
+            if (uid == null) {
+                bot.sendGroupMsg(Qid, "订阅失败，请检查输入的uid或者昵称是否正确。\n例如：群订阅动态 嘉然今天吃什么", false);
+                return;
             }
+            bilibiliService.addSubscribe(Qid,uid,userSubscribeMap,Boolean.TRUE,bilibiliPushMap.getGroupMap());
+            bot.sendGroupMsg(Qid, "订阅成功！", false);
         }
     }
 
@@ -192,10 +128,10 @@ public class BilibiliCommandController extends BotPlugin {
     public int getNewDynamicInPrivate(@NotNull Bot bot, PrivateMessageEvent event, Matcher m) {
 
 
-        if (m!=null&&m.lookingAt()){
+        if (M!=null&&M.lookingAt()){
             try {
 
-                MsgUtils msgUtils = BilibiliParsingStrategy.ParsingBID(m.group(0));
+                MsgUtils msgUtils = BilibiliParsingStrategy.ParsingBID(M.group(0));
 //                bot.sendPrivateMsg(event.getUserId(),msgUtils.build(),false);
                 LevelDB instance = LevelDB.getInstance();
                 instance.put("1","1");

@@ -8,11 +8,7 @@ public class ParsingStrategyTests {
 
     @Test
     void Bid() {
-        try {
-            BilibiliParsingStrategy.ParsingBID("BV1744y14794");
-        } catch (BilibiliException e) {
-            e.printStackTrace();
-        }
+        BilibiliParsingStrategy.ParsingBID("BV1744y14794");
 
     }
 }

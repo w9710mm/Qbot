@@ -25,9 +25,9 @@ import java.util.Set;
 public class TiktokPushMap implements Serializable {
 
 
-    private Map<Long, Set<Long>> groupMap =new HashMap<>();
+    private Map<String, Set<Long>> groupMap =new HashMap<>();
 
-    private  Map<Long, Set<Long>>  privateMap=new HashMap<>() ;
+    private  Map<String, Set<Long>>  privateMap=new HashMap<>() ;
 
     private TiktokPushMap(){}
 

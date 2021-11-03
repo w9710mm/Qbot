@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 
 import com.mikuac.shiro.common.utils.RegexUtils;
 import com.mm.qbot.Exception.BilibiliException;
+import com.mm.qbot.enumeration.NeedTopEnum;
 import com.mm.qbot.enumeration.RelationActionEnum;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -15,6 +16,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.util.PatternMatchUtils;
 import org.springframework.web.client.RestTemplate;
 
+import javax.net.ssl.HostnameVerifier;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -217,6 +219,26 @@ public class BilibiliApi {
 
 
 
+
+    public  static JSONObject getSpaceDynamic(Long  hostUid, Long offsetDynamicId, NeedTopEnum needTopEnum){
+        String url="https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/space_history?host_uid=" +
+                "{hostUid}&offset_dynamic_id={offsetDynamicId}&need_top={needTopEnum}&platform=web";
+
+        HttpHeaders headers=new HttpHeaders();
+
+        headers.addAll(comHeaders);
+        HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(null, headers);
+
+        Map<String, Object> paramMaps = new HashMap<>();
+        paramMaps.put("hostUid", hostUid);
+        paramMaps.put("offsetDynamicId", offsetDynamicId);
+        paramMaps.put("needTopEnum", needTopEnum.getId());
+
+        ResponseEntity<String> exchange = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class,paramMaps);
+
+        return JSONObject.parseObject(exchange.getBody());
+
+    }
 
 
 
