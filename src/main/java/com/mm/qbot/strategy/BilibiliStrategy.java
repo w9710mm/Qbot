@@ -132,7 +132,7 @@ public class BilibiliStrategy {
             case (8):
                 pack.put("title", origin.getString("title"));
                 pack.put("aid", origin.getString("aid"));
-                pack.put("duration",TimeUtils.changeTimeFormat(card.getInteger("duration")));
+                pack.put("duration",TimeUtils.changeTimeFormat(origin.getInteger("duration")));
 
                 pack.put("org_content", origin.getString("dynamic"));
                 msgUtils.text(String.format("%s：%s\n",pack.get("org_username"),pack.get("org_content")));

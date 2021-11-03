@@ -65,7 +65,7 @@ public class LevelDB {
 
 
 
-    public  void put(String key, Object val) {
+    public  boolean put(String key, Object val) {
 
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -75,7 +75,9 @@ public class LevelDB {
             db.put(key.getBytes(charset), baos.toByteArray());
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
+        return true;
 
     }
 

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.context.annotation.Bean;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
 
@@ -22,7 +23,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserSubscribe {
+public class UserSubscribe  implements Serializable {
     private Long id;
 
     //订阅的b用户
