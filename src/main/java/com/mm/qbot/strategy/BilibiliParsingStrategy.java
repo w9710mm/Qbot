@@ -26,10 +26,10 @@ public class BilibiliParsingStrategy {
 
     }
 
-    public  static MsgUtils ParsingBID(String bid) throws BilibiliException{
+    public  static MsgUtils ParsingBID(String bid) {
         JSONObject json = BilibiliApi.getVideoByBid(bid);
         if (json.getInteger("code")!=0){
-            throw new  BilibiliException(String.format("获取bid：%s失败",bid));
+            return  null;
         }
 
         JSONObject data = json.getJSONObject("data");

@@ -30,7 +30,7 @@ public class UserSubscribe {
 
     private Set<Long> weiboids;
 
-    private Set<Long> Tikids;
+    private Set<String> Tikids;
     //是否订阅视频
     private Boolean isBVideo;
 

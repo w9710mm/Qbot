@@ -50,14 +50,14 @@ public class InitBilibili {
 
         Map<Long, Set<Long>> weiBoPrivatePushMap = weiBoPushMap.getPrivateMap();
 
-        Map<Long, Set<Long>> tiktokGroupPushMap = tiktokPushMap.getGroupMap();
+        Map<String, Set<Long>> tiktokGroupPushMap = tiktokPushMap.getGroupMap();
 
-        Map<Long, Set<Long>> tiktokPrivatePushMap = tiktokPushMap.getPrivateMap();
+        Map<String, Set<Long>> tiktokPrivatePushMap = tiktokPushMap.getPrivateMap();
 
 
 
         subscribeMap.forEach((key, userSubscribe) -> {
-            Set<Long> tikids = userSubscribe.getTikids();
+            Set<String> tikids = userSubscribe.getTikids();
             Set<Long> weiboids = userSubscribe.getWeiboids();
             Set<Long> bids = userSubscribe.getBids();
             if (userSubscribe.getIsGroup()) {
@@ -72,7 +72,7 @@ public class InitBilibili {
                         longs.add(key);
                     }
                 }
-                for (Long id : tikids){
+                for (String id : tikids){
                     if (!tiktokGroupPushMap.containsKey(id)){
                         Set<Long> longs=new HashSet<>();
                         longs.add(key);
@@ -120,7 +120,7 @@ public class InitBilibili {
                         longs.add(key);
                     }
                 }
-                for (Long id : tikids){
+                for (String id : tikids){
                     if (!tiktokPrivatePushMap.containsKey(id)){
                         Set<Long> longs=new HashSet<>();
                         longs.add(key);
