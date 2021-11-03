@@ -29,12 +29,18 @@ public class InitBilibili {
 
     private final TiktokPushMap tiktokPushMap = TiktokPushMap.getInstance();
 
-    private final UserSubscribeMap userSubscribeMap = UserSubscribeMap.getInstance();
 
     @Bean
     public void InitPushMap() {
 
-        Map<Long, UserSubscribe> subscribeMap = userSubscribeMap.getSubscribeMap();
+
+        UserSubscribeMap UsersubscribeMap =(UserSubscribeMap)levelDB.get("userSubscribeMap");
+
+        if (UsersubscribeMap==null){
+            UsersubscribeMap=UserSubscribeMap.getInstance();
+            levelDB.put("userSubscribeMap",UsersubscribeMap);
+        }
+        Map<Long, UserSubscribe> subscribeMap = UsersubscribeMap.getSubscribeMap();
 
         Map<Long, Set<Long>> bilibiliGroupPushMap = bilibiliPushMap.getGroupMap();
 
