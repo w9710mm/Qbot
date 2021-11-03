@@ -31,16 +31,16 @@ public class InitBilibili {
 
 
     @Bean
-    public void InitPushMap() {
+    public void initPushMap() {
 
 
-        UserSubscribeMap UsersubscribeMap =(UserSubscribeMap)levelDB.get("userSubscribeMap");
+        UserSubscribeMap usersubscribeMap =(UserSubscribeMap)levelDB.get("userSubscribeMap");
 
-        if (UsersubscribeMap==null){
-            UsersubscribeMap=UserSubscribeMap.getInstance();
-            levelDB.put("userSubscribeMap",UsersubscribeMap);
+        if (usersubscribeMap==null){
+            usersubscribeMap=UserSubscribeMap.getInstance();
+            levelDB.put("userSubscribeMap",usersubscribeMap);
         }
-        Map<Long, UserSubscribe> subscribeMap = UsersubscribeMap.getSubscribeMap();
+        Map<Long, UserSubscribe> subscribeMap = usersubscribeMap.getSubscribeMap();
 
         Map<Long, Set<Long>> bilibiliGroupPushMap = bilibiliPushMap.getGroupMap();
 

@@ -27,8 +27,9 @@ public class BilibiliService {
         if (matcher.lookingAt()){
 
             JSONObject res = BilibiliApi.modifyRelation(Long.valueOf(matcher.group()), RelationActionEnum.SUBSCRIBE);
-            if (res.getInteger("message")==0)
+            if (res.getInteger("message")==0) {
                 uid=Long.valueOf(matcher.group());
+            }
         }
         if (!matcher.lookingAt()){
             JSONObject result=BilibiliApi.serachUser(text,"bili_user");
@@ -37,8 +38,9 @@ public class BilibiliService {
                 JSONObject data = datas.getJSONObject(0);
                 Long mid = data.getLong("mid");
                 JSONObject res = BilibiliApi.modifyRelation(mid, RelationActionEnum.SUBSCRIBE);
-                if (res.getInteger("message")==0)
+                if (res.getInteger("message")==0) {
                     uid=mid;
+                }
             }
         }
 
