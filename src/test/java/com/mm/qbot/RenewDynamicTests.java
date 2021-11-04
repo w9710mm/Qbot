@@ -14,10 +14,9 @@ public class RenewDynamicTests {
     @Test
     public void Renew() {
 
-        JSONObject jsonObject = BilibiliApi.getNewDynamicNum("268435455", "586920011287906415");
 
 //        if (jsonObject.getJSONObject("data").getInteger("update_num")>=1){
-            JSONObject newDynamic = BilibiliApi.getNewDynamic("1359202", "268435455", "587592349757451973", "weball", "web");
+            JSONObject newDynamic = BilibiliApi.getNewDynamic("1823651096", "268435455", "587592349757451973", "weball", "web");
             System.out.println(newDynamic.toJSONString());
         JSONArray jsonArray=newDynamic.getJSONObject("data").getJSONArray("cards");
         for (Object object:jsonArray) {

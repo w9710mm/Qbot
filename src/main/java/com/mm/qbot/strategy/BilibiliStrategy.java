@@ -112,10 +112,19 @@ public class BilibiliStrategy {
 
                 pack.put("org_time", TimeUtils.stampToDate(origin.getJSONObject("item").getLong("upload_time") * 1000));
                 JSONArray pics=origin.getJSONObject("item").getJSONArray("pictures");
+                if (pics.size()==1){
+                    String url=pics.getJSONObject(0).getString("img_src");
+                    int lastIndexOf = url.lastIndexOf(".");
+                    url=url.substring(0,lastIndexOf)+".png@550w_550h";
+                    msgUtils.img(url);
+                }
                 for (Object o:pics) {
                   JSONObject pic =(JSONObject)o;
-                  picUrls.add(pic.getString("img_src"));
-                  msgUtils.img(pic.getString("img_src"));
+                    String url=pic.getString("img_src");
+                    int lastIndexOf = url.lastIndexOf(".");
+                    url=url.substring(0,lastIndexOf)+".png@550w_550h";
+                    msgUtils.img(url);
+                  picUrls.add(url);
                 }
                 msgUtils.text(String.format("发布时间:%s\n",pack.get("org_time")));
 
@@ -193,7 +202,7 @@ public class BilibiliStrategy {
 //        pack.put("org_type","");
 
 
-        return msgUtils;
+            return msgUtils;
 
     }
 
@@ -221,10 +230,19 @@ public class BilibiliStrategy {
         pack.put("content", card.getJSONObject("item").getString("description"));
         JSONArray pics = card.getJSONObject("item").getJSONArray("pictures");
         msgUtils.text(String.format("%s：%s\n",pack.get("username"),pack.get("content")));
+        if (pics.size()==1){
+            String url=pics.getJSONObject(0).getString("img_src");
+            int lastIndexOf = url.lastIndexOf(".");
+            url=url.substring(0,lastIndexOf)+".png@550w_550h";
+            msgUtils.img(url);
+        }
         for (Object pic : pics) {
             JSONObject p = (JSONObject) pic;
-            picUrls.add(p.getString("img_src"));
-            msgUtils.img(p.getString("img_src"));
+            String url=p.getString("img_src");
+            int lastIndexOf = url.lastIndexOf(".");
+            url=url.substring(0,lastIndexOf)+".png@550w_550h";
+            msgUtils.img(url);
+            picUrls.add(url);
         }
         pack.put("pics", picUrls);
 

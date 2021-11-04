@@ -127,7 +127,7 @@ public class BilibiliCommandController extends BotPlugin {
         MsgUtils msgUtils=bilibiliService.followUser(uid);
 
         if (msgUtils!=null){
-            boolean flag = bilibiliService.addSubscribe(qid, uid, userSubscribeMap, Boolean.FALSE, bilibiliPushMap.getGroupMap());
+            boolean flag = bilibiliService.addSubscribe(qid, uid, userSubscribeMap, Boolean.TRUE, bilibiliPushMap.getGroupMap());
             if (flag){
                 bot.sendGroupMsg(qid,msgUtils.build(),false);
                 return;
@@ -227,6 +227,13 @@ public class BilibiliCommandController extends BotPlugin {
             return;
         }
         bot.sendGroupMsg(event.getGroupId(),msgUtils.build(),false);
+
+    }
+
+    @PrivateMessageHandler(cmd="test")
+    public void test(@NotNull Bot bot, PrivateMessageEvent event, Matcher m) {
+          MsgUtils msgUtils=MsgUtils.builder().img("file:///F:\\javaProject\\QBot\\1.jpg");
+        bot.sendPrivateMsg(event.getPrivateSender().getUserId(),msgUtils.build(),false);
 
     }
 }
