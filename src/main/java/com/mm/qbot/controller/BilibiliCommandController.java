@@ -11,6 +11,7 @@ import com.mm.qbot.dto.*;
 import com.mm.qbot.service.BilibiliService;
 import com.mm.qbot.strategy.BilibiliParsingStrategy;
 import com.mm.qbot.utils.LevelDB;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Controller;
 
@@ -26,6 +27,7 @@ import java.util.regex.Matcher;
  */
 
 @Controller
+@Slf4j
 public class BilibiliCommandController extends BotPlugin {
 
 
@@ -126,7 +128,7 @@ public class BilibiliCommandController extends BotPlugin {
     @PrivateMessageHandler(cmd="(\\b最新动态 )(\\S+)")
     public void getNewDynamicInPrivate(@NotNull Bot bot, PrivateMessageEvent event, Matcher m) {
         Long uid = bilibiliService.findUid(m.group(2));
-
+        log.info("11");
         if (uid==null){
             return;
         }

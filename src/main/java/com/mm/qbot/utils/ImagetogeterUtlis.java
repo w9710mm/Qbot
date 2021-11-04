@@ -147,7 +147,7 @@ public class ImagetogeterUtlis {
             }
             graphics.dispose();
         } catch (Exception e) {
-            logger.error("推送同比压缩图片出错{}",e);
+//            logger.error("推送同比压缩图片出错{}",e);
         }
 
         return tag;
@@ -158,7 +158,7 @@ public class ImagetogeterUtlis {
             return ImageIO.read(new File(imgName));
 //        	return ImageIO.read(new URL(imgName));
         } catch (IOException e) {
-            logger.error("推送同比压缩图片出错{}",e);
+//            logger.error("推送同比压缩图片出错{}",e);
         }
         return null;
     }
@@ -169,7 +169,7 @@ public class ImagetogeterUtlis {
                 File outputfile = new File(newImage);
                 ImageIO.write(img, "jpg", outputfile);
             } catch (IOException e) {
-                logger.error("推送同比压缩图片出错{}",e);
+//                logger.error("推送同比压缩图片出错{}",e);
             }
         }
     }
@@ -183,8 +183,8 @@ public class ImagetogeterUtlis {
             return sourceImage;
         }
         // 计算x轴y轴缩放比例--如需等比例缩放，在调用之前确保參数width和height是等比例变化的
-        double ratiox  = (new Integer(width)).doubleValue()/ sourceImage.getWidth();
-        double ratioy  = (new Integer(height)).doubleValue()/ sourceImage.getHeight();
+        double ratiox  = (Integer.valueOf(width)).doubleValue()/ sourceImage.getWidth();
+        double ratioy  = (Integer.valueOf(height)).doubleValue()/ sourceImage.getHeight();
         AffineTransformOp op = new AffineTransformOp(AffineTransform.getScaleInstance(ratiox, ratioy), null);
         BufferedImage bufImg = op.filter(sourceImage, null);
         return bufImg;
