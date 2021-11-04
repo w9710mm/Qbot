@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.springframework.context.annotation.Bean;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -27,13 +28,13 @@ public class UserSubscribe  implements Serializable {
     private Long id;
 
     //订阅的b用户
-    private Set<Long> bids;
+    private Set<Long> bids=new HashSet<>();
 
-    private Set<Long> weiboids;
+    private Set<Long> weiboids=new HashSet<>();
 
-    private Set<String> Tikids;
+    private Set<String> Tikid=new HashSet<>();
     //是否订阅视频
-    private Boolean isBVideo;
+    private Boolean isBVideo=Boolean.TRUE;
 
     //是否是群
     private Boolean isGroup;

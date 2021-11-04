@@ -1,6 +1,7 @@
 package com.mm.qbot.dto;
 
 import com.mm.qbot.utils.LevelDB;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,7 @@ import java.util.Set;
  */
 
 
-@Getter
-@Setter
+@Data
 public class BilibiliPushMap implements Serializable {
 
 
@@ -31,6 +31,8 @@ public class BilibiliPushMap implements Serializable {
 
     private  Map<Long, Set<Long>>  privateMap=new HashMap<>() ;
 
+
+    private Long dynamicIdOffset=0L;
 
     private static class  BilibiliPushMapInstance{
 //        private static final LevelDB levelDB=LevelDB.getInstance();

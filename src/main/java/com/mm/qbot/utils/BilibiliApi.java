@@ -35,12 +35,12 @@ public class BilibiliApi {
     static RestTemplate restTemplate = new RestTemplate();
 
     private static List<String> cookies=new ArrayList<>(){{
-        add("SESSDATA=1772f4fa%2C1648774194%2Ce2e12%2Aa1");
-        add("buvid3=972DD461-3A0C-4FEB-B265-CF4102362DC918533infoc");
-        add("bili_jct=2d09cbe5436f446b068bc7f1f6d1be86");
+        add("SESSDATA=328999b3%2C1651550125%2C0fc1d*b1");
+        add("buvid3=8E25A7A9-0A5E-1156-4F65-C2F8E7BC126678704infoc");
+        add("bili_jct=26bcba888f13413eb3d46c79e6a65b4d");
     }};
 
-    private  static  String csrf="2d09cbe5436f446b068bc7f1f6d1be86";
+    private  static  String csrf="26bcba888f13413eb3d46c79e6a65b4d";
     private static MultiValueMap<String, String> comHeaders = new LinkedMultiValueMap<>(){
         {
             add("user-agent","Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36");

@@ -51,5 +51,10 @@ public class UserSubscribeMap implements Serializable {
         return  UserSubscribeMapInstance.Instance;
     }
 
+    public static  void setInstance(UserSubscribeMap userSubscribeMap ){
+
+        UserSubscribeMapInstance.Instance=userSubscribeMap;
+    }
+
 
 }

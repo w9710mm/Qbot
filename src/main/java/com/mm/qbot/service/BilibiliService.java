@@ -73,15 +73,7 @@ public class BilibiliService {
     public boolean addSubscribe(Long Qid, Long subcribeId , @NotNull UserSubscribeMap userSubscribeMap, Boolean isGroup,Map<Long, Set<Long>> pushMap) {
 
             Map<Long, UserSubscribe> subscribeMap = userSubscribeMap.getSubscribeMap();
-            if (!subscribeMap.containsKey(Qid)){
-                UserSubscribe userSubscribe=new UserSubscribe();
-                userSubscribe.setId(Qid);
-                userSubscribe.setIsGroup(isGroup);
-                Set<Long> dis=new HashSet<>();
-                dis.add(subcribeId);
-                userSubscribe.setBids(dis);
-                subscribeMap.put(Qid,userSubscribe);
-            }
+
             if (subscribeMap.containsKey(Qid)){
                 UserSubscribe userSubscribe = subscribeMap.get(Qid);
                 Set<Long> bids = userSubscribe.getBids();
@@ -91,6 +83,14 @@ public class BilibiliService {
                 }
                 bids.add(subcribeId);
             }
+            if (!subscribeMap.containsKey(Qid)){
+            UserSubscribe userSubscribe=new UserSubscribe();
+            userSubscribe.setId(Qid);
+            userSubscribe.setIsGroup(isGroup);
+            Set<Long> dis= userSubscribe.getBids();
+            dis.add(subcribeId);
+            subscribeMap.put(Qid,userSubscribe);
+         }
 
 
             if (pushMap.containsKey(subcribeId)){

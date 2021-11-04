@@ -2,6 +2,7 @@ package com.mm.qbot.boot;
 
 import com.alibaba.fastjson.JSONObject;
 import com.mm.qbot.dto.*;
+import com.mm.qbot.utils.BilibiliApi;
 import com.mm.qbot.utils.LevelDB;
 import netscape.javascript.JSObject;
 import org.springframework.context.annotation.Bean;
@@ -34,13 +35,17 @@ public class InitBilibili {
     public void initPushMap() {
 
 
-        UserSubscribeMap usersubscribeMap = (UserSubscribeMap) levelDB.get("userSubscribeMap");
-
-        if (usersubscribeMap == null) {
-            usersubscribeMap = UserSubscribeMap.getInstance();
-            levelDB.put("userSubscribeMap", usersubscribeMap);
+        UserSubscribeMap usersubscribeMapforDB = (UserSubscribeMap) levelDB.get("userSubscribeMap");
+        UserSubscribeMap userSubscribeMap=UserSubscribeMap.getInstance();
+        if (usersubscribeMapforDB!=null){
+            userSubscribeMap.setSubscribeMap(usersubscribeMapforDB.getSubscribeMap());
         }
-        Map<Long, UserSubscribe> subscribeMap = usersubscribeMap.getSubscribeMap();
+
+        if (usersubscribeMapforDB == null) {
+            levelDB.put("userSubscribeMap", userSubscribeMap);
+        }
+
+        Map<Long, UserSubscribe> subscribeMap = userSubscribeMap.getSubscribeMap();
 
         Map<Long, Set<Long>> bilibiliGroupPushMap = bilibiliPushMap.getGroupMap();
 
@@ -56,7 +61,7 @@ public class InitBilibili {
 
 
         subscribeMap.forEach((key, userSubscribe) -> {
-            Set<String> tikids = userSubscribe.getTikids();
+            Set<String> tikids = userSubscribe.getTikid();
             Set<Long> weiboids = userSubscribe.getWeiboids();
             Set<Long> bids = userSubscribe.getBids();
             if (userSubscribe.getIsGroup()) {
@@ -127,7 +132,7 @@ public class InitBilibili {
                             }
                         }
                     }
-                    if (weiboids != null && weiboids.size() != 0) {
+                    if (tikids != null && tikids.size() != 0) {
                         for (String id : tikids) {
                             if (!tiktokPrivatePushMap.containsKey(id)) {
                                 Set<Long> longs = new HashSet<>();
@@ -143,6 +148,15 @@ public class InitBilibili {
                 }
             }
         });
+
+    }
+
+    @Bean
+    public void initBilibiliDynamicId(){
+
+        JSONObject dynamic = BilibiliApi.getNewDynamic("1823651096", "268435455", "0", "webball", "web");
+        Long   dynamicIdOffset=dynamic.getJSONObject("data").getLong("max_dynamic_id");
+        bilibiliPushMap.setDynamicIdOffset(dynamicIdOffset);
 
     }
 

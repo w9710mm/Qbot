@@ -5,6 +5,7 @@ shiro:
   plugin-list:
     - com.mm.qbot.controller.BilibiliCommandController
     - com.mm.qbot.controller.BilibiliGetNewDynamicController
+    - com.mm.qbot.controller.AsoulPaperController
 #    - com.mikuac.example.plugins.PluginTwo
   # WebSocket 配置
   ws-config:

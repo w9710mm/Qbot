@@ -76,7 +76,21 @@ public class BilibiliCommandController extends BotPlugin {
     @PrivateMessageHandler(cmd="(\\b订阅动态 )(\\S+)")
     public void privateSubscribeInPrivate(@NotNull Bot bot, PrivateMessageEvent event, Matcher m) {
 
+        long qid = Long.parseLong(String.valueOf(event.getPrivateSender().getUserId()));
 
+        Long uid = bilibiliService.findUid(m.group(2));
+        MsgUtils msgUtils=bilibiliService.followUser(uid);
+
+        if (msgUtils!=null){
+            boolean flag = bilibiliService.addSubscribe(qid, uid, userSubscribeMap, Boolean.FALSE, bilibiliPushMap.getPrivateMap());
+            if (flag){
+                bot.sendPrivateMsg(qid,msgUtils.build(),false);
+                return;
+            }
+        }
+
+        msgUtils=MsgUtils.builder().text("订阅失败，请检查输入的uid或者昵称是否正确。\n例如：订阅动态 嘉然今天吃什么");
+        bot.sendPrivateMsg(qid,msgUtils.build(), false);
 
     }
 
@@ -91,13 +105,13 @@ public class BilibiliCommandController extends BotPlugin {
 
         if (msgUtils!=null){
             boolean flag = bilibiliService.addSubscribe(qid, uid, userSubscribeMap, Boolean.FALSE, bilibiliPushMap.getPrivateMap());
-            if (!flag){
+            if (flag){
                 bot.sendGroupMsg(qid,msgUtils.build(),false);
                 return;
             }
         }
 
-        msgUtils=MsgUtils.builder().text("订阅失败，请检查输入的uid或者昵称是否正确。\n例如：群订阅动态 嘉然今天吃什么");
+        msgUtils=MsgUtils.builder().text("订阅失败，请检查输入的uid或者昵称是否正确。\n例如：订阅动态 嘉然今天吃什么");
         bot.sendGroupMsg(qid,msgUtils.build(), false);
 
     }
@@ -114,7 +128,7 @@ public class BilibiliCommandController extends BotPlugin {
 
         if (msgUtils!=null){
             boolean flag = bilibiliService.addSubscribe(qid, uid, userSubscribeMap, Boolean.FALSE, bilibiliPushMap.getGroupMap());
-            if (!flag){
+            if (flag){
                 bot.sendGroupMsg(qid,msgUtils.build(),false);
                 return;
             }
