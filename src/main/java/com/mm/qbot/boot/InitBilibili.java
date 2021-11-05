@@ -35,38 +35,41 @@ public class InitBilibili {
     public void initPushMap() {
 
 
-        UserSubscribeMap usersubscribeMapforDB = (UserSubscribeMap) levelDB.get("userSubscribeMap");
+        UserSubscribeMap userSubscribeMapforDB = (UserSubscribeMap) levelDB.get("userSubscribeMap");
         UserSubscribeMap userSubscribeMap=UserSubscribeMap.getInstance();
-        if (usersubscribeMapforDB!=null){
-            userSubscribeMap.setSubscribeMap(usersubscribeMapforDB.getSubscribeMap());
+        if (userSubscribeMapforDB!=null){
+            userSubscribeMap.setGroupSubscribeMap(userSubscribeMapforDB.getGroupSubscribeMap());
+            userSubscribeMap.setPrivateSubscribeMap(userSubscribeMapforDB.getPrivateSubscribeMap());
         }
 
-        if (usersubscribeMapforDB == null) {
+        if (userSubscribeMapforDB == null) {
             levelDB.put("userSubscribeMap", userSubscribeMap);
         }
 
         Map<Long, UserSubscribe> subscribeMap = userSubscribeMap.getSubscribeMap();
 
-        Map<Long, Set<Long>> bilibiliGroupPushMap = bilibiliPushMap.getGroupMap();
 
-        Map<Long, Set<Long>> bilibiliPrivatePushMap = bilibiliPushMap.getPrivateMap();
 
-        Map<Long, Set<Long>> weiBoGroupPushMap = weiBoPushMap.getGroupMap();
+        Map<User, Set<Long>> bilibiliGroupPushMap = bilibiliPushMap.getGroupMap();
 
-        Map<Long, Set<Long>> weiBoPrivatePushMap = weiBoPushMap.getPrivateMap();
+        Map<User, Set<Long>> bilibiliPrivatePushMap = bilibiliPushMap.getPrivateMap();
 
-        Map<String, Set<Long>> tiktokGroupPushMap = tiktokPushMap.getGroupMap();
+        Map<User, Set<Long>> weiBoGroupPushMap = weiBoPushMap.getGroupMap();
 
-        Map<String, Set<Long>> tiktokPrivatePushMap = tiktokPushMap.getPrivateMap();
+        Map<User,Set<Long>> weiBoPrivatePushMap = weiBoPushMap.getPrivateMap();
+
+        Map<User,Set<Long>> tiktokGroupPushMap = tiktokPushMap.getGroupMap();
+
+        Map<User,Set<Long>> tiktokPrivatePushMap = tiktokPushMap.getPrivateMap();
 
 
         subscribeMap.forEach((key, userSubscribe) -> {
-            Set<String> tikids = userSubscribe.getTikid();
-            Set<Long> weiboids = userSubscribe.getWeiboids();
-            Set<Long> bids = userSubscribe.getBids();
+            Set<User> tikids = userSubscribe.getTikid();
+            Set<User> weiboids = userSubscribe.getWeiboids();
+            Set<User> bids = userSubscribe.getBids();
             if (userSubscribe.getIsGroup()) {
                 if (weiboids != null && weiboids.size() != 0) {
-                    for (Long id : weiboids) {
+                    for (User id : weiboids) {
                         if (!weiBoGroupPushMap.containsKey(id)) {
                             Set<Long> longs = new HashSet<>();
                             longs.add(key);
@@ -79,7 +82,7 @@ public class InitBilibili {
                     }
                 }
                 if (tikids != null && tikids.size() != 0) {
-                    for (String id : tikids) {
+                    for (User id : tikids) {
                         if (!tiktokGroupPushMap.containsKey(id)) {
                             Set<Long> longs = new HashSet<>();
                             longs.add(key);
@@ -92,7 +95,7 @@ public class InitBilibili {
                     }
                 }
                 if (bids != null && bids.size() != 0) {
-                    for (Long id : bids) {
+                    for (User id : bids) {
                         if (!bilibiliGroupPushMap.containsKey(id)) {
                             Set<Long> longs = new HashSet<>();
                             longs.add(key);
@@ -107,7 +110,7 @@ public class InitBilibili {
 
                 if (!userSubscribe.getIsGroup()) {
                     if (bids != null && bids.size() != 0) {
-                        for (Long id : bids) {
+                        for (User id : bids) {
                             if (!bilibiliPrivatePushMap.containsKey(id)) {
                                 Set<Long> longs = new HashSet<>();
                                 longs.add(key);
@@ -120,7 +123,7 @@ public class InitBilibili {
                         }
                     }
                     if (weiboids != null && weiboids.size() != 0) {
-                        for (Long id : weiboids) {
+                        for (User id : weiboids) {
                             if (!weiBoPrivatePushMap.containsKey(id)) {
                                 Set<Long> longs = new HashSet<>();
                                 longs.add(key);
@@ -133,7 +136,7 @@ public class InitBilibili {
                         }
                     }
                     if (tikids != null && tikids.size() != 0) {
-                        for (String id : tikids) {
+                        for (User id : tikids) {
                             if (!tiktokPrivatePushMap.containsKey(id)) {
                                 Set<Long> longs = new HashSet<>();
                                 longs.add(key);

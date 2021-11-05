@@ -1,6 +1,7 @@
 package com.mm.qbot.dto;
 
 import com.mm.qbot.utils.LevelDB;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.util.LinkedMultiValueMap;
@@ -24,9 +25,12 @@ import java.util.Set;
 public class WeiBoPushMap implements Serializable {
 
 
-    private Map<Long, Set<Long>> groupMap =new HashMap<>();
+    private Map<User, Set<Long>> groupMap =new HashMap<>();
 
-    private  Map<Long, Set<Long>>  privateMap=new HashMap<>() ;
+    private  Map<User, Set<Long>> privateMap=new HashMap<>() ;
+
+
+
 
     private static class  WeiBoPushMapInstance{
 //        private static final LevelDB levelDB=LevelDB.getInstance();

@@ -1,6 +1,7 @@
 package com.mm.qbot.dto;
 
 import com.mm.qbot.utils.LevelDB;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.util.LinkedMultiValueMap;
@@ -25,11 +26,13 @@ import java.util.Set;
 public class TiktokPushMap implements Serializable {
 
 
-    private Map<String, Set<Long>> groupMap =new HashMap<>();
+    private Map<User, Set<Long>> groupMap =new HashMap<>();
 
-    private  Map<String, Set<Long>>  privateMap=new HashMap<>() ;
+    private  Map<User, Set<Long>>  privateMap=new HashMap<>() ;
 
     private TiktokPushMap(){}
+
+
 
     private static class  TiktokPushMapInstance{
 //        private static final LevelDB levelDB=LevelDB.getInstance();

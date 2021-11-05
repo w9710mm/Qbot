@@ -28,11 +28,11 @@ public class UserSubscribe  implements Serializable {
     private Long id;
 
     //订阅的b用户
-    private Set<Long> bids=new HashSet<>();
+    private Set<User> bids=new HashSet<>();
 
-    private Set<Long> weiboids=new HashSet<>();
+    private Set<User> weiboids=new HashSet<>();
 
-    private Set<String> Tikid=new HashSet<>();
+    private Set<User> tikid =new HashSet<>();
     //是否订阅视频
     private Boolean isBVideo=Boolean.TRUE;
 

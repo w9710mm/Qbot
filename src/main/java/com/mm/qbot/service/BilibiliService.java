@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.mikuac.shiro.common.utils.MsgUtils;
 import com.mm.qbot.Exception.BilibiliException;
+import com.mm.qbot.dto.User;
 import com.mm.qbot.dto.UserSubscribe;
 import com.mm.qbot.dto.UserSubscribeMap;
 import com.mm.qbot.enumeration.NeedTopEnum;
@@ -33,13 +34,13 @@ public class BilibiliService {
     private final LevelDB levelDB=LevelDB.getInstance();
 
     //关注一个账号
-    public MsgUtils followUser(Long uid){
+    public MsgUtils followUser(User uid){
 
 
         if (uid==null){
             return null;
         }
-        JSONObject res = BilibiliApi.modifyRelation(uid, RelationActionEnum.SUBSCRIBE);
+        JSONObject res = BilibiliApi.modifyRelation(Long.valueOf(uid.getUid()), RelationActionEnum.SUBSCRIBE);
         if (res.getInteger("message")!=0) {
             return null;
         }
@@ -70,36 +71,36 @@ public class BilibiliService {
 
 
     //添加订阅信息
-    public boolean addSubscribe(Long Qid, Long subcribeId , @NotNull UserSubscribeMap userSubscribeMap, Boolean isGroup,Map<Long, Set<Long>> pushMap) {
+    public boolean addSubscribe(Long qid, User subcribeId , @NotNull UserSubscribeMap userSubscribeMap, Boolean isGroup, Map<User, Set<Long>> pushMap) {
 
             Map<Long, UserSubscribe> subscribeMap = userSubscribeMap.getSubscribeMap();
 
-            if (subscribeMap.containsKey(Qid)){
-                UserSubscribe userSubscribe = subscribeMap.get(Qid);
-                Set<Long> bids = userSubscribe.getBids();
+            if (subscribeMap.containsKey(qid)){
+                UserSubscribe userSubscribe = subscribeMap.get(qid);
+                Set<User> bids = userSubscribe.getBids();
                 if (bids==null){
                     bids=new HashSet<>();
                     userSubscribe.setBids(bids);
                 }
                 bids.add(subcribeId);
             }
-            if (!subscribeMap.containsKey(Qid)){
+            if (!subscribeMap.containsKey(qid)){
             UserSubscribe userSubscribe=new UserSubscribe();
-            userSubscribe.setId(Qid);
+            userSubscribe.setId(qid);
             userSubscribe.setIsGroup(isGroup);
-            Set<Long> dis= userSubscribe.getBids();
+            Set<User> dis= userSubscribe.getBids();
             dis.add(subcribeId);
-            subscribeMap.put(Qid,userSubscribe);
+            subscribeMap.put(qid,userSubscribe);
          }
 
 
             if (pushMap.containsKey(subcribeId)){
                 Set<Long> longs = pushMap.get(subcribeId);
-                longs.add(Qid);
+                longs.add(qid);
             }
             if (!pushMap.containsKey(subcribeId)){
                 Set<Long> longs=new HashSet<>();
-                longs.add(Qid);
+                longs.add(qid);
                 pushMap.put(subcribeId,longs);
             }
 
@@ -108,21 +109,26 @@ public class BilibiliService {
     }
 
 
-    public Long findUid(String text){
+    public User findUser(String text){
 
         Matcher matcher = uidPattern.matcher(text);
 
-        Long uid=null;
+        User uid=null;
 
         if (matcher.lookingAt()){
-            uid=Long.valueOf(matcher.group());
+            JSONObject userInfo = BilibiliApi.getUserInfo(Long.valueOf(text));
+            if (userInfo.getInteger("code")!=404){
+                uid.setUid(userInfo.getJSONObject("data").getString("mid"));
+                uid.setUname(userInfo.getJSONObject("data").getString("name"));
+            }
         }
         if (!matcher.lookingAt()){
             JSONObject result=BilibiliApi.serachUser(text,"bili_user");
             JSONArray datas = result.getJSONObject("data").getJSONArray("result");
             if (datas!=null){
                 JSONObject data = datas.getJSONObject(0);
-                uid = data.getLong("mid");
+                uid.setUid(data.getString("mid"));
+                uid.setUname(data.getString("uname"));
             }
         }
         return  uid;

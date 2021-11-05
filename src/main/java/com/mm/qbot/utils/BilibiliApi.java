@@ -88,7 +88,7 @@ public class BilibiliApi {
                 "&current_dynamic_id={current_dynamic_id}&from={from}&platform={platform}";
 
 
-        Map<String, String> paramMaps = new HashMap<>();
+        Map<String, String> paramMaps = new HashMap<>(5);
         paramMaps.put("uid", uid);
         paramMaps.put("type_list", typeList);
         paramMaps.put("current_dynamic_id", currentDynamicId);
@@ -110,7 +110,7 @@ public class BilibiliApi {
         String url="https://api.bilibili.com/x/web-interface/search/type?keyword={keyword}&search_type={search_type}";
 
 
-        Map<String, Object> paramMaps = new HashMap<>();
+        Map<String, Object> paramMaps = new HashMap<>(2);
         paramMaps.put("keyword", keyword);
         paramMaps.put("search_type", searchType);
 
@@ -129,7 +129,7 @@ public class BilibiliApi {
         HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(null, headers);
 
 
-        Map<String, Object> paramMaps = new HashMap<>();
+        Map<String, Object> paramMaps = new HashMap<>(1);
         paramMaps.put("bvid", bid);
 
 
@@ -200,7 +200,7 @@ public class BilibiliApi {
 
 
 
-        MultiValueMap<String, String> body= new LinkedMultiValueMap< >();
+        MultiValueMap<String, String> body= new LinkedMultiValueMap< >(5);
 
         body.add("fid",String.valueOf(uid));
         body.add("act", String.valueOf(action.getId()));
@@ -229,7 +229,7 @@ public class BilibiliApi {
         headers.addAll(comHeaders);
         HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(null, headers);
 
-        Map<String, Object> paramMaps = new HashMap<>();
+        Map<String, Object> paramMaps = new HashMap<>(3);
         paramMaps.put("hostUid", hostUid);
         paramMaps.put("offsetDynamicId", offsetDynamicId);
         paramMaps.put("needTopEnum", needTopEnum.getId());
@@ -241,6 +241,25 @@ public class BilibiliApi {
     }
 
 
+
+    public static JSONObject getUserInfo(Long uid){
+
+        String url="https://api.bilibili.com/x/space/acc/info?mid={uid}";
+
+        HttpHeaders headers=new HttpHeaders();
+
+        headers.addAll(comHeaders);
+
+        HttpEntity<MultiValueMap<String,String>> httpEntity=new HttpEntity<>(null,headers);
+
+        Map<String,Object> paramMaps=new HashMap<>( 1);
+
+        paramMaps.put("uid",uid);
+
+        ResponseEntity<String> exchange=restTemplate.exchange(url,HttpMethod.GET,httpEntity,String.class,paramMaps);
+
+        return JSONObject.parseObject(exchange.getBody());
+    }
 
 
 }

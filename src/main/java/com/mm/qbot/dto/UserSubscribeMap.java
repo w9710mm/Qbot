@@ -1,6 +1,7 @@
 package com.mm.qbot.dto;
 
 import com.mm.qbot.utils.LevelDB;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
@@ -21,13 +22,16 @@ import java.util.Map;
  */
 @Component
 
+@Data
 public class UserSubscribeMap implements Serializable {
 
 
-    @Getter
-    @Setter
 
-    private Map<Long,UserSubscribe> subscribeMap =new HashMap<>();
+
+    private Map<Long,UserSubscribe> privateSubscribeMap =new HashMap<>();
+
+
+    private Map<Long,UserSubscribe> groupSubscribeMap =new HashMap<>();
 
     private UserSubscribeMap(){};
 

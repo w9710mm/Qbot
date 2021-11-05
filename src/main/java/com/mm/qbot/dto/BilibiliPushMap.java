@@ -27,10 +27,9 @@ import java.util.Set;
 public class BilibiliPushMap implements Serializable {
 
 
-   private  Map<Long, Set<Long>>  groupMap =new HashMap<>();
+   private  Map<User, Set<Long>>  groupMap =new HashMap<>();
 
-    private  Map<Long, Set<Long>>  privateMap=new HashMap<>() ;
-
+    private Map<User, Set<Long>> privateMap=new HashMap<>() ;
 
     private Long dynamicIdOffset=0L;
 
