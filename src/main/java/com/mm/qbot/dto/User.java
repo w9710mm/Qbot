@@ -2,6 +2,8 @@ package com.mm.qbot.dto;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 /**
  * @author meme
  * @version V0.0.1
@@ -11,7 +13,7 @@ import lombok.Data;
  */
 @Data
 
-public class User {
+public class User implements Serializable {
 
     private String uid;
 

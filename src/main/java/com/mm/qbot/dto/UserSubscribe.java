@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -28,11 +29,11 @@ public class UserSubscribe  implements Serializable {
     private Long id;
 
     //订阅的b用户
-    private Set<User> bids=new HashSet<>();
+    private LinkedHashSet<User> bids=new LinkedHashSet<>();
 
-    private Set<User> weiboids=new HashSet<>();
+    private LinkedHashSet<User> weiboids=new LinkedHashSet<>();
 
-    private Set<User> tikid =new HashSet<>();
+    private LinkedHashSet<User> tikid =new LinkedHashSet<>();
     //是否订阅视频
     private Boolean isBVideo=Boolean.TRUE;
 

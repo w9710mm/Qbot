@@ -18,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -73,13 +74,17 @@ public class BilibiliService {
     //添加订阅信息
     public boolean addSubscribe(Long qid, User subcribeId , @NotNull UserSubscribeMap userSubscribeMap, Boolean isGroup, Map<User, Set<Long>> pushMap) {
 
-            Map<Long, UserSubscribe> subscribeMap = userSubscribeMap.getSubscribeMap();
-
+        Map<Long, UserSubscribe> subscribeMap;
+            if (isGroup) {
+                subscribeMap=  userSubscribeMap.getGroupSubscribeMap();
+            }else {
+                subscribeMap=userSubscribeMap.getPrivateSubscribeMap();
+            }
             if (subscribeMap.containsKey(qid)){
                 UserSubscribe userSubscribe = subscribeMap.get(qid);
-                Set<User> bids = userSubscribe.getBids();
+                LinkedHashSet<User> bids = userSubscribe.getBids();
                 if (bids==null){
-                    bids=new HashSet<>();
+                    bids=new LinkedHashSet<>();
                     userSubscribe.setBids(bids);
                 }
                 bids.add(subcribeId);
@@ -113,7 +118,7 @@ public class BilibiliService {
 
         Matcher matcher = uidPattern.matcher(text);
 
-        User uid=null;
+        User uid=new User();
 
         if (matcher.lookingAt()){
             JSONObject userInfo = BilibiliApi.getUserInfo(Long.valueOf(text));

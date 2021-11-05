@@ -46,7 +46,10 @@ public class InitBilibili {
             levelDB.put("userSubscribeMap", userSubscribeMap);
         }
 
-        Map<Long, UserSubscribe> subscribeMap = userSubscribeMap.getSubscribeMap();
+        Map<Long, UserSubscribe> privateSubscribeMap = userSubscribeMap.getPrivateSubscribeMap();
+
+        Map<Long, UserSubscribe> groupSubscribeMap  = userSubscribeMap.getGroupSubscribeMap();
+
 
 
 
@@ -63,7 +66,7 @@ public class InitBilibili {
         Map<User,Set<Long>> tiktokPrivatePushMap = tiktokPushMap.getPrivateMap();
 
 
-        subscribeMap.forEach((key, userSubscribe) -> {
+        groupSubscribeMap.forEach((key, userSubscribe) -> {
             Set<User> tikids = userSubscribe.getTikid();
             Set<User> weiboids = userSubscribe.getWeiboids();
             Set<User> bids = userSubscribe.getBids();
@@ -108,48 +111,56 @@ public class InitBilibili {
                     }
                 }
 
-                if (!userSubscribe.getIsGroup()) {
-                    if (bids != null && bids.size() != 0) {
-                        for (User id : bids) {
-                            if (!bilibiliPrivatePushMap.containsKey(id)) {
-                                Set<Long> longs = new HashSet<>();
-                                longs.add(key);
-                                bilibiliPrivatePushMap.put(id, longs);
-                            }
-                            if (bilibiliPrivatePushMap.containsKey(id)) {
-                                Set<Long> longs = bilibiliPrivatePushMap.get(id);
-                                longs.add(key);
-                            }
+            }
+        });
+
+
+        privateSubscribeMap.forEach((key, userSubscribe) -> {
+            Set<User> tikids = userSubscribe.getTikid();
+            Set<User> weiboids = userSubscribe.getWeiboids();
+            Set<User> bids = userSubscribe.getBids();
+            if (!userSubscribe.getIsGroup()) {
+                if (bids != null && bids.size() != 0) {
+                    for (User id : bids) {
+                        if (!bilibiliPrivatePushMap.containsKey(id)) {
+                            Set<Long> longs = new HashSet<>();
+                            longs.add(key);
+                            bilibiliPrivatePushMap.put(id, longs);
+                        }
+                        if (bilibiliPrivatePushMap.containsKey(id)) {
+                            Set<Long> longs = bilibiliPrivatePushMap.get(id);
+                            longs.add(key);
                         }
                     }
-                    if (weiboids != null && weiboids.size() != 0) {
-                        for (User id : weiboids) {
-                            if (!weiBoPrivatePushMap.containsKey(id)) {
-                                Set<Long> longs = new HashSet<>();
-                                longs.add(key);
-                                weiBoPrivatePushMap.put(id, longs);
-                            }
-                            if (weiBoPrivatePushMap.containsKey(id)) {
-                                Set<Long> longs = weiBoPrivatePushMap.get(id);
-                                longs.add(key);
-                            }
+                }
+                if (weiboids != null && weiboids.size() != 0) {
+                    for (User id : weiboids) {
+                        if (!weiBoPrivatePushMap.containsKey(id)) {
+                            Set<Long> longs = new HashSet<>();
+                            longs.add(key);
+                            weiBoPrivatePushMap.put(id, longs);
+                        }
+                        if (weiBoPrivatePushMap.containsKey(id)) {
+                            Set<Long> longs = weiBoPrivatePushMap.get(id);
+                            longs.add(key);
                         }
                     }
-                    if (tikids != null && tikids.size() != 0) {
-                        for (User id : tikids) {
-                            if (!tiktokPrivatePushMap.containsKey(id)) {
-                                Set<Long> longs = new HashSet<>();
-                                longs.add(key);
-                                tiktokPrivatePushMap.put(id, longs);
-                            }
-                            if (tiktokPrivatePushMap.containsKey(id)) {
-                                Set<Long> longs = tiktokPrivatePushMap.get(id);
-                                longs.add(key);
-                            }
+                }
+                if (tikids != null && tikids.size() != 0) {
+                    for (User id : tikids) {
+                        if (!tiktokPrivatePushMap.containsKey(id)) {
+                            Set<Long> longs = new HashSet<>();
+                            longs.add(key);
+                            tiktokPrivatePushMap.put(id, longs);
+                        }
+                        if (tiktokPrivatePushMap.containsKey(id)) {
+                            Set<Long> longs = tiktokPrivatePushMap.get(id);
+                            longs.add(key);
                         }
                     }
                 }
             }
+
         });
 
     }

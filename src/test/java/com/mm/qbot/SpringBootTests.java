@@ -1,8 +1,12 @@
 package com.mm.qbot;
 
+import com.mm.qbot.dto.User;
 import com.mm.qbot.utils.DownLoadUtlis;
 import org.junit.Test;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 public class SpringBootTests{
     @Test
@@ -19,5 +23,27 @@ public  void test1() {
         String suffix = originalFilename.substring(0,lastIndexOf);
 
         System.out.println("suffix = " + suffix);
+    }
+
+
+    @Test
+    public  void test2() {
+        Set<String> bids=new LinkedHashSet<>();
+
+        bids.add("da");
+        bids.add("dasdsa");
+        bids.add("1");
+        bids.add("dasdadsa");
+
+
+        for (String a:bids) {
+            System.out.println(a);
+        }
+        bids.remove("1");
+        for (String a:bids) {
+            System.out.println(a);
+        }
+
+
     }
 }

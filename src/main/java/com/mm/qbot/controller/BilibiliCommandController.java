@@ -228,17 +228,12 @@ public class BilibiliCommandController extends BotPlugin {
 
     }
 
-    @PrivateMessageHandler
-    public void test(@NotNull Bot bot, PrivateMessageEvent event, Matcher m) {
-          MsgUtils msgUtils=MsgUtils.builder().img("file:///F:\\javaProject\\QBot\\1.jpg");
-        bot.sendPrivateMsg(event.getPrivateSender().getUserId(),msgUtils.build(),false);
 
-    }
 
-    @GroupMessageHandler(cmd="(\\b动态列表")
+    @GroupMessageHandler(cmd="(\\b动态列表)")
     public void showSubscirbeListInGroup(@NotNull Bot bot, GroupMessageEvent event) {
           Long qid= Long.valueOf(event.getSender().getUserId());
-        Map<Long, UserSubscribe> subscribeMap = userSubscribeMap.getSubscribeMap();
+        Map<Long, UserSubscribe> subscribeMap = userSubscribeMap.getPrivateSubscribeMap();
         if (subscribeMap.containsKey(qid)){
             UserSubscribe userSubscribe = subscribeMap.get(qid);
             if (!userSubscribe.getIsGroup()){
@@ -257,10 +252,10 @@ public class BilibiliCommandController extends BotPlugin {
         }
     }
 
-    @PrivateMessageHandler(cmd="(\\b动态列表")
+    @PrivateMessageHandler(cmd="(\\b动态列表)")
     public void showSubscirbeListInPrivate(@NotNull Bot bot, PrivateMessageEvent event) {
         Long qid= event.getPrivateSender().getUserId();
-        Map<Long, UserSubscribe> subscribeMap = userSubscribeMap.getSubscribeMap();
+        Map<Long, UserSubscribe> subscribeMap = userSubscribeMap.getPrivateSubscribeMap();
         if (subscribeMap.containsKey(qid)){
             UserSubscribe userSubscribe = subscribeMap.get(qid);
             Set<User> bids = userSubscribe.getBids();
@@ -276,5 +271,44 @@ public class BilibiliCommandController extends BotPlugin {
             }
         }
     }
+    @PrivateMessageHandler(cmd="(\\b群动态列表)")
+    public void showGroupSubscirbeList(@NotNull Bot bot, GroupMessageEvent event) {
+        Long qid= event.getGroupId();
+        Map<Long, UserSubscribe> subscribeMap = userSubscribeMap.getGroupSubscribeMap();
+        if (subscribeMap.containsKey(qid)){
+            UserSubscribe userSubscribe = subscribeMap.get(qid);
+            Set<User> bids = userSubscribe.getBids();
+            if (bids.size()!=0){
+                MsgUtils msgUtils=MsgUtils.builder().text("群订阅列表：\n");
+                int count=0;
+                for (User user :bids) {
+                    msgUtils.text(String.format("%d. %s   %s\n",count,user.getUname(),user.getUid()));
+                    count++;
+                }
+                bot.sendGroupMsg(qid,msgUtils.build(),true);
+            }
+        }
+    }
 
+    @PrivateMessageHandler(cmd="(\\b取消动态 )([0-9]+)")
+    public void undoSubscribeInPrivate(@NotNull Bot bot, PrivateMessageEvent event,Matcher m) {
+        Long qid= event.getUserId();
+
+        Integer num= Integer.valueOf(m.group(2));
+
+        Map<Long, UserSubscribe> subscribeMap = userSubscribeMap.getGroupSubscribeMap();
+        if (subscribeMap.containsKey(qid)){
+            UserSubscribe userSubscribe = subscribeMap.get(qid);
+            Set<User> bids = userSubscribe.getBids();
+            if (bids.size()!=0){
+                MsgUtils msgUtils=MsgUtils.builder().text("群订阅列表：\n");
+                int count=0;
+                for (User user :bids) {
+                    msgUtils.text(String.format("%d. %s   %s\n",count,user.getUname(),user.getUid()));
+                    count++;
+                }
+                bot.sendGroupMsg(qid,msgUtils.build(),true);
+            }
+        }
+    }
 }

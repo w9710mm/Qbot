@@ -8,6 +8,7 @@ import com.mikuac.shiro.core.BotContainer;
 import com.mikuac.shiro.core.BotPlugin;
 import com.mm.qbot.Exception.BilibiliException;
 import com.mm.qbot.dto.BilibiliPushMap;
+import com.mm.qbot.dto.User;
 import com.mm.qbot.strategy.BilibiliStrategy;
 import com.mm.qbot.utils.BilibiliApi;
 import com.mm.qbot.utils.LevelDB;
@@ -31,9 +32,9 @@ public class BilibiliGetNewDynamicController extends BotPlugin {
 
         private final BilibiliPushMap bilibiliPushMap=BilibiliPushMap.getInstance();
 
-        private final Map<Long, Set<Long>> privateMap=BilibiliPushMap.getInstance().getPrivateMap();
+        private final Map<User, Set<Long>> privateMap=BilibiliPushMap.getInstance().getPrivateMap();
 
-        private final Map<Long,Set<Long>> groupMap=BilibiliPushMap.getInstance().getGroupMap();
+        private final Map<User, Set<Long>> groupMap=BilibiliPushMap.getInstance().getGroupMap();
          @Resource
         private   BotContainer botContainer;
 
@@ -55,18 +56,20 @@ public class BilibiliGetNewDynamicController extends BotPlugin {
 
 
         JSONArray cards=newDynamic.getJSONObject("data").getJSONArray("cards");
-            if (cards!=null) {
+            if (cards!=null&&cards.size()!=0) {
                 for (Object object : cards) {
                     JSONObject card = (JSONObject) object;
-                    Long uid=card.getJSONObject("desc").getLong("uid");
+                    User user=new User();
+                    user.setUid( card.getJSONObject("desc").getString("uid"));
+                    user.setUname(card.getJSONObject("desc").getString("uname"));
                     try {
-                        if (privateMap.containsKey(uid)){
-                            for (Long qid:privateMap.get(uid)) {
+                        if (privateMap.containsKey(user)){
+                            for (Long qid:privateMap.get(user)) {
                                 bot.sendPrivateMsg(qid, BilibiliStrategy.dynamicStrategy(card).build(), false);
                             }
                         }
-                        if (groupMap.containsKey(uid)){
-                            for (Long qid:groupMap.get(uid)) {
+                        if (groupMap.containsKey(user)){
+                            for (Long qid:groupMap.get(user)) {
                                 bot.sendGroupMsg(qid, BilibiliStrategy.dynamicStrategy(card).build(), false);
                             }
                         }
