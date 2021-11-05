@@ -20,6 +20,7 @@ import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -32,9 +33,9 @@ public class BilibiliGetNewDynamicController extends BotPlugin {
 
         private final BilibiliPushMap bilibiliPushMap=BilibiliPushMap.getInstance();
 
-        private final Map<User, Set<Long>> privateMap=BilibiliPushMap.getInstance().getPrivateMap();
+        private final Map<User, LinkedHashSet<Long>> privateMap=BilibiliPushMap.getInstance().getPrivateMap();
 
-        private final Map<User, Set<Long>> groupMap=BilibiliPushMap.getInstance().getGroupMap();
+        private final Map<User, LinkedHashSet<Long>> groupMap=BilibiliPushMap.getInstance().getGroupMap();
          @Resource
         private   BotContainer botContainer;
 

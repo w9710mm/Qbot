@@ -53,17 +53,17 @@ public class InitBilibili {
 
 
 
-        Map<User, Set<Long>> bilibiliGroupPushMap = bilibiliPushMap.getGroupMap();
+        Map<User, LinkedHashSet<Long>> bilibiliGroupPushMap = bilibiliPushMap.getGroupMap();
 
-        Map<User, Set<Long>> bilibiliPrivatePushMap = bilibiliPushMap.getPrivateMap();
+        Map<User, LinkedHashSet<Long>> bilibiliPrivatePushMap = bilibiliPushMap.getPrivateMap();
 
-        Map<User, Set<Long>> weiBoGroupPushMap = weiBoPushMap.getGroupMap();
+        Map<User, LinkedHashSet<Long>> weiBoGroupPushMap = weiBoPushMap.getGroupMap();
 
-        Map<User,Set<Long>> weiBoPrivatePushMap = weiBoPushMap.getPrivateMap();
+        Map<User,LinkedHashSet<Long>> weiBoPrivatePushMap = weiBoPushMap.getPrivateMap();
 
-        Map<User,Set<Long>> tiktokGroupPushMap = tiktokPushMap.getGroupMap();
+        Map<User,LinkedHashSet<Long>> tiktokGroupPushMap = tiktokPushMap.getGroupMap();
 
-        Map<User,Set<Long>> tiktokPrivatePushMap = tiktokPushMap.getPrivateMap();
+        Map<User,LinkedHashSet<Long>> tiktokPrivatePushMap = tiktokPushMap.getPrivateMap();
 
 
         groupSubscribeMap.forEach((key, userSubscribe) -> {
@@ -74,12 +74,12 @@ public class InitBilibili {
                 if (weiboids != null && weiboids.size() != 0) {
                     for (User id : weiboids) {
                         if (!weiBoGroupPushMap.containsKey(id)) {
-                            Set<Long> longs = new HashSet<>();
+                            LinkedHashSet<Long> longs = new LinkedHashSet<>();
                             longs.add(key);
                             weiBoGroupPushMap.put(id, longs);
                         }
                         if (weiBoGroupPushMap.containsKey(id)) {
-                            Set<Long> longs = weiBoGroupPushMap.get(id);
+                            LinkedHashSet<Long> longs = weiBoGroupPushMap.get(id);
                             longs.add(key);
                         }
                     }
@@ -87,12 +87,12 @@ public class InitBilibili {
                 if (tikids != null && tikids.size() != 0) {
                     for (User id : tikids) {
                         if (!tiktokGroupPushMap.containsKey(id)) {
-                            Set<Long> longs = new HashSet<>();
+                            LinkedHashSet<Long> longs = new LinkedHashSet<>();
                             longs.add(key);
                             tiktokGroupPushMap.put(id, longs);
                         }
                         if (tiktokGroupPushMap.containsKey(id)) {
-                            Set<Long> longs = tiktokGroupPushMap.get(id);
+                            LinkedHashSet<Long> longs = tiktokGroupPushMap.get(id);
                             longs.add(key);
                         }
                     }
@@ -100,12 +100,12 @@ public class InitBilibili {
                 if (bids != null && bids.size() != 0) {
                     for (User id : bids) {
                         if (!bilibiliGroupPushMap.containsKey(id)) {
-                            Set<Long> longs = new HashSet<>();
+                            LinkedHashSet<Long> longs = new LinkedHashSet<>();
                             longs.add(key);
                             bilibiliGroupPushMap.put(id, longs);
                         }
                         if (bilibiliGroupPushMap.containsKey(id)) {
-                            Set<Long> longs = bilibiliGroupPushMap.get(id);
+                            LinkedHashSet<Long> longs = bilibiliGroupPushMap.get(id);
                             longs.add(key);
                         }
                     }
@@ -123,12 +123,12 @@ public class InitBilibili {
                 if (bids != null && bids.size() != 0) {
                     for (User id : bids) {
                         if (!bilibiliPrivatePushMap.containsKey(id)) {
-                            Set<Long> longs = new HashSet<>();
+                            LinkedHashSet<Long> longs = new LinkedHashSet<>();
                             longs.add(key);
                             bilibiliPrivatePushMap.put(id, longs);
                         }
                         if (bilibiliPrivatePushMap.containsKey(id)) {
-                            Set<Long> longs = bilibiliPrivatePushMap.get(id);
+                            LinkedHashSet<Long> longs = bilibiliPrivatePushMap.get(id);
                             longs.add(key);
                         }
                     }
@@ -136,12 +136,12 @@ public class InitBilibili {
                 if (weiboids != null && weiboids.size() != 0) {
                     for (User id : weiboids) {
                         if (!weiBoPrivatePushMap.containsKey(id)) {
-                            Set<Long> longs = new HashSet<>();
+                            LinkedHashSet<Long> longs = new LinkedHashSet<>();
                             longs.add(key);
                             weiBoPrivatePushMap.put(id, longs);
                         }
                         if (weiBoPrivatePushMap.containsKey(id)) {
-                            Set<Long> longs = weiBoPrivatePushMap.get(id);
+                            LinkedHashSet<Long> longs = weiBoPrivatePushMap.get(id);
                             longs.add(key);
                         }
                     }
@@ -149,12 +149,12 @@ public class InitBilibili {
                 if (tikids != null && tikids.size() != 0) {
                     for (User id : tikids) {
                         if (!tiktokPrivatePushMap.containsKey(id)) {
-                            Set<Long> longs = new HashSet<>();
+                            LinkedHashSet<Long> longs = new LinkedHashSet<>();
                             longs.add(key);
                             tiktokPrivatePushMap.put(id, longs);
                         }
                         if (tiktokPrivatePushMap.containsKey(id)) {
-                            Set<Long> longs = tiktokPrivatePushMap.get(id);
+                            LinkedHashSet<Long> longs = tiktokPrivatePushMap.get(id);
                             longs.add(key);
                         }
                     }

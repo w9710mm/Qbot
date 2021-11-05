@@ -72,7 +72,7 @@ public class BilibiliService {
 
 
     //添加订阅信息
-    public boolean addSubscribe(Long qid, User subcribeId , @NotNull UserSubscribeMap userSubscribeMap, Boolean isGroup, Map<User, Set<Long>> pushMap) {
+    public boolean addSubscribe(Long qid, User subcribeId , @NotNull UserSubscribeMap userSubscribeMap, @NotNull Boolean isGroup, Map<User, LinkedHashSet<Long>> pushMap) {
 
         Map<Long, UserSubscribe> subscribeMap;
             if (isGroup) {
@@ -93,18 +93,18 @@ public class BilibiliService {
             UserSubscribe userSubscribe=new UserSubscribe();
             userSubscribe.setId(qid);
             userSubscribe.setIsGroup(isGroup);
-            Set<User> dis= userSubscribe.getBids();
+                LinkedHashSet<User> dis= userSubscribe.getBids();
             dis.add(subcribeId);
             subscribeMap.put(qid,userSubscribe);
          }
 
 
             if (pushMap.containsKey(subcribeId)){
-                Set<Long> longs = pushMap.get(subcribeId);
+                LinkedHashSet<Long> longs = pushMap.get(subcribeId);
                 longs.add(qid);
             }
             if (!pushMap.containsKey(subcribeId)){
-                Set<Long> longs=new HashSet<>();
+                LinkedHashSet<Long> longs=new LinkedHashSet<>();
                 longs.add(qid);
                 pushMap.put(subcribeId,longs);
             }

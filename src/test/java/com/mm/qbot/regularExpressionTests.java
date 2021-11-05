@@ -104,4 +104,26 @@ public class regularExpressionTests {
             System.out.println("NO MATCH");
         }
     }
+
+
+    @Test
+    void testnum(){
+
+        String pattern = "(等等 )([0-9]+)";
+        String line="等等 01   ";
+        // 创建 Pattern 对象
+        Pattern r = Pattern.compile(pattern);
+        System.out.println(line);
+        // 现在创建 matcher 对象
+        Matcher m = r.matcher(line);
+        if (m.find( )) {
+            System.out.println("Found value: " + Integer.valueOf(m.group(2)) );
+
+        } else {
+            System.out.println("NO MATCH");
+        }
+    }
+
+
+
 }

@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
+import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -35,13 +36,9 @@ public class BilibiliCommandController extends BotPlugin {
 
     private final BilibiliPushMap bilibiliPushMap =BilibiliPushMap.getInstance();
 
-    private final WeiBoPushMap weiBoPushMap =WeiBoPushMap.getInstance();
-
-    private final TiktokPushMap tiktokPushMap =TiktokPushMap.getInstance();
 
     private final UserSubscribeMap userSubscribeMap=UserSubscribeMap.getInstance();
 
-    private final LevelDB levelDB=LevelDB.getInstance();
 
     @Resource
     private BilibiliService bilibiliService;
@@ -241,7 +238,7 @@ public class BilibiliCommandController extends BotPlugin {
                 if (bids.size()!=0){
                     MsgUtils msgUtils=MsgUtils.builder().text(String.format("用户：%s(%s)的订阅列表：\n"
                             ,event.getSender().getNickname(),event.getSender().getUserId()));
-                            int count=0;
+                            int count=1;
                     for (User user :bids) {
                         msgUtils.text(String.format("%d. %s   %s\n",count,user.getUname(),user.getUid()));
                         count++;
@@ -262,7 +259,7 @@ public class BilibiliCommandController extends BotPlugin {
             if (bids.size()!=0){
                 MsgUtils msgUtils=MsgUtils.builder().text(String.format("用户：%s(%s)的订阅列表：\n"
                         ,event.getPrivateSender().getUserId(),event.getPrivateSender().getNickname()));
-                int count=0;
+                int count=1;
                 for (User user :bids) {
                     msgUtils.text(String.format("%d. %s   %s\n",count,user.getUname(),user.getUid()));
                     count++;
@@ -280,7 +277,7 @@ public class BilibiliCommandController extends BotPlugin {
             Set<User> bids = userSubscribe.getBids();
             if (bids.size()!=0){
                 MsgUtils msgUtils=MsgUtils.builder().text("群订阅列表：\n");
-                int count=0;
+                int count=1;
                 for (User user :bids) {
                     msgUtils.text(String.format("%d. %s   %s\n",count,user.getUname(),user.getUid()));
                     count++;
@@ -291,22 +288,106 @@ public class BilibiliCommandController extends BotPlugin {
     }
 
     @PrivateMessageHandler(cmd="(\\b取消动态 )([0-9]+)")
-    public void undoSubscribeInPrivate(@NotNull Bot bot, PrivateMessageEvent event,Matcher m) {
-        Long qid= event.getUserId();
+    public void undoSubscribeInPrivate(@NotNull Bot bot, @NotNull PrivateMessageEvent event, @NotNull Matcher m) {
+        long qid= event.getPrivateSender().getUserId();
+        int num= Integer.parseInt(m.group(2));
+        Map<Long, UserSubscribe> subscribeMap = userSubscribeMap.getPrivateSubscribeMap();
 
-        Integer num= Integer.valueOf(m.group(2));
-
-        Map<Long, UserSubscribe> subscribeMap = userSubscribeMap.getGroupSubscribeMap();
+        Map<User, LinkedHashSet<Long>> privateMap = bilibiliPushMap.getPrivateMap();
         if (subscribeMap.containsKey(qid)){
             UserSubscribe userSubscribe = subscribeMap.get(qid);
             Set<User> bids = userSubscribe.getBids();
             if (bids.size()!=0){
-                MsgUtils msgUtils=MsgUtils.builder().text("群订阅列表：\n");
-                int count=0;
+                int count=1;
+                MsgUtils msgUtils=MsgUtils.builder();
+
                 for (User user :bids) {
-                    msgUtils.text(String.format("%d. %s   %s\n",count,user.getUname(),user.getUid()));
+                    if (count==num){
+                        bids.remove(user);
+                        if (privateMap.containsKey(user)){
+                            Set<Long> longs = privateMap.get(user);
+                            longs.remove(qid);
+                        }
+                        msgUtils.text("取消成功！");
+                        bot.sendPrivateMsg(qid,msgUtils.build(),true);
+                        return;
+                    }
                     count++;
                 }
+                 msgUtils=MsgUtils.builder().text("取消失败，请检查序号！");
+                bot.sendPrivateMsg(qid,msgUtils.build(),true);
+            }
+        }
+    }
+
+
+    @GroupMessageHandler(cmd="(\\b取消动态 )([0-9]+)")
+    public void undoSubscribeInGroup(@NotNull Bot bot, @NotNull GroupMessageEvent event, @NotNull Matcher m) {
+        long qid= event.getGroupId();
+
+        int num= Integer.parseInt(m.group(2));
+
+        Map<Long, UserSubscribe> subscribeMap = userSubscribeMap.getPrivateSubscribeMap();
+
+        Map<User, LinkedHashSet<Long>> privateMap = bilibiliPushMap.getPrivateMap();
+        if (subscribeMap.containsKey(qid)){
+            UserSubscribe userSubscribe = subscribeMap.get(qid);
+            Set<User> bids = userSubscribe.getBids();
+            if (bids.size()!=0){
+                int count=1;
+                MsgUtils msgUtils=MsgUtils.builder();
+
+                for (User user :bids) {
+                    if (count==num){
+                        if (privateMap.containsKey(user)){
+                            LinkedHashSet<Long> longs = privateMap.get(user);
+                            longs.remove(qid);
+                        }
+                        bids.remove(user);
+                        msgUtils.text("取消成功！");
+                        bot.sendGroupMsg(qid,msgUtils.build(),true);
+                        return;
+                    }
+                    count++;
+                }
+                msgUtils=MsgUtils.builder().text("取消失败，请检查序号！");
+                bot.sendGroupMsg(qid,msgUtils.build(),true);
+            }
+        }
+    }
+
+
+    @GroupMessageHandler(cmd="(\\b群取消动态 )([0-9]+)")
+    public void undoGroupSubscribe(@NotNull Bot bot, @NotNull GroupMessageEvent event, @NotNull Matcher m) {
+        long qid= event.getGroupId();
+
+        int num= Integer.parseInt(m.group(2));
+
+        Map<Long, UserSubscribe> subscribeMap = userSubscribeMap.getGroupSubscribeMap();
+        Map<User, LinkedHashSet<Long>> groupMap = bilibiliPushMap.getGroupMap();
+
+
+        if (subscribeMap.containsKey(qid)){
+            UserSubscribe userSubscribe = subscribeMap.get(qid);
+            Set<User> bids = userSubscribe.getBids();
+            if (bids.size()!=0){
+                int count=1;
+                MsgUtils msgUtils=MsgUtils.builder();
+
+                for (User user :bids) {
+                    if (count==num){
+                        if (groupMap.containsKey(user)){
+                            LinkedHashSet<Long> longs = groupMap.get(user);
+                            longs.remove(qid);
+                        }
+                        bids.remove(user);
+                        msgUtils.text("取消成功！");
+                        bot.sendGroupMsg(qid,msgUtils.build(),true);
+                        return;
+                    }
+                    count++;
+                }
+                msgUtils=MsgUtils.builder().text("取消失败，请检查序号！");
                 bot.sendGroupMsg(qid,msgUtils.build(),true);
             }
         }
