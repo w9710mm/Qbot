@@ -5,14 +5,22 @@ import com.alibaba.fastjson.JSONObject;
 import com.mikuac.shiro.common.utils.MsgUtils;
 import com.mm.qbot.Exception.BilibiliException;
 import com.mm.qbot.enumeration.BiliBiliEnum;
+import com.mm.qbot.utils.BilibiliApi;
 import com.mm.qbot.utils.TimeUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class BilibiliStrategy {
+
+
+    private static final String DYNAMIC_LINK_REGEX ="(dynamic|video|read/mobile)(/)([a-zA-Z0-9]+)";
+    private static final  Pattern DYNAMIC_LINK_PATTERN = Pattern.compile(DYNAMIC_LINK_REGEX);
+
     public static MsgUtils dynamicStrategy(JSONObject json) throws BilibiliException {
 
         Integer type = json.getJSONObject("desc").getInteger("type");
@@ -388,6 +396,68 @@ public class BilibiliStrategy {
         msgUtils.img(card.getJSONObject("live_play_info").getString("cover"));
         msgUtils.text(String.format("\n%s",pack.get("link")));
 
+        return msgUtils;
+    }
+
+
+    public  static MsgUtils parsingBID(String bid) {
+        JSONObject json = BilibiliApi.getVideoByBid(bid);
+        if (json.getInteger("code")!=0){
+            return  null;
+        }
+
+        JSONObject data = json.getJSONObject("data");
+        JSONObject stat = data.getJSONObject("stat");
+        MsgUtils msg=new MsgUtils();
+
+        msg.text(String.format("标题：%s\n",data.getString("title")));
+        msg.text(String.format("分区：%s\n",data.getString("tname")));
+        msg.text(String.format("介绍：%s\n",data.getString("desc")));
+        msg.text(String.format("硬币：%d  ",stat.getInteger("coin")));
+        msg.text(String.format("点赞：%d  ",stat.getInteger("coin")));
+        msg.text(String.format("收藏：%d  ",stat.getInteger("favorite")));
+        msg.text(String.format("转发：%d  ",stat.getInteger("reply")));
+        msg.text(String.format("播放：%d  ",stat.getInteger("view")));
+        msg.text(String.format("集数：%d  ",data.getJSONArray("pages").size()));
+        msg.text(String.format("发布时间：%s\n", TimeUtils.stampToDate(data.getLong("ctime"))));
+        msg.text(String.format("时长：%s\n", TimeUtils.changeTimeFormat(data.getInteger("duration")*1000)));
+        msg.text(String.format("UP主：%s(%d)\n",data.getJSONObject("owner").getString("name"),
+                data.getJSONObject("owner").getInteger("mid")));
+        msg.text(String.format("url：https://www.bilibili.com/video/%s",data.getString("bvid")));
+        msg.img(data.getString("pic"));
+
+
+
+//        video.getInteger()
+        return msg;
+    }
+
+
+    public  static MsgUtils parsingDynamicLink(String urL) {
+
+        Matcher matcher = DYNAMIC_LINK_PATTERN.matcher(urL);
+        MsgUtils msgUtils;
+        JSONObject object;
+        matcher.find();
+        switch (matcher.group(1)) {
+            case ("dynamic") -> {
+                object = BilibiliApi.getDynamicCard(matcher.group(3));
+                try {
+                    msgUtils = BilibiliStrategy.dynamicStrategy(object.getJSONObject("data").getJSONObject("card"));
+                } catch (BilibiliException e) {
+                    msgUtils = null;
+                    e.printStackTrace();
+                }
+            }
+            case ("video") -> msgUtils = BilibiliStrategy.parsingBID(matcher.group(3));
+            case ("read/mobile") ->
+                    msgUtils = null;
+            default -> msgUtils = null;
+        }
+
+
+
+//        video.getInteger()
         return msgUtils;
     }
 

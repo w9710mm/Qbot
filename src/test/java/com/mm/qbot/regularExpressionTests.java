@@ -33,7 +33,7 @@ public class regularExpressionTests {
     }
     @Test
     void ShortID1(){
-        String line = "https:\\/\\/b23.tv\\/mONXO1";
+        String line = "https://b23.tv/0aYOXj?share_medium=android&amp;share_source=qq&amp;bbid=XY771FD75454244367C646EF7BE117FC8E5AF&amp;ts=1636172649863";
         String pattern = "b23\\.tv\\\\/([a-zA-Z0-9]{6})";
 
         // 创建 Pattern 对象
@@ -58,7 +58,7 @@ public class regularExpressionTests {
         System.out.println(line);
         // 现在创建 matcher 对象
         Matcher m = r.matcher(line);
-        if (m.find( )) {
+        if (m.find()) {
             System.out.println("Found value: " + m.group(1) );
 
         } else {

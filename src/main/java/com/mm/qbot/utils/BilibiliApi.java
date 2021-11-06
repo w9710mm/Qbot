@@ -32,7 +32,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class BilibiliApi {
-    static RestTemplate restTemplate = new RestTemplate();
+    private static RestTemplate restTemplate = new RestTemplate();
 
     private static List<String> cookies=new ArrayList<>(){{
         add("SESSDATA=328999b3%2C1651550125%2C0fc1d*b1");
@@ -186,6 +186,31 @@ public class BilibiliApi {
        }else {
            throw new BilibiliException("获取动态url错误：不是正确的短链接");
        }
+    }
+
+
+    public static JSONObject   getDynamicCard(String id){
+       String  url=  String.format("https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/get_dynamic_detail?dynamic_id=%s", id);
+
+        HttpHeaders headers=new HttpHeaders();
+        headers.addAll(comHeaders);
+        HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(null, headers);
+        ResponseEntity<String> res=restTemplate.postForEntity(url,httpEntity,String.class);
+        return  JSONObject.parseObject(res.getBody());
+
+    }
+    public static String   getRealLink(String url) {
+
+        url = "https://b23.tv/" + url;
+        String realUrl=null;
+        HttpHeaders headers = new HttpHeaders();
+        headers.addAll(comHeaders);
+        HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(null, headers);
+        ResponseEntity<String> res = restTemplate.postForEntity(url, httpEntity, String.class);
+        if (res.getStatusCodeValue() == 302) {
+            realUrl= res.getHeaders().get("Location").toString();
+        }
+        return realUrl;
     }
 
 

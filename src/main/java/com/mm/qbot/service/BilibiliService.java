@@ -10,14 +10,12 @@ import com.mm.qbot.dto.UserSubscribe;
 import com.mm.qbot.dto.UserSubscribeMap;
 import com.mm.qbot.enumeration.NeedTopEnum;
 import com.mm.qbot.enumeration.RelationActionEnum;
-import com.mm.qbot.strategy.BilibiliParsingStrategy;
 import com.mm.qbot.strategy.BilibiliStrategy;
 import com.mm.qbot.utils.BilibiliApi;
 import com.mm.qbot.utils.LevelDB;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
@@ -138,4 +136,91 @@ public class BilibiliService {
         }
         return  uid;
     }
+
+    public MsgUtils undoSubscribe(long qid,
+                                 int num,
+                                 Map<Long, UserSubscribe> subscribeMap,
+                                 Map<User, LinkedHashSet<Long>> pushMap){
+
+        MsgUtils msgUtils = MsgUtils.builder();
+        if (subscribeMap.containsKey(qid)){
+            UserSubscribe userSubscribe = subscribeMap.get(qid);
+            Set<User> bids = userSubscribe.getBids();
+            if (bids.size()!=0&&bids.size()<=num){
+                int count=1;
+
+                for (User user :bids) {
+                    if (count==num){
+                        if (pushMap.containsKey(user)){
+                            LinkedHashSet<Long> longs = pushMap.get(user);
+                            longs.remove(qid);
+                        }
+                        bids.remove(user);
+                        msgUtils.text("取消成功！");
+                        break;
+                    }
+                    count++;
+                }
+
+            }
+            else {
+                if (bids.size()>=num){
+                    msgUtils.text("取消失败，请检查序号是否正确。");
+                }else{
+                msgUtils.text("好像没有任何订阅信息。");
+                }
+            }
+        }
+        if (!subscribeMap.containsKey(qid)){
+            msgUtils=MsgUtils.builder().text("好像没有任何订阅信息。");
+        }
+        return  msgUtils;
+    }
+
+
+    public MsgUtils showSubscribe(long qid,
+                                  Map<Long, UserSubscribe> subscribeMap){
+
+        MsgUtils msgUtils = MsgUtils.builder();
+
+        if (subscribeMap.containsKey(qid)){
+            UserSubscribe userSubscribe = subscribeMap.get(qid);
+            Set<User> bids = userSubscribe.getBids();
+            if (bids.size()!=0){
+                if (!userSubscribe.getIsGroup()){
+                    msgUtils.text("你订阅的UP主有这些：\n");
+                }
+                if (userSubscribe.getIsGroup()){
+                    msgUtils.text("本群订阅的UP主有这些：\n");
+                }
+                int count=1;
+                for (User user :bids) {
+                    msgUtils.text(String.format("%d、 %s   %s\n",count,user.getUname(),user.getUid()));
+                    count++;
+                }
+                msgUtils.text("uid信息+uid/用户名");
+                msgUtils.text("取消订阅：取消动态+序号/all");
+            }else {
+                msgUtils.text("好像没有任何订阅信息");
+            }
+        }
+        if (!subscribeMap.containsKey(qid)){
+            msgUtils.text("好像没有任何订阅信息");
+        }
+        return  msgUtils;
+    }
+
+    public MsgUtils parsingShortLink(String url){
+        String realLink = BilibiliApi.getRealLink(url);
+
+        MsgUtils msgUtils = BilibiliStrategy.parsingDynamicLink(realLink);
+
+
+        System.out.println(realLink);
+
+
+        return msgUtils;
+    }
+
+
 }
