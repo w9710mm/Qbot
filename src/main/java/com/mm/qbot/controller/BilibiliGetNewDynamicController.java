@@ -61,8 +61,9 @@ public class BilibiliGetNewDynamicController extends BotPlugin {
                 for (Object object : cards) {
                     JSONObject card = (JSONObject) object;
                     User user=new User();
-                    user.setUid( card.getJSONObject("desc").getString("uid"));
-                    user.setUname(card.getJSONObject("desc").getString("uname"));
+                    JSONObject userInfo =card.getJSONObject("desc").getJSONObject("user_profile").getJSONObject("info");
+                    user.setUid( userInfo.getString("uid"));
+                    user.setUname(userInfo.getString("uname"));
                     try {
                         if (privateMap.containsKey(user)){
                             for (Long qid:privateMap.get(user)) {

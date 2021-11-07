@@ -124,6 +124,24 @@ public class regularExpressionTests {
         }
     }
 
+    @Test
+    void testdym(){
+
+        String pattern = "m\\.bilibili\\.com/dynamic/([0-9]+)";
+        String line="https://m.bilibili.com/dynamic/589894314794584367";
+        // 创建 Pattern 对象
+        Pattern r = Pattern.compile(pattern);
+        System.out.println(line);
+        // 现在创建 matcher 对象
+        Matcher m = r.matcher(line);
+        if (m.find( )) {
+            System.out.println("Found value: " + m.group(1) );
+
+        } else {
+            System.out.println("NO MATCH");
+        }
+    }
+
 
 
 }

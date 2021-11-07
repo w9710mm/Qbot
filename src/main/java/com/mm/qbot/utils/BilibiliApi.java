@@ -34,38 +34,36 @@ import java.util.regex.Pattern;
 public class BilibiliApi {
     private static RestTemplate restTemplate = new RestTemplate();
 
-    private static List<String> cookies=new ArrayList<>(){{
+    private static List<String> cookies = new ArrayList<>() {{
         add("SESSDATA=328999b3%2C1651550125%2C0fc1d*b1");
         add("buvid3=8E25A7A9-0A5E-1156-4F65-C2F8E7BC126678704infoc");
         add("bili_jct=26bcba888f13413eb3d46c79e6a65b4d");
     }};
 
-    private  static  String csrf="26bcba888f13413eb3d46c79e6a65b4d";
-    private static MultiValueMap<String, String> comHeaders = new LinkedMultiValueMap<>(){
+    private static String csrf = "26bcba888f13413eb3d46c79e6a65b4d";
+    private static MultiValueMap<String, String> comHeaders = new LinkedMultiValueMap<>() {
         {
-            add("user-agent","Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36");
-            add("referer","https://www.bilibili.com/");
+            add("user-agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36");
+            add("referer", "https://www.bilibili.com/");
         }
     };
 
 
-
-
     //TODO根据登录情况刷新cookie
-    public boolean reNewCookie(){
+    public boolean reNewCookie() {
         return false;
     }
 
     //TODO根据情况刷新cookie
-    public boolean reNewHeader(){
+    public boolean reNewHeader() {
         return false;
     }
 
 
-    public static JSONObject getNewDynamicNum(String typeList,String offset){
-        HttpHeaders headers=new HttpHeaders();
+    public static JSONObject getNewDynamicNum(String typeList, String offset) {
+        HttpHeaders headers = new HttpHeaders();
         headers.addAll(comHeaders);
-        headers.put(HttpHeaders.COOKIE,cookies);
+        headers.put(HttpHeaders.COOKIE, cookies);
         HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(null, headers);
         String dynamicSvr = "https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/web_cyclic_num?type_list={type_list}&offset={offset}";
 
@@ -75,16 +73,16 @@ public class BilibiliApi {
         paramMaps.put("offset", offset);
 
 
-        ResponseEntity<String> res=restTemplate.exchange(dynamicSvr, HttpMethod.GET,httpEntity,String.class,paramMaps);
+        ResponseEntity<String> res = restTemplate.exchange(dynamicSvr, HttpMethod.GET, httpEntity, String.class, paramMaps);
         return JSONObject.parseObject(res.getBody());
     }
 
-    public  static JSONObject getNewDynamic(String uid,String typeList,String currentDynamicId, String from,String platform ){
-        HttpHeaders headers=new HttpHeaders();
+    public static JSONObject getNewDynamic(String uid, String typeList, String currentDynamicId, String from, String platform) {
+        HttpHeaders headers = new HttpHeaders();
         headers.addAll(comHeaders);
-        headers.put(HttpHeaders.COOKIE,cookies);
+        headers.put(HttpHeaders.COOKIE, cookies);
         HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(null, headers);
-        String url="https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/dynamic_new?uid={uid}&type_list={type_list}" +
+        String url = "https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/dynamic_new?uid={uid}&type_list={type_list}" +
                 "&current_dynamic_id={current_dynamic_id}&from={from}&platform={platform}";
 
 
@@ -95,35 +93,32 @@ public class BilibiliApi {
         paramMaps.put("from", from);
         paramMaps.put("platform", platform);
 
-        ResponseEntity<String> res=restTemplate.exchange(url, HttpMethod.GET,httpEntity,String.class,paramMaps);
+        ResponseEntity<String> res = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class, paramMaps);
 
         return JSONObject.parseObject(res.getBody());
     }
 
 
-
-    public static JSONObject serachUser(String keyword,String searchType ){
-        HttpHeaders headers=new HttpHeaders();
+    public static JSONObject serachUser(String keyword, String searchType) {
+        HttpHeaders headers = new HttpHeaders();
         headers.addAll(comHeaders);
 //        headers.put(HttpHeaders.COOKIE,cookies);
         HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(null, headers);
-        String url="https://api.bilibili.com/x/web-interface/search/type?keyword={keyword}&search_type={search_type}";
+        String url = "https://api.bilibili.com/x/web-interface/search/type?keyword={keyword}&search_type={search_type}";
 
 
         Map<String, Object> paramMaps = new HashMap<>(2);
         paramMaps.put("keyword", keyword);
         paramMaps.put("search_type", searchType);
 
-        ResponseEntity<String> res=restTemplate.exchange(url, HttpMethod.GET,httpEntity,String.class,paramMaps);
+        ResponseEntity<String> res = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class, paramMaps);
         return JSONObject.parseObject(res.getBody());
     }
 
 
-
-
-    public static  JSONObject getVideoByBid(String bid){
-        String url="https://api.bilibili.com/x/web-interface/view?bvid={bvid}";
-        HttpHeaders headers=new HttpHeaders();
+    public static JSONObject getVideoByBid(String bid) {
+        String url = "https://api.bilibili.com/x/web-interface/view?bvid={bvid}";
+        HttpHeaders headers = new HttpHeaders();
         headers.addAll(comHeaders);
 //        headers.put(HttpHeaders.COOKIE,cookies);
         HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(null, headers);
@@ -133,105 +128,103 @@ public class BilibiliApi {
         paramMaps.put("bvid", bid);
 
 
-
-        ResponseEntity<String> res=restTemplate.exchange(url, HttpMethod.GET,httpEntity,String.class,paramMaps);
+        ResponseEntity<String> res = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class, paramMaps);
         return JSONObject.parseObject(res.getBody());
 
     }
 
 
     //获取短链接
-    public static  JSONObject getShortLink(String url) throws BilibiliException{
-        url="https://b23.tv/"+url;
-        HttpHeaders headers=new HttpHeaders();
+    public static JSONObject getShortLink(String url) throws BilibiliException {
+        url = "https://b23.tv/" + url;
+        HttpHeaders headers = new HttpHeaders();
         headers.addAll(comHeaders);
 //        headers.put(HttpHeaders.COOKIE,cookies);
         HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(null, headers);
 
 
+        ResponseEntity<String> res = restTemplate.postForEntity(url, httpEntity, String.class);
 
-       ResponseEntity<String> res=restTemplate.postForEntity(url,httpEntity,String.class);
-
-       if (res.getStatusCodeValue()==302) {
+        if (res.getStatusCodeValue() == 302) {
 //        res.getHeaders().get("Location").ts;
 
 
-           String regex="(dynamic|video|read/mobile)(/)([a-zA-Z0-9]+)";
+            String regex = "(dynamic|video|read/mobile)(/)([a-zA-Z0-9]+)";
 
 
-           Pattern pattern = Pattern.compile(regex);
-           Matcher matcher = pattern.matcher(res.getHeaders().get("Location").toString());
-            String realUrl=null;
-           switch (matcher.group(1)){
-               case ("dynamic"):
-                   realUrl=  String.format("https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/get_dynamic_detail?dynamic_id=%s", matcher.group(3));
-               break;
-               case ("video"):
-                   return getVideoByBid(matcher.group(2));
+            Pattern pattern = Pattern.compile(regex);
+            Matcher matcher = pattern.matcher(res.getHeaders().get("Location").toString());
+            String realUrl = null;
+            switch (matcher.group(1)) {
+                case ("dynamic"):
+                    realUrl = String.format("https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/get_dynamic_detail?dynamic_id=%s", matcher.group(3));
+                    break;
+                case ("video"):
+                    return getVideoByBid(matcher.group(2));
 
-               case ("read/mobile") :
+                case ("read/mobile"):
 
-                   //处理文章
-                   break;
+                    //处理文章
+                    break;
 
-               default:
-                   throw new BilibiliException("获取动态url错误：该资源已经失效");
+                default:
+                    throw new BilibiliException("获取动态url错误：该资源已经失效");
 
-           }
+            }
 
-               res = restTemplate.exchange(realUrl, HttpMethod.GET, httpEntity, String.class);
-               return JSONObject.parseObject(res.getBody());
+            res = restTemplate.exchange(realUrl, HttpMethod.GET, httpEntity, String.class);
+            return JSONObject.parseObject(res.getBody());
 
 
-       }else {
-           throw new BilibiliException("获取动态url错误：不是正确的短链接");
-       }
+        } else {
+            throw new BilibiliException("获取动态url错误：不是正确的短链接");
+        }
     }
 
 
-    public static JSONObject   getDynamicCard(String id){
-       String  url=  String.format("https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/get_dynamic_detail?dynamic_id=%s", id);
+    public static JSONObject getDynamicCard(String id) {
+        String url = String.format("https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/get_dynamic_detail?dynamic_id=%s", id);
 
-        HttpHeaders headers=new HttpHeaders();
+        HttpHeaders headers = new HttpHeaders();
         headers.addAll(comHeaders);
         HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(null, headers);
-        ResponseEntity<String> res=restTemplate.postForEntity(url,httpEntity,String.class);
-        return  JSONObject.parseObject(res.getBody());
+        ResponseEntity<String> res = restTemplate.postForEntity(url, httpEntity, String.class);
+        return JSONObject.parseObject(res.getBody());
 
     }
-    public static String   getRealLink(String url) {
+
+    public static String getRealLink(String url) {
 
         url = "https://b23.tv/" + url;
-        String realUrl=null;
+        String realUrl = null;
         HttpHeaders headers = new HttpHeaders();
         headers.addAll(comHeaders);
         HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(null, headers);
         ResponseEntity<String> res = restTemplate.postForEntity(url, httpEntity, String.class);
         if (res.getStatusCodeValue() == 302) {
-            realUrl= res.getHeaders().get("Location").toString();
+            realUrl = res.getHeaders().get("Location").toString();
         }
         return realUrl;
     }
 
 
-    public  static JSONObject modifyRelation(Long uid, RelationActionEnum action){
+    public static JSONObject modifyRelation(Long uid, RelationActionEnum action) {
 
-        String url="https://api.bilibili.com/x/relation/modify";
+        String url = "https://api.bilibili.com/x/relation/modify";
 
-        HttpHeaders headers=new HttpHeaders();
+        HttpHeaders headers = new HttpHeaders();
         headers.addAll(comHeaders);
 //        headers.put(HttpHeaders.COOKIE,cookies);
-        headers.put(HttpHeaders.COOKIE,cookies);
+        headers.put(HttpHeaders.COOKIE, cookies);
 
 
+        MultiValueMap<String, String> body = new LinkedMultiValueMap<>(5);
 
-        MultiValueMap<String, String> body= new LinkedMultiValueMap< >(5);
-
-        body.add("fid",String.valueOf(uid));
+        body.add("fid", String.valueOf(uid));
         body.add("act", String.valueOf(action.getId()));
         body.add("re_src", String.valueOf(11));
-        body.add("csrf",csrf);
-        body.add("csrf_token",csrf);
+        body.add("csrf", csrf);
+        body.add("csrf_token", csrf);
 
 
         HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(body, headers);
@@ -239,17 +232,15 @@ public class BilibiliApi {
         ResponseEntity<String> exchange = restTemplate.exchange(url, HttpMethod.POST, httpEntity, String.class);
 
 
-       return JSONObject.parseObject(exchange.getBody());
+        return JSONObject.parseObject(exchange.getBody());
     }
 
 
-
-
-    public  static JSONObject getSpaceDynamic(Long  hostUid, Long offsetDynamicId, NeedTopEnum needTopEnum){
-        String url="https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/space_history?host_uid=" +
+    public static JSONObject getSpaceDynamic(Long hostUid, Long offsetDynamicId, NeedTopEnum needTopEnum) {
+        String url = "https://api.vc.bilibili.com/dynamic_svr/v1/dynamic_svr/space_history?host_uid=" +
                 "{hostUid}&offset_dynamic_id={offsetDynamicId}&need_top={needTopEnum}&platform=web";
 
-        HttpHeaders headers=new HttpHeaders();
+        HttpHeaders headers = new HttpHeaders();
 
         headers.addAll(comHeaders);
         HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(null, headers);
@@ -259,32 +250,32 @@ public class BilibiliApi {
         paramMaps.put("offsetDynamicId", offsetDynamicId);
         paramMaps.put("needTopEnum", needTopEnum.getId());
 
-        ResponseEntity<String> exchange = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class,paramMaps);
+        ResponseEntity<String> exchange = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class, paramMaps);
 
         return JSONObject.parseObject(exchange.getBody());
 
     }
 
 
+    public static JSONObject getUserInfo(Long uid) {
 
-    public static JSONObject getUserInfo(Long uid){
+        String url = "https://api.bilibili.com/x/space/acc/info?mid={uid}";
 
-        String url="https://api.bilibili.com/x/space/acc/info?mid={uid}";
-
-        HttpHeaders headers=new HttpHeaders();
+        HttpHeaders headers = new HttpHeaders();
 
         headers.addAll(comHeaders);
 
-        HttpEntity<MultiValueMap<String,String>> httpEntity=new HttpEntity<>(null,headers);
+        HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(null, headers);
 
-        Map<String,Object> paramMaps=new HashMap<>( 1);
+        Map<String, Object> paramMaps = new HashMap<>(1);
 
-        paramMaps.put("uid",uid);
+        paramMaps.put("uid", uid);
 
-        ResponseEntity<String> exchange=restTemplate.exchange(url,HttpMethod.GET,httpEntity,String.class,paramMaps);
+        ResponseEntity<String> exchange = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class, paramMaps);
 
         return JSONObject.parseObject(exchange.getBody());
     }
+
 
 
 }

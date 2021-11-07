@@ -213,14 +213,23 @@ public class BilibiliService {
     public MsgUtils parsingShortLink(String url){
         String realLink = BilibiliApi.getRealLink(url);
 
-        MsgUtils msgUtils = BilibiliStrategy.parsingDynamicLink(realLink);
 
-
-        System.out.println(realLink);
-
-
-        return msgUtils;
+        return BilibiliStrategy.parsingDynamicLink(realLink);
     }
 
 
+
+    public MsgUtils parsingDynamic(String url) {
+        MsgUtils msgUtils;
+
+        try {
+            JSONObject dynamicCard = BilibiliApi.getDynamicCard(url);
+            msgUtils= BilibiliStrategy.dynamicStrategy(dynamicCard.getJSONObject("data").getJSONObject("card"));
+        }catch (Exception e){
+            e.printStackTrace();
+            msgUtils=null;
+        }
+
+        return msgUtils;
+    }
 }
