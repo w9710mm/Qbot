@@ -49,7 +49,7 @@ public class PicTests {
         BufferedImage image  =new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D graphics = image.createGraphics();
 
-        graphics.setBackground(Color.WHITE);
+        graphics.setBackground(Color.white);
         int line=-1;
         int ge=0;
         for (String url:urls) {
