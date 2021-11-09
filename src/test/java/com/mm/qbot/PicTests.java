@@ -9,6 +9,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,11 +30,11 @@ public class PicTests {
 @Test
     public void overlapImage() throws MyImageException, IOException {
         List<String> urls=new ArrayList<>();
-        urls.add("2.jpg");
-        urls.add("3.jpg");
-        urls.add("4.jpg");
-    urls.add("12.jpg");
-    urls.add("53.jpg");
+//        urls.add("src/main/resources/testPic/1 (1).webp");
+        urls.add("https://i0.hdslb.com/bfs/album/8320e8d3c88536f6320da42ee54c95b34a4b4ecd.jpg@500w_500h");
+        urls.add("https://i0.hdslb.com/bfs/album/df576451704c0bc2f0f9c335c4aa8444e30d6d94.jpg@500w_500h");
+    urls.add("https://i0.hdslb.com/bfs/album/90f7acfe55984e0951820ba73e0eae8c0452928f.png@500w_500h");
+    urls.add("https://i0.hdslb.com/bfs/album/9ff93e121b5bea138547fdee98cc5c06ed06ce1b.jpg@500w_500h");
 
         double v = (double) urls.size() / 3;
 
@@ -56,8 +57,9 @@ public class PicTests {
             if (ge%3==0){
                 line++;
             }
+            URL pic=new URL(url);
            SimpleImageTool.of(url).size(500,500).toFile(new File(url));
-            BufferedImage bufferedImage=ImageIO.read(new File(url));
+            BufferedImage bufferedImage=ImageIO.read(pic);
             graphics.drawImage(bufferedImage,(ge%3)*500,line*500,bufferedImage.getWidth(),bufferedImage.getHeight(),null);
             ge++;
 
