@@ -6,6 +6,8 @@ import org.junit.Test;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -50,7 +52,7 @@ public class PicTests {
         BufferedImage image  =new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
         Graphics2D graphics = image.createGraphics();
 
-        graphics.setBackground(Color.white);
+        graphics.setColor(Color.white);
         int line=-1;
         int ge=0;
         for (String url:urls) {
@@ -58,7 +60,7 @@ public class PicTests {
                 line++;
             }
             URL pic=new URL(url);
-           SimpleImageTool.of(url).size(500,500).toFile(new File(url));
+//           SimpleImageTool.of(url).size(500,500).toFile(new File(url));
             BufferedImage bufferedImage=ImageIO.read(pic);
             graphics.drawImage(bufferedImage,(ge%3)*500,line*500,bufferedImage.getWidth(),bufferedImage.getHeight(),null);
             ge++;
@@ -69,5 +71,32 @@ public class PicTests {
         ImageIO.write(image,"png", new File("out.jpg"));
 
 
+    }
+
+    public static void resize(BufferedImage bufferedImage, int height, int width, boolean bb){
+            double ratio =0;
+            Image image=bufferedImage.getScaledInstance(width,height,BufferedImage.SCALE_SMOOTH);
+            if (bufferedImage.getHeight()>bufferedImage.getWidth()){
+                ratio= (double) height /(double) bufferedImage.getHeight();
+            }else {
+                ratio=(double) width /(double) bufferedImage.getWidth();
+            }
+        AffineTransformOp op = new AffineTransformOp(AffineTransform.getScaleInstance(ratio, ratio), null);
+        image = op.filter(bufferedImage, null);
+
+        if (bb){
+            BufferedImage bi=new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
+            Graphics2D graphics2D=bi.createGraphics();
+            graphics2D.setColor(Color.white);
+            graphics2D.fillRect(0,0,width,height);
+            if (width==image.getWidth(null)){
+                graphics2D.drawImage(image,0,(height-image.getHeight(null))/2,image.getWidth(null), image.getHeight(null), Color.white, null);
+            }else {
+
+                graphics2D.drawImage(image, (width - image.getWidth(null)) / 2, 0, image.getWidth(null), image.getHeight(null), Color.white, null);
+            }
+            graphics2D.dispose();
+            bi= (BufferedImage) image;
+        }
     }
 }
