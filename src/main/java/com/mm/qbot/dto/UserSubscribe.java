@@ -35,7 +35,14 @@ public class UserSubscribe  implements Serializable {
 
     private LinkedHashSet<User> tikid =new LinkedHashSet<>();
     //是否订阅视频
-    private Boolean isBVideo=Boolean.TRUE;
+    private Boolean isBVideo =Boolean.TRUE;
+
+    private Boolean isDynamic=Boolean.TRUE;
+
+    private Boolean isLive=Boolean.FALSE;
+
+    private  Boolean isArticle=Boolean.TRUE;
+
 
     //是否是群
     private Boolean isGroup;

@@ -145,7 +145,7 @@ public class BilibiliService {
         MsgUtils msgUtils = MsgUtils.builder();
         if (subscribeMap.containsKey(qid)){
             UserSubscribe userSubscribe = subscribeMap.get(qid);
-            Set<User> bids = userSubscribe.getBids();
+            LinkedHashSet<User> bids = userSubscribe.getBids();
             if (bids.size()!=0&&bids.size()<=num){
                 int count=1;
 
@@ -178,6 +178,32 @@ public class BilibiliService {
     }
 
 
+    public MsgUtils undoAllSubscribe(long qid,
+                                  Map<Long, UserSubscribe> subscribeMap,
+                                  Map<User, LinkedHashSet<Long>> pushMap){
+
+        MsgUtils msgUtils = MsgUtils.builder();
+        if (subscribeMap.containsKey(qid)) {
+            UserSubscribe userSubscribe = subscribeMap.get(qid);
+            LinkedHashSet<User> bids = userSubscribe.getBids();
+            for (User u:bids) {
+                if (pushMap.containsKey(u)){
+                    LinkedHashSet<Long> longs = pushMap.get(u);
+                    for (Long q:longs) {
+                        if (q.equals(qid)){
+                            longs.remove(q);
+                            break;
+                        }
+                    }
+                }
+            }
+            userSubscribe.setBids(new LinkedHashSet<>());
+            msgUtils.text("取消成功！");
+        }else {
+            msgUtils.text("取消失败，可能没有任何订阅信息");
+        }
+        return  msgUtils;
+    }
     public MsgUtils showSubscribe(long qid,
                                   Map<Long, UserSubscribe> subscribeMap){
 
@@ -198,7 +224,7 @@ public class BilibiliService {
                     msgUtils.text(String.format("%d、 %s   %s\n",count,user.getUname(),user.getUid()));
                     count++;
                 }
-                msgUtils.text("uid信息+uid/用户名");
+                msgUtils.text("uid信息+uid/用户名\n");
                 msgUtils.text("取消订阅：取消动态+序号/all");
             }else {
                 msgUtils.text("好像没有任何订阅信息");
@@ -230,6 +256,29 @@ public class BilibiliService {
             msgUtils=null;
         }
 
+        return msgUtils;
+    }
+
+    public MsgUtils getUpInfo(String uid){
+        MsgUtils msgUtils=MsgUtils.builder();
+        JSONObject userInfo = BilibiliApi.getUserInfo(Long.valueOf(uid));
+        JSONObject data = userInfo.getJSONObject("data");
+
+        msgUtils.img(data.getString("face"));
+        msgUtils.text(String.format("\n签名：%s",data.getString("sign")));
+        msgUtils.text( String.format("\n昵称（%s）:%s生日:%s",data.getString("name"),uid,data.getString("birthday")));
+        msgUtils.text(String.format("等级：%s",data.getString("level")));
+        msgUtils.text(String.format("性别：%s",data.getString("sex")));
+        JSONObject upStat = BilibiliApi.getUpStat(uid);
+        JSONObject upStatData=upStat.getJSONObject("data");
+
+        msgUtils.text(String.format("\n播放量：%s 阅读量：%s 点赞数：%s ",upStatData.getJSONObject("archive").getString("view"),
+         upStatData.getJSONObject("article").getString("view") ,upStatData.getString("likes") ));
+
+        JSONObject relationStat = BilibiliApi.getRelationStat(uid);
+        JSONObject relationStatData=relationStat.getJSONObject("data");
+
+        msgUtils.text(String.format("\n粉丝：%s 关注:%s ",relationStatData.getString("follower"),relationStatData.getString("following")));
         return msgUtils;
     }
 }

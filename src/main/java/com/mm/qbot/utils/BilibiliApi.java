@@ -264,6 +264,7 @@ public class BilibiliApi {
         HttpHeaders headers = new HttpHeaders();
 
         headers.addAll(comHeaders);
+        headers.put(HttpHeaders.COOKIE, cookies);
 
         HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(null, headers);
 
@@ -275,6 +276,35 @@ public class BilibiliApi {
 
         return JSONObject.parseObject(exchange.getBody());
     }
+
+    public static JSONObject getUpStat(String uid){
+        String url = "https://api.bilibili.com/x/space/upstat?mid={uid}";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.addAll(comHeaders);
+        headers.put(HttpHeaders.COOKIE, cookies);
+
+        HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(null, headers);
+        Map<String, Object> paramMaps = new HashMap<>(1);
+        paramMaps.put("uid", uid);
+        ResponseEntity<String> exchange = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class, paramMaps);
+        return JSONObject.parseObject(exchange.getBody());
+    }
+
+
+    public static JSONObject getRelationStat(String uid){
+        String url = "https://api.bilibili.com/x/relation/stat?vmid={uid}";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.addAll(comHeaders);
+        HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(null, headers);
+        Map<String, Object> paramMaps = new HashMap<>(1);
+        paramMaps.put("uid", uid);
+        ResponseEntity<String> exchange = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class, paramMaps);
+        return JSONObject.parseObject(exchange.getBody());
+    }
+
+
 
 
 

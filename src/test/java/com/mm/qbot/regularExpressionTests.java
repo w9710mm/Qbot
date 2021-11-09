@@ -127,8 +127,8 @@ public class regularExpressionTests {
     @Test
     void testdym(){
 
-        String pattern = "m\\.bilibili\\.com/dynamic/([0-9]+)";
-        String line="https://m.bilibili.com/dynamic/589894314794584367";
+        String pattern = "t\\.bilibili\\.com/([0-9]+)";
+        String line="https://t.bilibili.com/587736570472853324";
         // 创建 Pattern 对象
         Pattern r = Pattern.compile(pattern);
         System.out.println(line);

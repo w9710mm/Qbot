@@ -72,31 +72,48 @@ public class PicTests {
 
 
     }
+@Test
+    public  void testForSize() {
+    try {
+        BufferedImage bufferedImage=ImageIO.read(new URL("https://i0.hdslb.com/bfs/album/99a5640590768f10b4aaeab2a13b3f578ed6a5b6.png"));
 
-    public static void resize(BufferedImage bufferedImage, int height, int width, boolean bb){
-            double ratio =0;
-            Image image=bufferedImage.getScaledInstance(width,height,BufferedImage.SCALE_SMOOTH);
-            if (bufferedImage.getHeight()>bufferedImage.getWidth()){
-                ratio= (double) height /(double) bufferedImage.getHeight();
-            }else {
-                ratio=(double) width /(double) bufferedImage.getWidth();
+        BufferedImage resize = resize(bufferedImage, 5500, 5500, true);
+
+        ImageIO.write(resize,"jpg", new File("out.jpg"));
+
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+
+}
+
+    public static BufferedImage resize(BufferedImage bi, int height, int width, boolean bb){
+        double ratio;
+        //计算比例
+        if ((bi.getHeight() > height) || (bi.getWidth() > width)) {
+            if (bi.getHeight() > bi.getWidth()) {
+                ratio = (new Integer(height)).doubleValue() / bi.getHeight();
+            } else {
+                ratio = (new Integer(width)).doubleValue() / bi.getWidth();
             }
-        AffineTransformOp op = new AffineTransformOp(AffineTransform.getScaleInstance(ratio, ratio), null);
-        bufferedImage = op.filter(bufferedImage, null);
-
-        if (bb){
-            BufferedImage bi=new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
-            Graphics2D graphics2D=bi.createGraphics();
-            graphics2D.setColor(Color.white);
-            graphics2D.fillRect(0,0,width,height);
-            if (width==image.getWidth(null)){
-                graphics2D.drawImage(image,0,(height-image.getHeight(null))/2,image.getWidth(null), image.getHeight(null), Color.white, null);
-            }else {
-
-                graphics2D.drawImage(image, (width - image.getWidth(null)) / 2, 0, image.getWidth(null), image.getHeight(null), Color.white, null);
-            }
-            graphics2D.dispose();
-            bi= (BufferedImage) image;
+            AffineTransformOp op = new AffineTransformOp(AffineTransform.getScaleInstance(ratio, ratio), null);
+            bi = op.filter(bi, null);
         }
+        if (bb) {
+            BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+            Graphics2D g = image.createGraphics();
+            g.setColor(Color.white);
+            g.fillRect(0, 0, width, height);
+            if (height== bi.getHeight(null))
+                g.drawImage(bi, (width - bi.getWidth(null)) / 2, 0, bi.getWidth(null), bi.getHeight(null), Color.white, null);
+
+            else
+                g.drawImage(bi, (width - bi.getWidth(null)) / 2, (height - bi.getHeight(null)) / 2, bi.getWidth(null), bi.getHeight(null), Color.white, null);
+
+
+            g.dispose();
+            bi = image;
+        }
+        return bi;
     }
 }

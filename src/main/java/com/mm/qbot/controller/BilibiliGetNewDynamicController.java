@@ -3,6 +3,7 @@ package com.mm.qbot.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.mikuac.shiro.common.utils.MsgUtils;
 import com.mikuac.shiro.core.Bot;
 import com.mikuac.shiro.core.BotContainer;
 import com.mikuac.shiro.core.BotPlugin;
@@ -67,12 +68,19 @@ public class BilibiliGetNewDynamicController extends BotPlugin {
                     try {
                         if (privateMap.containsKey(user)){
                             for (Long qid:privateMap.get(user)) {
-                                bot.sendPrivateMsg(qid, BilibiliStrategy.dynamicStrategy(card).build(), false);
+                                MsgUtils msgUtils = BilibiliStrategy.dynamicStrategy(card);
+                                if (msgUtils!=null) {
+                                    bot.sendPrivateMsg(qid, msgUtils.build(), false);
+                                }
                             }
                         }
                         if (groupMap.containsKey(user)){
                             for (Long qid:groupMap.get(user)) {
-                                bot.sendGroupMsg(qid, BilibiliStrategy.dynamicStrategy(card).build(), false);
+                                MsgUtils msgUtils = BilibiliStrategy.dynamicStrategy(card);
+                                if (msgUtils!=null) {
+
+                                    bot.sendGroupMsg(qid, msgUtils.build(), false);
+                                }
                             }
                         }
 

@@ -65,7 +65,6 @@ public class InitBilibili {
 
         Map<User,LinkedHashSet<Long>> tiktokPrivatePushMap = tiktokPushMap.getPrivateMap();
 
-
         groupSubscribeMap.forEach((key, userSubscribe) -> {
             Set<User> tikids = userSubscribe.getTikid();
             Set<User> weiboids = userSubscribe.getWeiboids();
