@@ -266,7 +266,7 @@ public class BilibiliService {
 
         msgUtils.img(data.getString("face"));
         msgUtils.text(String.format("\n签名：%s",data.getString("sign")));
-        msgUtils.text( String.format("\n昵称（%s）:%s生日:%s",data.getString("name"),uid,data.getString("birthday")));
+        msgUtils.text( String.format("\n昵称：（%s）:%s生日:%s",data.getString("name"),uid,data.getString("birthday")));
         msgUtils.text(String.format("等级：%s",data.getString("level")));
         msgUtils.text(String.format("性别：%s",data.getString("sex")));
         JSONObject upStat = BilibiliApi.getUpStat(uid);
