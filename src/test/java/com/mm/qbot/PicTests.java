@@ -82,7 +82,7 @@ public class PicTests {
                 ratio=(double) width /(double) bufferedImage.getWidth();
             }
         AffineTransformOp op = new AffineTransformOp(AffineTransform.getScaleInstance(ratio, ratio), null);
-        image = op.filter(bufferedImage, null);
+        bufferedImage = op.filter(bufferedImage, null);
 
         if (bb){
             BufferedImage bi=new BufferedImage(width,height,BufferedImage.TYPE_INT_RGB);
