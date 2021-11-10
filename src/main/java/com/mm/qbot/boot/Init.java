@@ -5,6 +5,7 @@ import com.mm.qbot.dto.*;
 import com.mm.qbot.dto.pushMap.*;
 import com.mm.qbot.utils.BilibiliApi;
 import com.mm.qbot.utils.LevelDB;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -174,16 +175,76 @@ public class Init {
     }
 
     @Bean
-
     public void initUaList(){
         List<String> uaList = userAgentList.getUaList();
-        uaList.add("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/14.0.835.163 Safari/535.1"),
-        uaList.add("Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; .NET4.0C; .NET4.0E)"),
-        uaList.add("Mozilla/5.0 (Windows NT 6.1) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/13.0.782.41 Safari/535.1 QQBrowser/6.9.11079.201"),
-        uaList.add("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36"),
-        uaList.add("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36 QIHU 360SE"),
+        uaList.add("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/14.0.835.163 Safari/535.1");
+        uaList.add("Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; .NET4.0C; .NET4.0E)");
+        uaList.add("Mozilla/5.0 (Windows NT 6.1) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/13.0.782.41 Safari/535.1 QQBrowser/6.9.11079.201");
+        uaList.add("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36");
+        uaList.add("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36 QIHU 360SE");
+    }
+    @Bean
+    public void initWeiboPushMap(){
+        Map<User, LinkedHashSet<Long>> groupMap = weiBoPushMap.getGroupMap();
+        LinkedHashSet<Long> groups=new LinkedHashSet<>();
+        groups.add(760322595L);
+        groups.add(245530949L);
+        groups.add(959969138L);
+        groups.add(483068702L);
+        groups.add(625773658L);
+
+        User asoul=new User();
+        asoul.setUid("7519401668");
+        asoul.setUname("A-SOUL_Official");
+        groupMap.put(asoul,groups);
+    }
+
+    @Bean
+    public void initTikTokPushMap(){
+        Map<User, LinkedHashSet<Long>> groupMap = tiktokPushMap.getGroupMap();
+        LinkedHashSet<Long> groups=new LinkedHashSet<>();
+        groups.add(760322595L);
+        groups.add(245530949L);
+        groups.add(959969138L);
+        groups.add(483068702L);
+        groups.add(625773658L);
+
+        User ava=new User();
+        ava.setUid("MS4wLjABAAAAxOXMMwlShWjp4DONMwfEEfloRYiC1rXwQ64eydoZ0ORPFVGysZEd4zMt8AjsTbyt");
+        ava.setUname("向晚大魔王");
+
+        User bella=new User();
+        ava.setUid("MS4wLjABAAAAlpnJ0bXVDV6BNgbHUYVWnnIagRqeeZyNyXB84JXTqAS5tgGjAtw0ZZkv0KSHYyhP");
+        ava.setUname("贝拉kira");
+
+        User carol=new User();
+        ava.setUid("MS4wLjABAAAAuZHC7vwqRhPzdeTb24HS7So91u9ucl9c8JjpOS2CPK-9Kg2D32Sj7-mZYvUCJCya");
+        ava.setUname("珈乐Carol");
+
+        User diana=new User();
+        ava.setUid("MS4wLjABAAAA5ZrIrbgva_HMeHuNn64goOD2XYnk4ItSypgRHlbSh1c");
+        ava.setUname("嘉然今天吃什么");
+
+        User eileen=new User();
+        ava.setUid("MS4wLjABAAAAxCiIYlaaKaMz_J1QaIAmHGgc3bTerIpgTzZjm0na8w5t2KTPrCz4bm_5M5EMPy92");
+        ava.setUname("乃琳Queen");
+
+        User asoul=new User();
+        ava.setUid("MS4wLjABAAAAflgvVQ5O1K4RfgUu3k0A2erAZSK7RsdiqPAvxcObn93x2vk4SKk1eUb6l_D4MX-n");
+        ava.setUname("A-SOUL_Official");
+
+        groupMap.put(ava,groups);
+        groupMap.put(bella,groups);
+        groupMap.put(carol,groups);
+        groupMap.put(diana,groups);
+        groupMap.put(eileen,groups);
+        groupMap.put(asoul,groups);
+
+
+
 
     }
+
 
 }
 
