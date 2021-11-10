@@ -1,14 +1,9 @@
-package com.mm.qbot.dto;
+package com.mm.qbot.dto.pushMap;
 
 import com.mm.qbot.utils.LevelDB;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.stereotype.Component;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
-import javax.annotation.Resource;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;

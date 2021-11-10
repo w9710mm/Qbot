@@ -1,16 +1,12 @@
-package com.mm.qbot.dto;
+package com.mm.qbot.dto.pushMap;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.context.annotation.Bean;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * @author meme

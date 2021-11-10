@@ -1,6 +1,5 @@
 package com.mm.qbot;
 
-import com.mm.qbot.dto.User;
 import com.mm.qbot.utils.DownLoadUtlis;
 import org.junit.Test;
 import org.springframework.http.HttpEntity;
@@ -10,12 +9,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 public class SpringBootTests{
     @Test

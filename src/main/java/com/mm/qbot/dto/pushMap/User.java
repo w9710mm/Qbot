@@ -1,4 +1,4 @@
-package com.mm.qbot.dto;
+package com.mm.qbot.dto.pushMap;
 
 import lombok.Data;
 

@@ -1,17 +1,12 @@
-package com.mm.qbot.dto;
+package com.mm.qbot.dto.pushMap;
 
-import com.mm.qbot.utils.LevelDB;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author meme
