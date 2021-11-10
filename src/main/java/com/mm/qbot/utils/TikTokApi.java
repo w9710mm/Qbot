@@ -24,9 +24,10 @@ public class TikTokApi {
 
     private final static List<String> USER_AGENT_LIST =UserAgentList.getInstance().getUaList();
     private final static Random RANDOM =new Random();
-    private static JSONObject getNewVideo(String uid){
+    public static JSONObject getNewVideo(String uid){
         String url=String.format("https://www.iesdouyin.com/web/api/v2/aweme/post/?sec_uid=%s&count=%d",uid, 21);
         HttpHeaders headers = new HttpHeaders();
+
         headers.add("user-agent",USER_AGENT_LIST.get(RANDOM.nextInt(USER_AGENT_LIST.size())));
 
         HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(null, headers);
