@@ -31,6 +31,8 @@ public class TiktokPushMap implements Serializable {
 
     private  Map<User, LinkedHashSet<Long>>  privateMap=new HashMap<>() ;
 
+
+    private Long dynamicIdOffset=0L;
     private TiktokPushMap(){}
 
 

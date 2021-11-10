@@ -30,7 +30,7 @@ public class WeiBoPushMap implements Serializable {
 
     private  Map<User, LinkedHashSet<Long>> privateMap=new HashMap<>() ;
 
-
+    private Long dynamicIdOffset=0L;
 
 
     private static class  WeiBoPushMapInstance{

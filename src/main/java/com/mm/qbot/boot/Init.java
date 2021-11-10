@@ -20,7 +20,7 @@ import java.util.*;
  */
 
 @Component
-public class InitBilibili {
+public class Init {
 
     private final LevelDB levelDB = LevelDB.getInstance();
 
@@ -30,6 +30,7 @@ public class InitBilibili {
 
     private final TiktokPushMap tiktokPushMap = TiktokPushMap.getInstance();
 
+    private final UserAgentList userAgentList=UserAgentList.getInstance();
 
     @Bean
     public void initPushMap() {
@@ -170,6 +171,18 @@ public class InitBilibili {
         JSONObject dynamic = BilibiliApi.getNewDynamic("1823651096", "268435455", "0", "webball", "web");
         Long   dynamicIdOffset=dynamic.getJSONObject("data").getLong("max_dynamic_id");
         bilibiliPushMap.setDynamicIdOffset(dynamicIdOffset);
+
+    }
+
+    @Bean
+
+    public void initUaList(){
+        List<String> uaList = userAgentList.getUaList();
+        uaList.add("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/14.0.835.163 Safari/535.1"),
+        uaList.add("Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; .NET4.0C; .NET4.0E)"),
+        uaList.add("Mozilla/5.0 (Windows NT 6.1) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/13.0.782.41 Safari/535.1 QQBrowser/6.9.11079.201"),
+        uaList.add("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36"),
+        uaList.add("Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36 QIHU 360SE"),
 
     }
 
