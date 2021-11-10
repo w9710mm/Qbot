@@ -9,6 +9,7 @@ import com.mm.qbot.utils.BilibiliApi;
 import com.mm.qbot.utils.ImageUtils;
 import com.mm.qbot.utils.StringUtils;
 import com.mm.qbot.utils.TimeUtils;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Slf4j
 public class BilibiliStrategy {
 
 
@@ -425,6 +427,7 @@ public class BilibiliStrategy {
     public  static MsgUtils parsingBID(String bid) {
         JSONObject json = BilibiliApi.getVideoByBid(bid);
         if (json.getInteger("code")!=0){
+            log.error(String.format("解析BV号：%s失败",bid));
             return  null;
         }
 

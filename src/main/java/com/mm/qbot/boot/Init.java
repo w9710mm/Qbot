@@ -5,6 +5,7 @@ import com.mm.qbot.dto.*;
 import com.mm.qbot.dto.pushMap.*;
 import com.mm.qbot.utils.BilibiliApi;
 import com.mm.qbot.utils.LevelDB;
+import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,7 @@ import java.util.*;
  */
 
 @Component
+@Slf4j
 public class Init {
 
     private final LevelDB levelDB = LevelDB.getInstance();
@@ -35,10 +37,11 @@ public class Init {
     @Bean
     public void initPushMap() {
 
-
+        log.info("载入推送表……");
         UserSubscribeMap userSubscribeMapforDB = (UserSubscribeMap) levelDB.get("userSubscribeMap");
         UserSubscribeMap userSubscribeMap=UserSubscribeMap.getInstance();
         if (userSubscribeMapforDB!=null){
+            log.debug("推送表不存在！重新生成中。");
             userSubscribeMap.setGroupSubscribeMap(userSubscribeMapforDB.getGroupSubscribeMap());
             userSubscribeMap.setPrivateSubscribeMap(userSubscribeMapforDB.getPrivateSubscribeMap());
         }
@@ -66,6 +69,7 @@ public class Init {
 
         Map<User,LinkedHashSet<Long>> tiktokPrivatePushMap = tiktokPushMap.getPrivateMap();
 
+        log.info("正在还原推送表");
         groupSubscribeMap.forEach((key, userSubscribe) -> {
             Set<User> tikids = userSubscribe.getTikid();
             Set<User> weiboids = userSubscribe.getWeiboids();
@@ -176,6 +180,7 @@ public class Init {
 
     @Bean
     public void initUaList(){
+        log.info("初始化随机UA");
         List<String> uaList = userAgentList.getUaList();
         uaList.add("Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/535.1 (KHTML, like Gecko) Chrome/14.0.835.163 Safari/535.1");
         uaList.add("Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; WOW64; Trident/5.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; InfoPath.3; .NET4.0C; .NET4.0E)");
@@ -185,6 +190,7 @@ public class Init {
     }
     @Bean
     public void initWeiboPushMap(){
+        log.info("初始化微博推送表");
         Map<User, LinkedHashSet<Long>> groupMap = weiBoPushMap.getGroupMap();
         LinkedHashSet<Long> groups=new LinkedHashSet<>();
         groups.add(760322595L);
@@ -201,6 +207,7 @@ public class Init {
 
     @Bean
     public void initTikTokPushMap(){
+        log.info("初始化抖音推送表");
         Map<User, LinkedHashSet<Long>> groupMap = tiktokPushMap.getGroupMap();
         LinkedHashSet<Long> groups=new LinkedHashSet<>();
         groups.add(760322595L);
