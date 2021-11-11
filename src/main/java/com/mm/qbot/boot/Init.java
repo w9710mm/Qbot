@@ -38,7 +38,7 @@ public class Init {
     public void initPushMap() {
 
         log.info("载入推送表……");
-        UserSubscribeMap userSubscribeMapforDB = (UserSubscribeMap) levelDB.get("userSubscribeMap");
+        UserSubscribeMap userSubscribeMapforDB = (UserSubscribeMap) levelDB.getObject("userSubscribeMap");
         UserSubscribeMap userSubscribeMap=UserSubscribeMap.getInstance();
         if (userSubscribeMapforDB!=null){
             log.debug("推送表不存在！重新生成中。");
@@ -219,20 +219,20 @@ public class Init {
         ava.setUid("MS4wLjABAAAAxOXMMwlShWjp4DONMwfEEfloRYiC1rXwQ64eydoZ0ORPFVGysZEd4zMt8AjsTbyt");
         ava.setUname("向晚大魔王");
         User bella=new User();
-        ava.setUid("MS4wLjABAAAAlpnJ0bXVDV6BNgbHUYVWnnIagRqeeZyNyXB84JXTqAS5tgGjAtw0ZZkv0KSHYyhP");
-        ava.setUname("贝拉kira");
+        bella.setUid("MS4wLjABAAAAlpnJ0bXVDV6BNgbHUYVWnnIagRqeeZyNyXB84JXTqAS5tgGjAtw0ZZkv0KSHYyhP");
+        bella.setUname("贝拉kira");
         User carol=new User();
-        ava.setUid("MS4wLjABAAAAuZHC7vwqRhPzdeTb24HS7So91u9ucl9c8JjpOS2CPK-9Kg2D32Sj7-mZYvUCJCya");
-        ava.setUname("珈乐Carol");
+        carol.setUid("MS4wLjABAAAAuZHC7vwqRhPzdeTb24HS7So91u9ucl9c8JjpOS2CPK-9Kg2D32Sj7-mZYvUCJCya");
+        carol.setUname("珈乐Carol");
         User diana=new User();
-        ava.setUid("MS4wLjABAAAA5ZrIrbgva_HMeHuNn64goOD2XYnk4ItSypgRHlbSh1c");
-        ava.setUname("嘉然今天吃什么");
+        diana.setUid("MS4wLjABAAAA5ZrIrbgva_HMeHuNn64goOD2XYnk4ItSypgRHlbSh1c");
+        diana.setUname("嘉然今天吃什么");
         User eileen=new User();
-        ava.setUid("MS4wLjABAAAAxCiIYlaaKaMz_J1QaIAmHGgc3bTerIpgTzZjm0na8w5t2KTPrCz4bm_5M5EMPy92");
-        ava.setUname("乃琳Queen");
+        eileen.setUid("MS4wLjABAAAAxCiIYlaaKaMz_J1QaIAmHGgc3bTerIpgTzZjm0na8w5t2KTPrCz4bm_5M5EMPy92");
+        eileen.setUname("乃琳Queen");
         User asoul=new User();
-        ava.setUid("MS4wLjABAAAAflgvVQ5O1K4RfgUu3k0A2erAZSK7RsdiqPAvxcObn93x2vk4SKk1eUb6l_D4MX-n");
-        ava.setUname("A-SOUL_Official");
+        asoul.setUid("MS4wLjABAAAAflgvVQ5O1K4RfgUu3k0A2erAZSK7RsdiqPAvxcObn93x2vk4SKk1eUb6l_D4MX-n");
+        asoul.setUname("A-SOUL_Official");
         groupMap.put(ava,groups);
         groupMap.put(bella,groups);
         groupMap.put(carol,groups);

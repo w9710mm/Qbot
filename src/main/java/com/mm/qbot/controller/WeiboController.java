@@ -12,7 +12,9 @@ import com.mm.qbot.service.WeiboService;
 import com.mm.qbot.strategy.BilibiliStrategy;
 import com.mm.qbot.utils.BilibiliApi;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
 import java.util.LinkedHashSet;
@@ -27,6 +29,8 @@ import java.util.Set;
  * @date 2021/11/10 8:59
  */
 @Slf4j
+@EnableScheduling
+@Controller
 public class WeiboController {
 
     private final Map<User, LinkedHashSet<Long>> groupMap=BilibiliPushMap.getInstance().getGroupMap();

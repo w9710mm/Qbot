@@ -29,7 +29,7 @@ public class TikTokService {
             msgUtils=null;
         }else {
             JSONObject aweme=awemeList.getJSONObject(0);
-            String awemeId = (String)levelDB.get("TikTok" + aweme.getString("aweme_id"));
+            String awemeId = levelDB.getString("TikTok" + aweme.getString("aweme_id"));
             if ("".equals(awemeId)||awemeId==null) {
                 msgUtils.text(String.format("【%s】更新了抖音视频\n%s\n更新时间：%s\n%s\n",
                         aweme.getJSONObject("author").getString("nickname")

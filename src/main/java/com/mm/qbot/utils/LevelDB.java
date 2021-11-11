@@ -83,7 +83,7 @@ public class LevelDB {
     }
 
     //根据key获取数据
-    public Object get(String key) {
+    public Object getObject(String key) {
         byte[] val = db.get(key.getBytes(charset));
         if (val!=null){
             try {
@@ -98,6 +98,14 @@ public class LevelDB {
         return null;
     }
 
+    //根据key获取数据
+    public String getString(String key) {
+        byte[] bytes = db.get(key.getBytes(charset));
+        if (bytes!=null){
+         return new String(bytes);
+        }
+        return null;
+    }
     //根据key删除数据
     public void delete(String key) {
         try {

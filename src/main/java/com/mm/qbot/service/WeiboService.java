@@ -63,7 +63,7 @@ public class WeiboService {
                 card=card2;
             }
 
-            String cardId = (String)levelDB.get(card.getString("itemid"));
+            String cardId = levelDB.getString(card.getString("itemid"));
             if ("".equals(cardId)||cardId==null) {
                 String text;
                 if (mblog.getString("raw_text")==null||"".equals(mblog.getString("raw_text"))){

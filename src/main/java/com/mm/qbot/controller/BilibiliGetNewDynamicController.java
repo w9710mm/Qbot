@@ -69,7 +69,7 @@ public class BilibiliGetNewDynamicController extends BotPlugin {
                     try {
                         if (privateMap.containsKey(user)){
                             for (Long qid:privateMap.get(user)) {
-                                String o =(String)levelDB.get(aLong + qid + card.getJSONObject("desc").getString("dynamic_id"));
+                                String o =levelDB.getString(aLong + qid + card.getJSONObject("desc").getString("dynamic_id"));
                                 if (o==null){
                                     continue;
                                 }
@@ -85,7 +85,7 @@ public class BilibiliGetNewDynamicController extends BotPlugin {
                         }
                         if (groupMap.containsKey(user)){
                             for (Long qid:groupMap.get(user)) {
-                                String o =(String)levelDB.get(aLong + qid + card.getJSONObject("desc").getString("dynamic_id"));
+                                String o =(String)levelDB.getString(aLong + qid + card.getJSONObject("desc").getString("dynamic_id"));
                                 if (o==null){
                                     continue;
                                 }
