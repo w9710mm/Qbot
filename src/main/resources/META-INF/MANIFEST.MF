@@ -1,0 +1,35 @@
+Manifest-Version: 1.0
+Main-Class: com.mm.qbot.QbotApplication
+Class-Path: mybatis-3.5.7.jar commons-codec-1.15.jar error_prone_annotat
+ ions-2.7.1.jar spring-expression-5.3.10.jar thumbnailator-0.4.8.jar spr
+ ing-web-5.3.10.jar netty-resolver-4.1.68.Final.jar netty-handler-4.1.68
+ .Final.jar spring-boot-starter-logging-2.5.5.jar lettuce-core-6.1.5.REL
+ EASE.jar reactor-core-3.4.10.jar spring-data-redis-2.5.5.jar fastjson-1
+ .2.78.jar logback-classic-1.2.6.jar guava-31.0.1-jre.jar HikariCP-4.0.3
+ .jar spring-boot-autoconfigure-2.5.5.jar spring-boot-starter-json-2.5.5
+ .jar spring-boot-starter-jdbc-2.5.5.jar jackson-datatype-jdk8-2.12.5.ja
+ r jsr305-3.0.2.jar spring-webmvc-5.3.10.jar spring-boot-starter-websock
+ et-2.5.5.jar spring-messaging-5.3.10.jar jackson-annotations-2.12.5.jar
+  mchange-commons-java-0.2.15.jar jackson-module-parameter-names-2.12.5.
+ jar failureaccess-1.0.1.jar jul-to-slf4j-1.7.32.jar spring-context-supp
+ ort-5.3.10.jar httpclient-4.5.2.jar netty-transport-4.1.68.Final.jar sp
+ ring-core-5.3.10.jar leveldb-0.10.jar spring-boot-2.5.5.jar annotations
+ -22.0.0.jar jackson-datatype-jsr310-2.12.5.jar jcommander-1.48.jar log4
+ j-api-2.14.1.jar spring-data-commons-2.5.5.jar tomcat-embed-websocket-9
+ .0.53.jar commons-lang3-3.12.0.jar j2objc-annotations-1.3.jar mybatis-s
+ pring-boot-starter-2.2.0.jar tomcat-embed-core-9.0.53.jar mybatis-sprin
+ g-2.0.6.jar leveldb-api-0.10.jar spring-boot-starter-tomcat-2.5.5.jar s
+ lf4j-api-1.7.32.jar netty-all-4.1.68.Final.jar jakarta.annotation-api-1
+ .3.5.jar tomcat-embed-el-9.0.53.jar spring-boot-starter-data-redis-2.5.
+ 5.jar listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar ne
+ tty-common-4.1.68.Final.jar spring-websocket-5.3.10.jar spring-data-key
+ value-2.5.5.jar spring-tx-5.3.10.jar lombok-1.18.20.jar checker-qual-3.
+ 12.0.jar javase-3.3.0.jar spring-jcl-5.3.10.jar spring-beans-5.3.10.jar
+  spring-aop-5.3.10.jar spring-boot-starter-web-2.5.5.jar snakeyaml-1.28
+ .jar jackson-core-2.12.5.jar core-3.3.0.jar spring-context-5.3.10.jar j
+ ackson-databind-2.12.5.jar reactive-streams-1.0.3.jar mybatis-spring-bo
+ ot-autoconfigure-2.2.0.jar logback-core-1.2.6.jar spring-boot-starter-2
+ .5.5.jar netty-codec-4.1.68.Final.jar httpcore-4.4.14.jar log4j-to-slf4
+ j-2.14.1.jar shiro-1.1.1.jar spring-oxm-5.3.10.jar jai-imageio-core-1.3
+ .1.jar netty-buffer-4.1.68.Final.jar spring-jdbc-5.3.10.jar
+

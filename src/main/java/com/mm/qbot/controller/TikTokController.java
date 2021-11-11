@@ -8,6 +8,8 @@ import com.mm.qbot.dto.pushMap.User;
 import com.mm.qbot.service.TikTokService;
 import com.mm.qbot.utils.LevelDB;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
@@ -27,6 +29,7 @@ import java.util.Set;
 @Slf4j
 @EnableScheduling
 @Controller
+@EnableAsync
 public class TikTokController {
 
 
@@ -41,9 +44,9 @@ public class TikTokController {
 
 
     //或直接指定时间间隔，例如：5秒
-
-    @Scheduled(initialDelay=1000, fixedRate=1000)
-    public void configureTasks() {
+@Async
+    @Scheduled(initialDelay=1000, fixedDelay=1000)
+    public void tikTokPush() {
         Map<Long, Bot> robots = botContainer.robots;
 
 

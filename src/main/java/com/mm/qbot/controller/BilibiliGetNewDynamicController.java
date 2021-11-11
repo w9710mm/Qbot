@@ -15,6 +15,8 @@ import com.mm.qbot.utils.BilibiliApi;
 
 import com.mm.qbot.utils.LevelDB;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
@@ -26,6 +28,7 @@ import java.util.Map;
 @EnableScheduling
 @Controller
 @Slf4j
+@EnableAsync
 public class BilibiliGetNewDynamicController extends BotPlugin {
 
 
@@ -45,8 +48,9 @@ public class BilibiliGetNewDynamicController extends BotPlugin {
 
     //或直接指定时间间隔，例如：5秒
 
-    @Scheduled(initialDelay=10000, fixedRate=60000)
-    public void configureTasks() {
+    @Async
+    @Scheduled(initialDelay=1000, fixedDelay=6000)
+    public void bilibiliPush() {
          Map<Long, Bot> robots = botContainer.robots;
         JSONObject newDynamic = BilibiliApi.getNewDynamic("1823651096", "268435455", String.valueOf(bilibiliPushMap.getDynamicIdOffset()), "weball", "web");
         bilibiliPushMap.setDynamicIdOffset(newDynamic.getJSONObject("data").getLong("max_dynamic_id"));
@@ -70,7 +74,7 @@ public class BilibiliGetNewDynamicController extends BotPlugin {
                         if (privateMap.containsKey(user)){
                             for (Long qid:privateMap.get(user)) {
                                 String o =levelDB.getString(aLong + qid + card.getJSONObject("desc").getString("dynamic_id"));
-                                if (o==null){
+                                if (o!=null){
                                     continue;
                                 }
                                 MsgUtils msgUtils = BilibiliStrategy.dynamicStrategy(card);
@@ -85,8 +89,8 @@ public class BilibiliGetNewDynamicController extends BotPlugin {
                         }
                         if (groupMap.containsKey(user)){
                             for (Long qid:groupMap.get(user)) {
-                                String o =(String)levelDB.getString(aLong + qid + card.getJSONObject("desc").getString("dynamic_id"));
-                                if (o==null){
+                                String o = levelDB.getString(aLong + qid + card.getJSONObject("desc").getString("dynamic_id"));
+                                if (o!=null){
                                     continue;
                                 }
                                 MsgUtils msgUtils = BilibiliStrategy.dynamicStrategy(card);

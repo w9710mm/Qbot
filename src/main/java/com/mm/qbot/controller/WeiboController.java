@@ -12,6 +12,8 @@ import com.mm.qbot.service.WeiboService;
 import com.mm.qbot.strategy.BilibiliStrategy;
 import com.mm.qbot.utils.BilibiliApi;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
@@ -31,6 +33,7 @@ import java.util.Set;
 @Slf4j
 @EnableScheduling
 @Controller
+@EnableAsync
 public class WeiboController {
 
     private final Map<User, LinkedHashSet<Long>> groupMap=BilibiliPushMap.getInstance().getGroupMap();
@@ -42,9 +45,11 @@ public class WeiboController {
 
 
     //或直接指定时间间隔，例如：5秒
-    @Scheduled(initialDelay=10000, fixedRate=1000 * 30*5)
-    public void configureTasks() {
+    @Async
+    @Scheduled(initialDelay=1000, fixedDelay=1000)
+    public void weiboPush() {
         Map<Long, Bot> robots = botContainer.robots;
+
 
 
         for (Long aLong : robots.keySet()) {
