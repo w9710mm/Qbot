@@ -17,7 +17,7 @@ public class AsoulPaperService extends ServiceImpl<WeeklyDataMapper, WeeklyData>
 
     public void selectUserPage() {
 
-        WeeklyData weeklyData = baseMapper.selectById(1);
-
+        WeeklyData weeklyData = baseMapper.selectById(233);
+        System.out.println(weeklyData);
     }
 }

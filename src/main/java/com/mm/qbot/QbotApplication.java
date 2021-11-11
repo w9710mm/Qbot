@@ -14,10 +14,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 /**
  * @author meme
  */
-@EnableAutoConfiguration(exclude = DataSourceAutoConfiguration.class)
 @SpringBootApplication
 @Configuration
-@MapperScan("com.mm.qbot.dao.mapper")
 @EnableAsync(proxyTargetClass = true)
 public class QbotApplication {
 
