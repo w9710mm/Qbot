@@ -13,6 +13,7 @@ import com.mm.qbot.dto.pushMap.User;
 import com.mm.qbot.strategy.BilibiliStrategy;
 import com.mm.qbot.utils.BilibiliApi;
 
+import com.mm.qbot.utils.LevelDB;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -37,12 +38,14 @@ public class BilibiliGetNewDynamicController extends BotPlugin {
          @Resource
         private   BotContainer botContainer;
 
+         private final static LevelDB levelDB=LevelDB.getInstance();
+
 
 
 
     //或直接指定时间间隔，例如：5秒
 
-    @Scheduled(initialDelay=10000, fixedRate=5000)
+    @Scheduled(initialDelay=10000, fixedRate=60000)
     public void configureTasks() {
          Map<Long, Bot> robots = botContainer.robots;
         JSONObject newDynamic = BilibiliApi.getNewDynamic("1823651096", "268435455", String.valueOf(bilibiliPushMap.getDynamicIdOffset()), "weball", "web");
@@ -55,6 +58,7 @@ public class BilibiliGetNewDynamicController extends BotPlugin {
 
 
         JSONArray cards=newDynamic.getJSONObject("data").getJSONArray("cards");
+
             if (cards!=null&&cards.size()!=0) {
                 for (Object object : cards) {
                     JSONObject card = (JSONObject) object;
@@ -65,19 +69,35 @@ public class BilibiliGetNewDynamicController extends BotPlugin {
                     try {
                         if (privateMap.containsKey(user)){
                             for (Long qid:privateMap.get(user)) {
+                                String o =(String)levelDB.get(aLong + qid + card.getJSONObject("desc").getString("dynamic_id"));
+                                if (o==null){
+                                    continue;
+                                }
                                 MsgUtils msgUtils = BilibiliStrategy.dynamicStrategy(card);
                                 if (msgUtils!=null) {
+                                    log.info(String.format("推送给%s的%s动态",qid,card.getJSONObject("desc").getString("dynamic_id")));
                                     bot.sendPrivateMsg(qid, msgUtils.build(), false);
+                                    continue;
                                 }
+                                log.debug(String.format("推送给%s的%s动态失败",qid,card.getJSONObject("desc").getString("dynamic_id")));
+                                levelDB.put(aLong + qid + card.getJSONObject("desc").getString("dynamic_id"),"1");
                             }
                         }
                         if (groupMap.containsKey(user)){
                             for (Long qid:groupMap.get(user)) {
+                                String o =(String)levelDB.get(aLong + qid + card.getJSONObject("desc").getString("dynamic_id"));
+                                if (o==null){
+                                    continue;
+                                }
                                 MsgUtils msgUtils = BilibiliStrategy.dynamicStrategy(card);
                                 if (msgUtils!=null) {
-
+                                    log.info(String.format("推送给群%s的%s动态",qid,card.getJSONObject("desc").getString("dynamic_id")));
                                     bot.sendGroupMsg(qid, msgUtils.build(), false);
+                                    continue;
                                 }
+                                log.debug(String.format("推送给%s的群%s动态失败",qid,card.getJSONObject("desc").getString("dynamic_id")));
+                                levelDB.put(aLong + qid + card.getJSONObject("desc").getString("dynamic_id"),"1");
+
                             }
                         }
 

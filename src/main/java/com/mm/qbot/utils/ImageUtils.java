@@ -40,21 +40,19 @@ public class ImageUtils {
     public static BufferedImage resize(BufferedImage bi, int height, int width, boolean bb){
         double ratio;
         //计算比例
-        if ((bi.getHeight() > height) || (bi.getWidth() > width)) {
-            if (bi.getHeight() > bi.getWidth()) {
-                ratio = (double)height/ bi.getHeight();
-            } else {
-                ratio = (double)width/ bi.getWidth();
-            }
-            AffineTransformOp op = new AffineTransformOp(AffineTransform.getScaleInstance(ratio, ratio), null);
+        double xRatio=(double)width/ bi.getWidth();
+        double yRatio= (double)height/ bi.getHeight();
+        ratio = Math.min(yRatio, xRatio);
+
+            AffineTransformOp op = new AffineTransformOp(AffineTransform.getScaleInstance(ratio, ratio), AffineTransformOp.TYPE_BILINEAR);
             bi = op.filter(bi, null);
-        }
+
         if (bb) {
             BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
             Graphics2D g = image.createGraphics();
             g.setColor(Color.white);
             g.fillRect(0, 0, width, height);
-            g.drawImage(bi, (width - bi.getWidth(null)) / 2, (height - bi.getHeight(null)) / 2, bi.getWidth(null), bi.getHeight(null), Color.white, null);
+            g.drawImage(bi, (width - bi.getWidth(null)) / 2, (height - bi.getHeight(null)) / 2, bi.getWidth(), bi.getHeight(), Color.white, null);
 
             g.dispose();
             bi = image;
@@ -67,13 +65,13 @@ public class ImageUtils {
 
             String url= UUID.randomUUID().toString().replace("-","");
             double v = (double) urls.size() / 3;
-            int height= (int) (1000*Math.ceil(v));
+            int height= (int) (500*Math.ceil(v));
 
             int width;
             if (urls.size()>=3){
-                width=3000;
+                width=1500;
             }else {
-                width=2000;
+                width=1000;
             }
             BufferedImage image  =new BufferedImage(width, height, BufferedImage.TYPE_4BYTE_ABGR);
             Graphics2D graphics = image.createGraphics();
@@ -87,8 +85,8 @@ public class ImageUtils {
                 }
                 URL pic=new URL(netUrl);
                 BufferedImage bufferedImage= ImageIO.read(pic);
-                resize(bufferedImage,1000,1000,true);
-                graphics.drawImage(bufferedImage,(ge%3)*1000,line*1000,bufferedImage.getWidth(),bufferedImage.getHeight(),null);
+                BufferedImage resize = resize(bufferedImage, 500, 500, true);
+                graphics.drawImage(resize,(ge%3)*500,line*500,resize.getWidth(),resize.getHeight(),null);
                 ge++;
 
             }

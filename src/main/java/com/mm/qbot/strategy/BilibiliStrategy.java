@@ -65,6 +65,11 @@ public class BilibiliStrategy {
 
                         break;
 
+                    case (2048):
+                        msgUtils = unFilmReviews(json);
+
+                        break;
+
                     //直播信息
                     case (4308):
                         msgUtils = unpackLive(json);
@@ -423,6 +428,21 @@ public class BilibiliStrategy {
         return msgUtils;
     }
 
+
+    private static MsgUtils unFilmReviews(JSONObject json){
+        MsgUtils msgUtils=MsgUtils.builder();
+        JSONObject card = JSONObject.parseObject(json.getString("card"));
+        JSONObject desc = json.getJSONObject("desc");
+        msgUtils.text(String.format("【%s（%s）】的动态\n%s\n%s评价了【%s】：%s\n",card.getJSONObject("user").getString("uname"),
+                card.getJSONObject("user").getString("uid"),
+                String.format("https://t.bilibili.com/%s", desc.getString("dynamic_id")),
+                        card.getJSONObject("user").getString("uname"),
+                        card.getJSONObject("sketch").getString("title"),
+                        card.getJSONObject("vest").getString("content")));
+        msgUtils.img(card.getJSONObject("sketch").getString("cover_url"));
+        msgUtils.text(card.getJSONObject("sketch").getString("target_url"));
+        return msgUtils;
+    }
 
     public  static MsgUtils parsingBID(String bid) {
         JSONObject json = BilibiliApi.getVideoByBid(bid);

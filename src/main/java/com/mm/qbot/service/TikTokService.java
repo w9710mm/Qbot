@@ -25,7 +25,7 @@ public class TikTokService {
         JSONObject jsonObject = TikTokApi.getNewVideo(uid);
 
         JSONArray awemeList = jsonObject.getJSONArray("aweme_list");
-        if (awemeList!=null||awemeList.size()==0){
+        if (awemeList==null||awemeList.size()==0){
             msgUtils=null;
         }else {
             JSONObject aweme=awemeList.getJSONObject(0);

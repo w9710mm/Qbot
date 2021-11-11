@@ -32,18 +32,12 @@ public class UserSubscribeMap implements Serializable {
 
 
     private static class UserSubscribeMapInstance{
-        private static final LevelDB levelDB=LevelDB.getInstance();
-        private static UserSubscribeMap Instance;
-        static{
-            Instance= (UserSubscribeMap) levelDB.get("UserSubscribeMap");;
-            if (Instance==null){
-                Instance=new UserSubscribeMap();
-                levelDB.put("UserSubscribeMap",Instance);
-            }
+        private static UserSubscribeMap Instance=new UserSubscribeMap();
+
 
         }
 
-    }
+
 
 
     public static  UserSubscribeMap getInstance(){
