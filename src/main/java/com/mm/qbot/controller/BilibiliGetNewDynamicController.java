@@ -8,8 +8,8 @@ import com.mikuac.shiro.core.Bot;
 import com.mikuac.shiro.core.BotContainer;
 import com.mikuac.shiro.core.BotPlugin;
 import com.mm.qbot.Exception.BilibiliException;
-import com.mm.qbot.dto.pushMap.BilibiliPushMap;
-import com.mm.qbot.dto.pushMap.User;
+import com.mm.qbot.bean.pushMap.BilibiliPushMap;
+import com.mm.qbot.bean.pushMap.User;
 import com.mm.qbot.strategy.BilibiliStrategy;
 import com.mm.qbot.utils.BilibiliApi;
 

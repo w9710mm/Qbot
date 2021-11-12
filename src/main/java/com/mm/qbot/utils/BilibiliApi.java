@@ -1,9 +1,7 @@
 package com.mm.qbot.utils;
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
 
-import com.mikuac.shiro.common.utils.RegexUtils;
 import com.mm.qbot.Exception.BilibiliException;
 import com.mm.qbot.enumeration.NeedTopEnum;
 import com.mm.qbot.enumeration.RelationActionEnum;
@@ -13,17 +11,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
-import org.springframework.util.PatternMatchUtils;
 import org.springframework.web.client.RestTemplate;
 
-import javax.net.ssl.HostnameVerifier;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -249,6 +238,24 @@ public class BilibiliApi {
         paramMaps.put("hostUid", hostUid);
         paramMaps.put("offsetDynamicId", offsetDynamicId);
         paramMaps.put("needTopEnum", needTopEnum.getId());
+
+        ResponseEntity<String> exchange = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class, paramMaps);
+
+        return JSONObject.parseObject(exchange.getBody());
+
+    }
+
+    public static JSONObject getSpaceVideo(String hostUid) {
+        String url = "https://api.bilibili.com/x/space/arc/search?mid={hostUid}&ps=30&tid=0&pn=1&keyword=&order=pubdate&jsonp=jsonp";
+
+        HttpHeaders headers = new HttpHeaders();
+
+        headers.addAll(comHeaders);
+        HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(null, headers);
+
+        Map<String, Object> paramMaps = new HashMap<>(1);
+        paramMaps.put("hostUid", hostUid);
+
 
         ResponseEntity<String> exchange = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class, paramMaps);
 

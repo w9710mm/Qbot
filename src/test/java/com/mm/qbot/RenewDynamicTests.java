@@ -4,9 +4,16 @@ package com.mm.qbot;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.mm.qbot.Exception.BilibiliException;
+import com.mm.qbot.bean.pushMap.User;
+import com.mm.qbot.enumeration.NeedTopEnum;
+import com.mm.qbot.service.AsoulPaperService;
+import com.mm.qbot.service.BilibiliService;
 import com.mm.qbot.strategy.BilibiliStrategy;
 import com.mm.qbot.utils.BilibiliApi;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class RenewDynamicTests {
 
@@ -33,5 +40,28 @@ public class RenewDynamicTests {
     }
 
 
+    @Test
+    public void RenewVideo() {
 
+
+//        if (jsonObject.getJSONObject("data").getInteger("update_num")>=1){
+        JSONObject newDynamic = BilibiliApi.getSpaceVideo("672328094");
+        System.out.println(newDynamic);
+//        }
+    }
+
+
+    @Test
+    public void RenewDy() {
+
+        User u=new User();
+        u.setUid("672328094");
+        u.setUname("嘉然今天吃什么");
+        List<User> userList=new ArrayList<>();
+        userList.add(u);
+        AsoulPaperService bilibiliService=new AsoulPaperService();
+        bilibiliService.weeklyData(userList);
+
+//        }
+    }
 }

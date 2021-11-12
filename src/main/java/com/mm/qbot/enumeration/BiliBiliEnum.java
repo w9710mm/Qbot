@@ -34,10 +34,12 @@ public enum BiliBiliEnum  implements BaseEnum{
             this.value = value;
         }
 
+        @Override
         public Integer getId() {
             return id;
         }
 
+        @Override
         public String getValue() {
             return value;
         }

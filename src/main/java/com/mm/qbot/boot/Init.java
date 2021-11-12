@@ -1,15 +1,16 @@
 package com.mm.qbot.boot;
 
 import com.alibaba.fastjson.JSONObject;
-import com.mm.qbot.dto.*;
-import com.mm.qbot.dto.pushMap.*;
+import com.mm.qbot.bean.*;
+import com.mm.qbot.bean.pushMap.*;
+import com.mm.qbot.enumeration.PathEnum;
 import com.mm.qbot.utils.BilibiliApi;
 import com.mm.qbot.utils.LevelDB;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.util.*;
 
 /**
@@ -243,6 +244,44 @@ public class Init {
 
     }
 
+    @Bean
+    public  void initFilePath(){
+
+        File dynamicImageFile=new File(PathEnum.getType(PathEnum.DYNAMIC_IMAGE_FILE.getId()));
+        File asoulPaPerImageFile=new File(PathEnum.getType(PathEnum.ASOUL_PAPER_IMAGE_FILE.getId()));
+
+         File asoulPaPerTextFile=new File(PathEnum.getType(PathEnum.ASOUL_PAPER_TEXT_FILE.getId())) ;
+        File weiboImageFile=new File(PathEnum.getType(PathEnum.WEIBO_IMAGE_FILE.getId())) ;
+         if (!asoulPaPerImageFile.exists()){
+             log.debug("周报图片文件夹不存在，重新创建");
+             if (!asoulPaPerImageFile.mkdirs()){
+                 log.error("周报图片文件夹创建失败");
+             }
+         }
+
+        if (!dynamicImageFile.exists()){
+            log.debug("动态图片文件夹不存在，重新创建");
+            if (!dynamicImageFile.mkdirs()){
+                log.error("动态文件夹创建失败");
+            }
+        }
+
+        if (!asoulPaPerTextFile.exists()){
+            log.debug("周报文本文件夹不存在，重新创建");
+            if (!asoulPaPerTextFile.mkdirs()){
+                log.error("周报文本文件夹创建失败");
+            }
+        }
+
+        if (!weiboImageFile.exists()){
+            log.debug("微博图片文件夹不存在，重新创建");
+            if (!weiboImageFile.mkdirs()){
+                log.error("微博图片文件夹创建失败");
+            }
+        }
+
+
+    }
 
 }
 

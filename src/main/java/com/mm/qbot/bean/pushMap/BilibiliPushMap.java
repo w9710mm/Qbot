@@ -1,4 +1,4 @@
-package com.mm.qbot.dto.pushMap;
+package com.mm.qbot.bean.pushMap;
 
 import lombok.Data;
 

@@ -464,8 +464,8 @@ public class BilibiliStrategy {
         msg.text(String.format("转发：%d  ",stat.getInteger("reply")));
         msg.text(String.format("播放：%d  ",stat.getInteger("view")));
         msg.text(String.format("集数：%d  ",data.getJSONArray("pages").size()));
-        msg.text(String.format("发布时间：%s\n", TimeUtils.stampToDate(data.getLong("ctime"))));
-        msg.text(String.format("时长：%s\n", TimeUtils.changeTimeFormat(data.getInteger("duration")*1000)));
+        msg.text(String.format("发布时间：%s\n", TimeUtils.stampToDate(data.getLong("ctime")*1000)));
+        msg.text(String.format("时长：%s\n", TimeUtils.changeTimeFormat(data.getInteger("duration"))));
         msg.text(String.format("UP主：%s(%d)\n",data.getJSONObject("owner").getString("name"),
                 data.getJSONObject("owner").getInteger("mid")));
         msg.text(String.format("url：https://www.bilibili.com/video/%s",data.getString("bvid")));

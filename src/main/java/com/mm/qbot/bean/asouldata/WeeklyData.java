@@ -1,4 +1,4 @@
-package com.mm.qbot.dto.asouldata;
+package com.mm.qbot.bean.asouldata;
 
 import java.io.Serializable;
 import java.util.Date;

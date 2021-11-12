@@ -1,7 +1,7 @@
 package com.mm.qbot.utils;
 
 import com.alibaba.fastjson.JSONObject;
-import com.mm.qbot.dto.UserAgentList;
+import com.mm.qbot.bean.UserAgentList;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;

@@ -1,6 +1,5 @@
-package com.mm.qbot.dto.pushMap;
+package com.mm.qbot.bean.pushMap;
 
-import com.mm.qbot.utils.LevelDB;
 import lombok.Data;
 import org.springframework.stereotype.Component;
 
