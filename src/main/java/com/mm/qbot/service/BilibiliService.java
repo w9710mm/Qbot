@@ -117,6 +117,8 @@ public class BilibiliService {
         Matcher matcher = uidPattern.matcher(text);
 
         User uid=new User();
+        try {
+
 
         if (matcher.find()){
             JSONObject userInfo = BilibiliApi.getUserInfo(Long.valueOf(text));
@@ -133,6 +135,9 @@ public class BilibiliService {
                 uid.setUid(data.getString("mid"));
                 uid.setUname(data.getString("uname"));
             }
+        }
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return  uid;
     }
