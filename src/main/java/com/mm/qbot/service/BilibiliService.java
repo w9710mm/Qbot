@@ -118,14 +118,14 @@ public class BilibiliService {
 
         User uid=new User();
 
-        if (matcher.lookingAt()){
+        if (matcher.find()){
             JSONObject userInfo = BilibiliApi.getUserInfo(Long.valueOf(text));
             if (userInfo.getInteger("code")!=404){
                 uid.setUid(userInfo.getJSONObject("data").getString("mid"));
                 uid.setUname(userInfo.getJSONObject("data").getString("name"));
             }
         }
-        if (!matcher.lookingAt()){
+        if (!matcher.find()){
             JSONObject result=BilibiliApi.serachUser(text,"bili_user");
             JSONArray datas = result.getJSONObject("data").getJSONArray("result");
             if (datas!=null){
