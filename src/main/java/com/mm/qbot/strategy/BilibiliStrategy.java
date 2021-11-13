@@ -190,16 +190,18 @@ public class BilibiliStrategy {
             //文章动态
             case (64):
                 pack.put("title", origin.getString("title"));
-                pack.put("org_content", StringUtils.omitString(origin.getString("summary"),92));
-                msgUtils.text(String.format("%s：%s\n",pack.get("org_username"),pack.get("org_content")));
+                msgUtils.text(String.format("%s：\n",pack.get("org_username")));
                 msgUtils.text(String.format("标题：%s\n",pack.get("title")));
                 pack.put("org_time", TimeUtils.stampToDate(origin.getLong("publish_time") * 1000));
                 JSONArray imgs=origin.getJSONArray("image_urls");
-                if ("".equals(origin.getString("banner_url"))){
+                if (!"".equals(origin.getString("banner_url"))){
                     msgUtils.img(origin.getString("banner_url"));
                 }else {
                     msgUtils.img(String.valueOf(origin.getJSONArray("origin_image_urls").get(0)));
                 }
+                pack.put("org_content", StringUtils.omitString(origin.getString("summary"),92));
+                msgUtils.text(String.format("\n%s\n",pack.get("org_content")));
+
 //                if (!"".equals(origin.getString("banner_url"))){
 //                    msgUtils.img(origin.getString("banner_url"));
 //                }
@@ -377,15 +379,15 @@ public class BilibiliStrategy {
         msgUtils.text(String.format("【%s",pack.get("username")));
         msgUtils.text(String.format("(%s)】的动态\n",pack.get("uid")));
         msgUtils.text((String) pack.get("url"));
-        msgUtils.text(String.format("%s：%s\n",pack.get("username"),pack.get("content")));
+        msgUtils.text(String.format("\n%s：\n",pack.get("username")));
         msgUtils.text(String.format("标题：%s\n",pack.get("title")));
 
-        if ("".equals(card.getString("banner_url"))){
+        if (!"".equals(card.getString("banner_url"))){
             msgUtils.img(card.getString("banner_url"));
         }else {
             msgUtils.img(String.valueOf(card.getJSONArray("image_urls").get(0)));
         }
-
+        msgUtils.text(String.format("%s\n",pack.get("content")));
         msgUtils.text(String.format("https://www.bilibili.com/read/cv%s\n",card.getString("id")));
         msgUtils.text(String.format("发布时间:%s\n",pack.get("time")));
 

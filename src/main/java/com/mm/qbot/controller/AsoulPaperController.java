@@ -3,14 +3,22 @@ package com.mm.qbot.controller;
 
 import com.mikuac.shiro.annotation.GroupMessageHandler;
 import com.mikuac.shiro.annotation.PrivateMessageHandler;
+import com.mikuac.shiro.core.Bot;
 import com.mikuac.shiro.core.BotPlugin;
+import com.mikuac.shiro.dto.action.common.ActionData;
+import com.mikuac.shiro.dto.action.response.GroupFilesResp;
+import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
 import com.mm.qbot.bean.pushMap.User;
 import com.mm.qbot.service.AsoulPaperService;
+import com.mm.qbot.utils.TimeUtils;
 import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
+import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 96234
@@ -41,17 +49,58 @@ public class AsoulPaperController extends BotPlugin {
         User asoul=new User();
         asoul.setUid("703007996");
         asoul.setUname("A-SOUL_Official");
+        userList.add(ava);
+        userList.add(bella);
+        userList.add(carol);
+        userList.add(diana);
+        userList.add(eileen);
+        userList.add(asoul);
     }
 
-    @PrivateMessageHandler
-    public void asoulDataWeekly(){
+    @GroupMessageHandler(groupWhiteList = {760322595,959969138})
+    public void asoulDataWeekly(GroupMessageEvent event, Bot bot){
+        ActionData<GroupFilesResp> groupRootFiles = bot.getGroupRootFiles(event.getGroupId());
+        List<GroupFilesResp.Folders> folders = groupRootFiles.getData().getFolders();
 
-    asoulPaperService.weeklyData(userList);
+        String folderid = null;
+        for (GroupFilesResp.Folders f :folders) {
+            if (("每周数据文本").equals(f.getFolderName())){
+                folderid=f.getFolderId();
+                break;
+            }
+        }
+        if (folderid==null){
+            return;
+        }
+        String url = asoulPaperService.weeklyData(userList);
+        int i = url.lastIndexOf("\\");
+       String s=url.substring(i+1,url.length());
+
+       bot.uploadGroupFile(event.getGroupId(),url,s,folderid);
 
     }
 
-    @GroupMessageHandler
-    public void asoulImageWeekly(){
+    @GroupMessageHandler(groupWhiteList = {760322595,959969138})
+    public void asoulImageWeekly(GroupMessageEvent event, Bot bot){
+        ActionData<GroupFilesResp> groupRootFiles = bot.getGroupRootFiles(event.getGroupId());
+        List<GroupFilesResp.Folders> folders = groupRootFiles.getData().getFolders();
 
+        String folderid = null;
+        for (GroupFilesResp.Folders f :folders) {
+           if (("每周数据图").equals(f.getFolderName())){
+               folderid=f.getFolderId();
+               break;
+           }
+        }
+        if (folderid==null){
+            return;
+        }
+        for (User user:userList) {
+            String url = asoulPaperService.weeklyImage(user);
+            int i = url.lastIndexOf("\\");
+
+            String s=url.substring(i+1,url.length());
+            bot.uploadGroupFile(event.getGroupId(),url,s,folderid);
+        }
     }
 }

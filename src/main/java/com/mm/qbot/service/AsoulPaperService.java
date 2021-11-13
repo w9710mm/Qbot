@@ -13,15 +13,19 @@ import com.mm.qbot.enumeration.BiliBiliEnum;
 import com.mm.qbot.enumeration.NeedTopEnum;
 import com.mm.qbot.enumeration.PathEnum;
 import com.mm.qbot.utils.BilibiliApi;
+import com.mm.qbot.utils.ChromeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
+import java.util.*;
 import java.util.List;
 
 import static com.mm.qbot.utils.TimeUtils.getLastWeekMondayEnd;
@@ -40,11 +44,28 @@ public class AsoulPaperService extends ServiceImpl<WeeklyDataMapper, WeeklyData>
     @Autowired
     private WeeklyDataMapper weeklyDataMapper;
 
+    private final SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy_MM_dd HH_mm_ss");
+
+    private final SimpleDateFormat simpleDateFormat2=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+    private static HashMap<String, Color> colorMap;
+
+    static {
+        colorMap=new HashMap<>();
+        colorMap.put("672346917",new Color(227,129,161));
+        colorMap.put("672353429",new Color(43,31,58));
+        colorMap.put("351609538",new Color(202,173,237));
+        colorMap.put("672328094",new Color(247,122,129));
+        colorMap.put("672342685",new Color(247,209,144));
+        colorMap.put("703007996",new Color(251,150,110));
+
+    }
+
+
     public String weeklyData(List<User> userList) {
 
         Date lastWeekMondayStart = getLastWeekMondayStart();
         Date lastWeekMondayEnd = getLastWeekMondayEnd();
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy_MM_dd HH_mm_ss");
 
         String url=String.format("%s\\%s.txt", PathEnum.getType(PathEnum.ASOUL_PAPER_TEXT_FILE.getId()),simpleDateFormat.format(lastWeekMondayStart),simpleDateFormat.format(lastWeekMondayEnd));
         try {
@@ -64,13 +85,15 @@ public class AsoulPaperService extends ServiceImpl<WeeklyDataMapper, WeeklyData>
 
                 data.append(user.getUname()).append(":\n");
 
-                wrapper.eq(WeeklyData::getDVideoNum,user.getUid());
-                wrapper.ge(WeeklyData::getCreateTime,lastWeekMondayStart);
+                wrapper.eq(WeeklyData::getUid,user.getUid());
+
+                wrapper.ge(WeeklyData::getCreateTime,simpleDateFormat2.format(lastWeekMondayStart));
+
                 wrapper.last("limit 1");
                 WeeklyData weeklyDataStart = weeklyDataMapper.selectOne(wrapper);
                 wrapper=new LambdaQueryWrapper<>();
-                wrapper.eq(WeeklyData::getDVideoNum,user.getUid());
-                wrapper.ge(WeeklyData::getCreateTime,lastWeekMondayStart);
+                wrapper.eq(WeeklyData::getUid,user.getUid());
+                wrapper.ge(WeeklyData::getCreateTime,simpleDateFormat2.format(lastWeekMondayEnd));
                 wrapper.last("limit 1");
                 WeeklyData weeklyDataEnd = weeklyDataMapper.selectOne(wrapper);
                 if (weeklyDataEnd==null||weeklyDataStart==null){
@@ -104,7 +127,7 @@ public class AsoulPaperService extends ServiceImpl<WeeklyDataMapper, WeeklyData>
                 Long next=spaceDynamic.getJSONObject("data").getLong("next_offset");
                 while (true){
                     JSONObject lastCard =(JSONObject) cards.get(cards.size() - 1);
-                    if (lastCard.getJSONObject("desc").getLong("timestamp")<lastWeekMondayStart.getTime()){
+                    if (lastCard.getJSONObject("desc").getLong("timestamp")<lastWeekMondayStart.getTime()/1000){
                         break;
                     }
                     JSONObject sd = BilibiliApi.getSpaceDynamic(Long.valueOf(user.getUid()),next, NeedTopEnum.NOT_NEED);
@@ -118,9 +141,9 @@ public class AsoulPaperService extends ServiceImpl<WeeklyDataMapper, WeeklyData>
                             .append(weeklyDynamic.get(0).getContent()).append(")\n")
                             .append(weeklyDynamic.get(0).getUrl()).append("\n");
                 }else {
-                    data.append("本周共发布（0）条视频\n");
+                    data.append("本周共发布（0）条评论\n");
                 }
-                data.append("_______________________________________");
+                data.append("_______________________________________\n");
 
 //                data.append()
 
@@ -135,15 +158,98 @@ public class AsoulPaperService extends ServiceImpl<WeeklyDataMapper, WeeklyData>
     }
 
 
+    public String weeklyImage(User user){
+
+        Date lastWeekMondayStart = getLastWeekMondayStart();
+        Date lastWeekMondayEnd = getLastWeekMondayEnd();
+        LambdaQueryWrapper<WeeklyData> wrapper = new LambdaQueryWrapper<>();
+        wrapper.eq(WeeklyData::getUid,user.getUid());
+        wrapper.ge(WeeklyData::getCreateTime,simpleDateFormat2.format(lastWeekMondayStart));
+        wrapper.last("limit 1");
+        WeeklyData weeklyDataStart = weeklyDataMapper.selectOne(wrapper);
+        wrapper=new LambdaQueryWrapper<>();
+        wrapper.eq(WeeklyData::getUid,user.getUid());
+        wrapper.ge(WeeklyData::getCreateTime,simpleDateFormat2.format(lastWeekMondayEnd));
+        wrapper.last("limit 1");
+        WeeklyData weeklyDataEnd = weeklyDataMapper.selectOne(wrapper);
+        JSONObject spaceDynamic = BilibiliApi.getSpaceDynamic(Long.valueOf(user.getUid()),0L, NeedTopEnum.NOT_NEED);
+        if (spaceDynamic.getInteger("code")!=0){
+            return null;
+        }
+        JSONArray cards=spaceDynamic.getJSONObject("data").getJSONArray("cards");
+        Long next=spaceDynamic.getJSONObject("data").getLong("next_offset");
+        while (true){
+            JSONObject lastCard =(JSONObject) cards.get(cards.size() - 1);
+            if (lastCard.getJSONObject("desc").getLong("timestamp")<lastWeekMondayStart.getTime()/1000){
+                break;
+            }
+            JSONObject sd = BilibiliApi.getSpaceDynamic(Long.valueOf(user.getUid()),next, NeedTopEnum.NOT_NEED);
+            next=sd.getJSONObject("data").getLong("next_offset");
+            cards.addAll(sd.getJSONObject("data").getJSONArray("cards"));
+        }
+        List<DynamicDTO> weeklyDynamic = getWeeklyDynamic(cards, lastWeekMondayStart, lastWeekMondayEnd);
+        String url=String.format("%s\\%s.png",PathEnum.getType(PathEnum.ASOUL_PAPER_IMAGE_FILE.getId()),weeklyDynamic.get(0).getDid());
+        try {
+        BufferedImage dynamicImage = ChromeUtils.getDynamicImage(weeklyDynamic.get(0).getDid());
+
+        File template=new File(String.format("%s\\%s.png",PathEnum.getType(PathEnum.TEMPLATE.getId()),user.getUid()));
+        File front=new File(String.format("%s\\YouSheBiaoTiHei-2.ttf",PathEnum.getType(PathEnum.TEMPLATE.getId())));
+
+       Font f= Font.createFont(0,front);
+//        font.
+
+            Font font = f.deriveFont(180L);
+            BufferedImage bufferedImage= ImageIO.read(template);
+        Graphics2D graphics = bufferedImage.createGraphics();
+        graphics.setPaint(colorMap.get(user.getUid()));
+
+        graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        graphics.setFont(font);
+        if ("703007996".equals(user.getUid())){
+            graphics.drawString(String.valueOf(weeklyDataEnd.getBFol()-weeklyDataStart.getBFol()),480,850);
+            graphics.drawString(String.valueOf(weeklyDataEnd.getBPlay()-weeklyDataStart.getBPlay()),1300,850);
+            graphics.drawString(String.valueOf(weeklyDataEnd.getDFol()-weeklyDataStart.getDFol()),3330,850);
+            graphics.drawString(String.valueOf(weeklyDataEnd.getDFav()-weeklyDataStart.getDFol()),4170,850);
+
+
+        }else {
+            graphics.drawString(String.valueOf(weeklyDataEnd.getBFol()-weeklyDataStart.getBFol()),3550,360);
+            graphics.drawString(String.valueOf(weeklyDataEnd.getBPlay()-weeklyDataStart.getBPlay()),3667,550);
+            graphics.drawString(String.valueOf(weeklyDataEnd.getDFol()-weeklyDataStart.getDFol()),3820,730);
+            graphics.drawString(String.valueOf(weeklyDataEnd.getDFav()-weeklyDataStart.getDFol()),3820,900);
+
+        }
+
+          float ratio = Math.min(4500L / dynamicImage.getWidth(),  1900L / dynamicImage.getHeight());
+            AffineTransformOp op = new AffineTransformOp(AffineTransform.getScaleInstance(ratio, ratio), AffineTransformOp.TYPE_BILINEAR);
+            dynamicImage = op.filter(dynamicImage, null);
+
+
+            graphics.drawImage(dynamicImage,2400-dynamicImage.getWidth()/2,2500-dynamicImage.getHeight()/2,null);
+
+            graphics.dispose();
+
+
+
+            ImageIO.write(bufferedImage, "PNG", new File(url));
+
+
+        } catch (FontFormatException | IOException e) {
+        e.printStackTrace();
+        return null;
+    }
+
+    return url;
+    }
     private List<VideoDTO> getWeeklyVideo(JSONArray cards,User user,Date lastWeekMondayStart,Date lastWeekMondayEnd){
         List<VideoDTO> videoDTOList=new ArrayList<>();
         for (Object o:cards) {
            JSONObject card =(JSONObject)o;
             Long created = card.getLong("created");
-            if (created>lastWeekMondayEnd.getTime()) {
+            if (created>lastWeekMondayEnd.getTime()/1000) {
                 continue;
             }
-            if (created<lastWeekMondayStart.getTime()){
+            if (created<lastWeekMondayStart.getTime()/1000){
                 break;
             }
             if (user!=null){
@@ -174,15 +280,15 @@ public class AsoulPaperService extends ServiceImpl<WeeklyDataMapper, WeeklyData>
         for (Object o:cards) {
             JSONObject card =(JSONObject)o;
             Long created = card.getJSONObject("desc").getLong("timestamp");
-            if (created>lastWeekMondayEnd.getTime()) {
+            if (created>lastWeekMondayEnd.getTime()/1000) {
                 continue;
             }
-            if (created<lastWeekMondayStart.getTime()){
+            if (created<lastWeekMondayStart.getTime()/1000){
                 break;
             }
             JSONObject desc=card.getJSONObject("desc");
             int type=desc.getInteger("type");
-            if (type!=BiliBiliEnum.WORD.getId()||type!=BiliBiliEnum.PICTURE.getId()){
+            if (type!=BiliBiliEnum.WORD.getId()&&type!=BiliBiliEnum.PICTURE.getId()){
                 continue;
             }
 
@@ -210,5 +316,6 @@ public class AsoulPaperService extends ServiceImpl<WeeklyDataMapper, WeeklyData>
 
         return dynamicDTOS;
     }
+
 
 }

@@ -3,6 +3,7 @@ package com.mm.qbot.controller;
 import com.mikuac.shiro.common.utils.MsgUtils;
 import com.mikuac.shiro.core.Bot;
 import com.mikuac.shiro.core.BotContainer;
+import com.mikuac.shiro.core.BotPlugin;
 import com.mm.qbot.bean.pushMap.TiktokPushMap;
 import com.mm.qbot.bean.pushMap.User;
 import com.mm.qbot.service.TikTokService;
@@ -29,7 +30,7 @@ import java.util.Set;
 @EnableScheduling
 @Controller
 @EnableAsync
-public class TikTokController {
+public class TikTokController extends BotPlugin {
 
 
     private final Map<User, LinkedHashSet<Long>> groupMap=TiktokPushMap.getInstance().getGroupMap();
@@ -44,7 +45,7 @@ public class TikTokController {
 
     //或直接指定时间间隔，例如：5秒
 @Async
-    @Scheduled(initialDelay=1000, fixedDelay=1000)
+    @Scheduled(initialDelay=1000, fixedDelay=6000*10)
     public void tikTokPush() {
         Map<Long, Bot> robots = botContainer.robots;
 
@@ -65,7 +66,6 @@ public class TikTokController {
                     log.info(String.format("推送给群%s抖音视频%s",longs,entry.getKey().getUid()));
                     bot.sendGroupMsg(longs,msgUtils.build(),false);
                 }
-                    bot.sendPrivateMsg(962349367, msgUtils.build(),false);
                 Thread.sleep(1000*30);
 
                 } catch (InterruptedException e) {

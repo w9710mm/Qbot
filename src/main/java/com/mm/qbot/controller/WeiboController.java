@@ -3,6 +3,7 @@ package com.mm.qbot.controller;
 import com.mikuac.shiro.common.utils.MsgUtils;
 import com.mikuac.shiro.core.Bot;
 import com.mikuac.shiro.core.BotContainer;
+import com.mikuac.shiro.core.BotPlugin;
 import com.mm.qbot.bean.pushMap.BilibiliPushMap;
 import com.mm.qbot.bean.pushMap.User;
 import com.mm.qbot.service.WeiboService;
@@ -29,7 +30,7 @@ import java.util.Set;
 @EnableScheduling
 @Controller
 @EnableAsync
-public class WeiboController {
+public class WeiboController extends BotPlugin {
 
     private final Map<User, LinkedHashSet<Long>> groupMap=BilibiliPushMap.getInstance().getGroupMap();
     @Resource
@@ -41,7 +42,7 @@ public class WeiboController {
 
     //或直接指定时间间隔，例如：5秒
     @Async
-    @Scheduled(initialDelay=1000, fixedDelay=1000)
+    @Scheduled(initialDelay=1000, fixedDelay=6000*10)
     public void weiboPush() {
         Map<Long, Bot> robots = botContainer.robots;
 
@@ -63,7 +64,6 @@ public class WeiboController {
                         bot.sendGroupMsg(longs,msgUtils.build(),false);
                     }
                     Thread.sleep(1000*30);
-                    bot.sendPrivateMsg(962349367, msgUtils.build(),false);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

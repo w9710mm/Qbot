@@ -7,6 +7,7 @@ import com.mm.qbot.enumeration.PathEnum;
 import com.mm.qbot.utils.BilibiliApi;
 import com.mm.qbot.utils.LevelDB;
 import lombok.extern.slf4j.Slf4j;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -35,7 +36,53 @@ public class Init {
 
     private final UserAgentList userAgentList=UserAgentList.getInstance();
 
+
     @Bean
+    public  void initFilePath(){
+
+        File dynamicImageFile=new File(PathEnum.getType(PathEnum.DYNAMIC_IMAGE_FILE.getId()));
+        File asoulPaPerImageFile=new File(PathEnum.getType(PathEnum.ASOUL_PAPER_IMAGE_FILE.getId()));
+
+        File asoulPaPerTextFile=new File(PathEnum.getType(PathEnum.ASOUL_PAPER_TEXT_FILE.getId())) ;
+        File weiboImageFile=new File(PathEnum.getType(PathEnum.WEIBO_IMAGE_FILE.getId())) ;
+
+        File levelFile=new File(PathEnum.getType(PathEnum.LEVEL_DB.getId()));
+        if (!asoulPaPerImageFile.exists()){
+            log.debug("周报图片文件夹不存在，重新创建");
+            if (!asoulPaPerImageFile.mkdirs()){
+                log.error("周报图片文件夹创建失败");
+            }
+        }
+
+        if (!dynamicImageFile.exists()){
+            log.debug("动态图片文件夹不存在，重新创建");
+            if (!dynamicImageFile.mkdirs()){
+                log.error("动态文件夹创建失败");
+            }
+        }
+
+        if (!asoulPaPerTextFile.exists()){
+            log.debug("周报文本文件夹不存在，重新创建");
+            if (!asoulPaPerTextFile.mkdirs()){
+                log.error("周报文本文件夹创建失败");
+            }
+        }
+
+        if (!weiboImageFile.exists()){
+            log.debug("微博图片文件夹不存在，重新创建");
+            if (!weiboImageFile.mkdirs()){
+                log.error("微博图片文件夹创建失败");
+            }
+        }
+        if (!levelFile.exists()){
+            log.debug("leveldb文件夹不存在，重新创建");
+            if (!levelFile.mkdirs()){
+                log.error("leveldb文件夹创建失败");
+            }
+        }
+
+    }
+   @Bean
     public void initPushMap() {
 
         log.info("载入推送表……");
@@ -170,6 +217,98 @@ public class Init {
 
     }
 
+//    @Bean
+    public void init1(){
+        UserSubscribeMap userSubscribeMap=UserSubscribeMap.getInstance();
+        Map<Long, UserSubscribe> groupSubscribeMap = userSubscribeMap.getGroupSubscribeMap();
+        Map<Long, UserSubscribe> privateSubscribeMap = userSubscribeMap.getPrivateSubscribeMap();
+
+
+        UserSubscribe a706592235=new UserSubscribe();
+        User ava=new User();
+        ava.setUid("672346917");
+        ava.setUname("向晚大魔王");
+        User bella=new User();
+        bella.setUid("672353429");
+        bella.setUname("贝拉kira");
+        User carol=new User();
+        carol.setUid("351609538");
+        carol.setUname("珈乐Carol");
+        User diana=new User();
+        diana.setUid("672328094");
+        diana.setUname("嘉然今天吃什么");
+        User eileen=new User();
+        eileen.setUid("672342685");
+        eileen.setUname("乃琳Queen");
+        User asoul=new User();
+        asoul.setUid("703007996");
+        asoul.setUname("A-SOUL_Official");
+        User ap=new User();
+        ap.setUid("1185499676");
+        ap.setUname("ASOUL周报");
+
+        User xs=new User();
+        xs.setUid("44002411");
+        xs.setUname("小松不漫步");
+
+        User tp=new User();
+        tp.setUid("247210788");
+        tp.setUname("嘉心糖周报");
+
+        User aza=new User();
+        aza.setUid("480680646");
+        aza.setUname("阿萨Aza");
+        LinkedHashSet<User> l1=new LinkedHashSet<>();
+        l1.add(asoul);
+        l1.add(ava);
+        l1.add(bella);
+        l1.add(carol);
+        l1.add(diana);
+        l1.add(eileen);
+        l1.add(ap);
+
+        a706592235.setIsGroup(true);
+        a706592235.setBids(l1);
+        groupSubscribeMap.put(706592235L,a706592235);
+
+        LinkedHashSet<User> l2=new LinkedHashSet<>();
+
+        l2.add(asoul);
+        l2.add(ava);
+        l2.add(bella);
+        l2.add(carol);
+        l2.add(diana);
+        l2.add(eileen);
+        l2.add(ap);
+        l2.add(xs);
+
+        UserSubscribe a959969138=new UserSubscribe();
+        a959969138.setIsGroup(true);
+        groupSubscribeMap.put(959969138L,a959969138);
+
+        LinkedHashSet<User> l3=new LinkedHashSet<>();
+
+        l3.add(asoul);
+        l3.add(ava);
+        l3.add(bella);
+        l3.add(carol);
+        l3.add(diana);
+        l3.add(eileen);
+        l3.add(tp);
+        UserSubscribe a245530949=new UserSubscribe();
+        a245530949.setIsGroup(true);
+        groupSubscribeMap.put(245530949L,a245530949);
+
+        LinkedHashSet<User> l4=new LinkedHashSet<>();
+
+       l4.add(aza);
+        UserSubscribe a=new UserSubscribe();
+        a.setIsGroup(false);
+        privateSubscribeMap.put(1093195408L,a);
+        levelDB.put("userSubscribeMap",userSubscribeMap);
+
+    }
+
     @Bean
     public void initBilibiliDynamicId(){
 
@@ -244,44 +383,7 @@ public class Init {
 
     }
 
-    @Bean
-    public  void initFilePath(){
 
-        File dynamicImageFile=new File(PathEnum.getType(PathEnum.DYNAMIC_IMAGE_FILE.getId()));
-        File asoulPaPerImageFile=new File(PathEnum.getType(PathEnum.ASOUL_PAPER_IMAGE_FILE.getId()));
-
-         File asoulPaPerTextFile=new File(PathEnum.getType(PathEnum.ASOUL_PAPER_TEXT_FILE.getId())) ;
-        File weiboImageFile=new File(PathEnum.getType(PathEnum.WEIBO_IMAGE_FILE.getId())) ;
-         if (!asoulPaPerImageFile.exists()){
-             log.debug("周报图片文件夹不存在，重新创建");
-             if (!asoulPaPerImageFile.mkdirs()){
-                 log.error("周报图片文件夹创建失败");
-             }
-         }
-
-        if (!dynamicImageFile.exists()){
-            log.debug("动态图片文件夹不存在，重新创建");
-            if (!dynamicImageFile.mkdirs()){
-                log.error("动态文件夹创建失败");
-            }
-        }
-
-        if (!asoulPaPerTextFile.exists()){
-            log.debug("周报文本文件夹不存在，重新创建");
-            if (!asoulPaPerTextFile.mkdirs()){
-                log.error("周报文本文件夹创建失败");
-            }
-        }
-
-        if (!weiboImageFile.exists()){
-            log.debug("微博图片文件夹不存在，重新创建");
-            if (!weiboImageFile.mkdirs()){
-                log.error("微博图片文件夹创建失败");
-            }
-        }
-
-
-    }
 
 }
 

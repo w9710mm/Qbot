@@ -1,6 +1,7 @@
 package com.mm.qbot.utils;
 
 import clive.hua.app.simpleImageTool.SimpleImageTool;
+import com.mm.qbot.enumeration.PathEnum;
 import com.sun.media.jai.codecimpl.JPEGCodec;
 import com.sun.media.jai.codecimpl.JPEGImageEncoder;
 import lombok.extern.slf4j.Slf4j;
@@ -91,7 +92,7 @@ public class ImageUtils {
 
             }
             graphics.dispose();
-            url=System.getProperty("user.dir")+"\\"+url+".png";
+            url= String.format("%s\\%s.png", PathEnum.getType(PathEnum.DYNAMIC_IMAGE_FILE.getId()),url);
 //            FileOutputStream fos   =   new   FileOutputStream("img.jpg");
 //            JPEGImageEncoder encoder   =   JPEGCodec.createJPEGEncoder(fos);
             ImageIO.write(image, "PNG", new File(url));

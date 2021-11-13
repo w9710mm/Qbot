@@ -12,7 +12,9 @@ public enum PathEnum {
     DYNAMIC_IMAGE_FILE(0, String.format("%s\\DynamicPic",System.getProperty("user.dir"))),
     ASOUL_PAPER_IMAGE_FILE(1, String.format("%s\\PaperPic",System.getProperty("user.dir"))),
     ASOUL_PAPER_TEXT_FILE(2,String.format("%s\\PaperText",System.getProperty("user.dir"))),
-    WEIBO_IMAGE_FILE(3,String.format("%s\\WeiboImage",System.getProperty("user.dir")));
+    WEIBO_IMAGE_FILE(3,String.format("%s\\WeiboImage",System.getProperty("user.dir"))),
+    TEMPLATE(4,String.format("%s\\template",System.getProperty("user.dir"))),
+    LEVEL_DB(5,String.format("%s\\leveldb",System.getProperty("user.dir")));
     private Integer id;
     private String value;
 

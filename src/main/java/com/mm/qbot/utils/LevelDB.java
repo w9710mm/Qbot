@@ -2,6 +2,7 @@ package com.mm.qbot.utils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.mm.qbot.enumeration.PathEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.units.qual.C;
 import org.iq80.leveldb.*;
@@ -36,11 +37,12 @@ public class LevelDB {
     static {
         try {
             String PATH  =  "/leveldb";
-            File FILE = new File(PATH);
+            File fILE = new File(PATH);
+//            File fILE = new File(PathEnum.getType(PathEnum.LEVEL_DB.getId()));
             DBFactory factory = new Iq80DBFactory();
             Options options = new Options();
             options.createIfMissing(true);
-            db = factory.open(FILE, options);
+            db = factory.open(fILE, options);
         } catch (IOException e) {
             e.printStackTrace();
         }
