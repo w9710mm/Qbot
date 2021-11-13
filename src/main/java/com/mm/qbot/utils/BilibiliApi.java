@@ -60,9 +60,16 @@ public class BilibiliApi {
         Map<String, String> paramMaps = new HashMap<>();
         paramMaps.put("type_list", typeList);
         paramMaps.put("offset", offset);
+        ResponseEntity<String> exchange;
+        ResponseEntity<String> res;
+        try {
+            res = restTemplate.exchange(dynamicSvr, HttpMethod.GET, httpEntity, String.class, paramMaps);
 
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
 
-        ResponseEntity<String> res = restTemplate.exchange(dynamicSvr, HttpMethod.GET, httpEntity, String.class, paramMaps);
         return JSONObject.parseObject(res.getBody());
     }
 
@@ -217,8 +224,14 @@ public class BilibiliApi {
 
 
         HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(body, headers);
+        ResponseEntity<String> exchange;
+        try {
+            exchange = restTemplate.exchange(url, HttpMethod.POST, httpEntity, String.class);
 
-        ResponseEntity<String> exchange = restTemplate.exchange(url, HttpMethod.POST, httpEntity, String.class);
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
 
 
         return JSONObject.parseObject(exchange.getBody());

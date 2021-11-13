@@ -49,7 +49,7 @@ public class BilibiliGetNewDynamicController extends BotPlugin {
     //或直接指定时间间隔，例如：5秒
 
     @Async
-    @Scheduled(initialDelay=1000, fixedDelay=6000*10)
+    @Scheduled(initialDelay=1000, fixedDelay=3000*10)
     public void bilibiliPush() {
          Map<Long, Bot> robots = botContainer.robots;
         JSONObject newDynamic = BilibiliApi.getNewDynamic("1823651096", "268435455", String.valueOf(bilibiliPushMap.getDynamicIdOffset()), "weball", "web");

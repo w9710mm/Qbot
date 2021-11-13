@@ -14,7 +14,6 @@ import java.util.Map;
  * @Description: 用户订阅类的集合
  * @date 2021/10/31 23:20
  */
-@Component
 
 @Data
 public class UserSubscribeMap implements Serializable {

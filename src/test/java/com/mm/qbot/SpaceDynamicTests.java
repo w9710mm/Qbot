@@ -10,7 +10,7 @@ public class SpaceDynamicTests {
     @Test
     public void test(){
 
-        JSONObject spaceDynamic = BilibiliApi.getSpaceDynamic(174501086L, 0L, NeedTopEnum.NOT_NEED);
+        JSONObject spaceDynamic = BilibiliApi.getSpaceVideo(String.valueOf(174501086));
         System.out.println(spaceDynamic.toJSONString());
 
     }

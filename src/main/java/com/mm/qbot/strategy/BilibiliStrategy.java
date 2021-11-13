@@ -108,7 +108,7 @@ public class BilibiliStrategy {
         msgUtils.text(String.format("%s\n",pack.get("url")));
         pack.put("type", BiliBiliEnum.FORWARD.getValue());
 
-        pack.put("content", StringUtils.omitString(card.getJSONObject("item").getString("content"),92));
+        pack.put("content", StringUtils.omitString(card.getJSONObject("item").getString("content"),72));
         msgUtils.text(String.format("%s：%s\n",pack.get("username"),pack.get("content")));
         pack.put("time", TimeUtils.stampToDate(desc.getLong("timestamp") * 1000));
         msgUtils.text(String.format("发布时间:%s\n",pack.get("time")));
@@ -116,16 +116,16 @@ public class BilibiliStrategy {
         pack.put("org_type", BiliBiliEnum.getType(desc.getInteger("orig_type")));
         pack.put("org_username", originUser.getJSONObject("info").getString("uname"));
         pack.put("org_uid", originUser.getJSONObject("info").getString("uid"));
+
 //        msgUtils.text(String.format("转发内容：【%s（%s）】的[%s]\n",pack.get("org_username"),pack.get("org_uid"),pack.get("org_type")));
 
-        pack.put("org_url", String.format("https://t.bilibili.com/%s", desc.getString("orig_dy_id")));
         msgUtils.text(String.format("%s\n",pack.get("org_url")));
 
         List<String> picUrls = new ArrayList<>();
         switch (desc.getInteger("orig_type")) {
             //图片动态
             case (2):
-                pack.put("org_content", StringUtils.omitString(origin.getJSONObject("item").getString("description"),92));
+                pack.put("org_content", StringUtils.omitString(origin.getJSONObject("item").getString("description"),72));
                 msgUtils.text(String.format("%s：%s\n",pack.get("org_username"),pack.get("org_content")));
 
                 pack.put("org_time", TimeUtils.stampToDate(origin.getJSONObject("item").getLong("upload_time") * 1000));
@@ -154,7 +154,7 @@ public class BilibiliStrategy {
             //文字动态
             case (4):
 
-                pack.put("org_content", StringUtils.omitString(origin.getJSONObject("item").getString("content"),92));
+                pack.put("org_content", StringUtils.omitString(origin.getJSONObject("item").getString("content"),72));
                 msgUtils.text(String.format("%s：%s\n",pack.get("org_username"),pack.get("org_content")));
                 pack.put("org_time", TimeUtils.stampToDate(origin.getJSONObject("item").getLong("timestamp") * 1000));
                 msgUtils.text(String.format("发布时间:%s\n",pack.get("org_time")));
@@ -165,12 +165,12 @@ public class BilibiliStrategy {
                 pack.put("aid", origin.getString("aid"));
                 pack.put("duration",TimeUtils.changeTimeFormat(origin.getInteger("duration")));
 
-                pack.put("org_content", StringUtils.omitString(origin.getString("dynamic"),92));
+                pack.put("org_content", StringUtils.omitString(origin.getString("dynamic"),72));
                 msgUtils.text(String.format("%s：%s\n",pack.get("org_username"),pack.get("org_content")));
                 msgUtils.text(String.format("标题：%s(%s)\n",pack.get("title"),pack.get("aid")));
                 pack.put("link", origin.getString("short_link_v2"));
                 pack.put("desc", origin.getString("desc"));
-                msgUtils.text(String.format("简介：%s\n",pack.get("desc")));
+                msgUtils.text(String.format("简介：%s\n",StringUtils.omitString((String) pack.get("desc"),50)));
                 pack.put("org_time", TimeUtils.stampToDate(origin.getLong("pubdate") * 1000));
                 msgUtils.text(String.format("发布时间:%s (%s)\n",pack.get("org_time"),pack.get("duration")));
                 pack.put("view", origin.getJSONObject("stat").getString("view"));
@@ -199,7 +199,7 @@ public class BilibiliStrategy {
                 }else {
                     msgUtils.img(String.valueOf(origin.getJSONArray("origin_image_urls").get(0)));
                 }
-                pack.put("org_content", StringUtils.omitString(origin.getString("summary"),92));
+                pack.put("org_content", StringUtils.omitString(origin.getString("summary"),72));
                 msgUtils.text(String.format("\n%s\n",pack.get("org_content")));
 
 //                if (!"".equals(origin.getString("banner_url"))){
@@ -255,7 +255,7 @@ public class BilibiliStrategy {
         pack.put("url", String.format("https://t.bilibili.com/%s", desc.getString("dynamic_id")));
 
         msgUtils.text(String.format("%s\n",pack.get("url")));
-        pack.put("content", StringUtils.omitString(card.getJSONObject("item").getString("description"),92));
+        pack.put("content", StringUtils.omitString(card.getJSONObject("item").getString("description"),72));
         JSONArray pics = card.getJSONObject("item").getJSONArray("pictures");
         msgUtils.text(String.format("%s：%s\n",pack.get("username"),pack.get("content")));
         if (pics.size()==1){
@@ -293,13 +293,12 @@ public class BilibiliStrategy {
         pack.put("username",card.getJSONObject("user").getString("uname"));
         pack.put("uid",card.getJSONObject("user").getString("uid"));
         pack.put("time",TimeUtils.stampToDate(desc.getLong("timestamp")*1000));
-        pack.put("content", StringUtils.omitString(card.getJSONObject("item").getString("content"),92));
+        pack.put("content", StringUtils.omitString(card.getJSONObject("item").getString("content"),72));
         pack.put("url", String.format("https://t.bilibili.com/%s", desc.getString("dynamic_id")));
         pack.put("pics",picUrls);
         msgUtils.text(String.format("【%s",pack.get("username")));
         msgUtils.text(String.format("(%s)】的动态\n",pack.get("uid")));
         msgUtils.text(String.format("%s\n",pack.get("url")));
-        msgUtils.text(String.format("[%s]\n",pack.get("type")));
         msgUtils.text(String.format("%s：%s\n",pack.get("username"),pack.get("content")));
         msgUtils.text(String.format("发布时间:%s\n",pack.get("time")));
 
@@ -326,7 +325,7 @@ public class BilibiliStrategy {
         pack.put("url", String.format("https://t.bilibili.com/%s", desc.getString("dynamic_id")));
         pack.put("type",BiliBiliEnum.getType(desc.getInteger("type")));
         pack.put("title",card.getString("title"));
-        pack.put("content",StringUtils.omitString(card.getString("dynamic"),92));
+        pack.put("content",StringUtils.omitString(card.getString("dynamic"),72));
         pack.put("desc",card.getString("desc"));
         pack.put("tname",card.getString("tname"));
         pack.put("org_time", TimeUtils.stampToDate(card.getLong("ctime") * 1000));
@@ -347,7 +346,7 @@ public class BilibiliStrategy {
         msgUtils.text(String.format("%s\n",pack.get("url")));
         msgUtils.text(String.format("%s：%s\n",pack.get("username"),pack.get("content")));
         msgUtils.text(String.format("标题：%s(%s)\n",pack.get("title"),pack.get("aid")));
-        msgUtils.text(String.format("简介：%s\n",pack.get("desc")));
+        msgUtils.text(String.format("简介：%s\n",StringUtils.omitString((String) pack.get("desc"),50)));
 
 
         msgUtils.text(String.format("发布时间:%s (%s)\n",pack.get("org_time"),pack.get("duration")));
@@ -371,7 +370,7 @@ public class BilibiliStrategy {
         pack.put("time",TimeUtils.stampToDate(desc.getLong("timestamp")*1000));
         pack.put("username",card.getJSONObject("author").getString("name"));
         pack.put("uid",card.getJSONObject("author").getString("mid"));
-        pack.put("content",StringUtils.omitString(card.getString("summary"),92));
+        pack.put("content",StringUtils.omitString(card.getString("summary"),72));
 
         pack.put("title",card.getString("title"));
         pack.put("url", String.format("https://t.bilibili.com/%s", desc.getString("dynamic_id")));

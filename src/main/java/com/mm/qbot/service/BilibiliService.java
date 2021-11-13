@@ -40,7 +40,7 @@ public class BilibiliService {
             return null;
         }
         JSONObject res = BilibiliApi.modifyRelation(Long.valueOf(uid.getUid()), RelationActionEnum.SUBSCRIBE);
-        if (res.getInteger("message")!=0) {
+        if (res==null||res.getInteger("message")!=0) {
             return null;
         }
         return MsgUtils.builder().text("订阅成功！");
@@ -280,5 +280,32 @@ public class BilibiliService {
 
         msgUtils.text(String.format("\n粉丝：%s 关注:%s ",relationStatData.getString("follower"),relationStatData.getString("following")));
         return msgUtils;
+    }
+
+    public MsgUtils getNewVideo(String uid){
+
+        JSONObject res =BilibiliApi.getSpaceVideo(uid);
+        JSONArray cards;
+        try {
+             cards=res.getJSONObject("data").getJSONObject("list").getJSONArray("vlist");
+
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+        if (cards==null) {
+            return null;
+        }
+        JSONObject card = cards.getJSONObject(0);
+        MsgUtils msgUtils;
+        try {
+            msgUtils = BilibiliStrategy.dynamicStrategy(card);
+        } catch (BilibiliException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return msgUtils;
+
     }
 }
