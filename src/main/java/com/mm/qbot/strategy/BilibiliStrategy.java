@@ -469,7 +469,7 @@ public class BilibiliStrategy {
         msg.text(String.format("时长：%s\n", TimeUtils.changeTimeFormat(data.getInteger("duration"))));
         msg.text(String.format("UP主：%s(%d)\n",data.getJSONObject("owner").getString("name"),
                 data.getJSONObject("owner").getInteger("mid")));
-        msg.text(String.format("url：https://www.bilibili.com/video/%s",data.getString("bvid")));
+        msg.text(String.format("https://www.bilibili.com/video/%s",data.getString("bvid")));
         msg.img(data.getString("pic"));
 
 
