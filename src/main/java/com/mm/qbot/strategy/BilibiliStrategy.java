@@ -167,7 +167,7 @@ public class BilibiliStrategy {
 
                 pack.put("org_content", StringUtils.omitString(origin.getString("dynamic"),72));
                 msgUtils.text(String.format("%s：%s\n",pack.get("org_username"),pack.get("org_content")));
-                msgUtils.text(String.format("标题：%s(%s)\n",pack.get("title"),pack.get("aid")));
+                msgUtils.text(String.format("%s\n",pack.get("title")));
                 pack.put("link", origin.getString("short_link_v2"));
                 pack.put("desc", origin.getString("desc"));
                 msgUtils.text(String.format("简介：%s\n",StringUtils.omitString((String) pack.get("desc"),50)));
@@ -191,7 +191,7 @@ public class BilibiliStrategy {
             case (64):
                 pack.put("title", origin.getString("title"));
                 msgUtils.text(String.format("%s：\n",pack.get("org_username")));
-                msgUtils.text(String.format("标题：%s\n",pack.get("title")));
+                msgUtils.text(String.format("%s\n",pack.get("title")));
                 pack.put("org_time", TimeUtils.stampToDate(origin.getLong("publish_time") * 1000));
                 JSONArray imgs=origin.getJSONArray("image_urls");
                 if (!"".equals(origin.getString("banner_url"))){
@@ -345,7 +345,7 @@ public class BilibiliStrategy {
         msgUtils.text(String.format("(%s)】的动态\n",pack.get("uid")));
         msgUtils.text(String.format("%s\n",pack.get("url")));
         msgUtils.text(String.format("%s：%s\n",pack.get("username"),pack.get("content")));
-        msgUtils.text(String.format("标题：%s(%s)\n",pack.get("title"),pack.get("aid")));
+        msgUtils.text(String.format("%s\n",pack.get("title"),pack.get("aid")));
         msgUtils.text(String.format("简介：%s\n",StringUtils.omitString((String) pack.get("desc"),50)));
 
 
@@ -379,7 +379,7 @@ public class BilibiliStrategy {
         msgUtils.text(String.format("(%s)】的动态\n",pack.get("uid")));
         msgUtils.text((String) pack.get("url"));
         msgUtils.text(String.format("\n%s：\n",pack.get("username")));
-        msgUtils.text(String.format("标题：%s\n",pack.get("title")));
+        msgUtils.text(String.format("%s\n",pack.get("title")));
 
         if (!"".equals(card.getString("banner_url"))){
             msgUtils.img(card.getString("banner_url"));
@@ -456,7 +456,7 @@ public class BilibiliStrategy {
         JSONObject stat = data.getJSONObject("stat");
         MsgUtils msg=new MsgUtils();
 
-        msg.text(String.format("标题：%s\n",data.getString("title")));
+        msg.text(String.format("%s\n",data.getString("title")));
         msg.text(String.format("分区：%s\n",data.getString("tname")));
         msg.text(String.format("介绍：%s\n",data.getString("desc")));
         msg.text(String.format("硬币：%d  ",stat.getInteger("coin")));

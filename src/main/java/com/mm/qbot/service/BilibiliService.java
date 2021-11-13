@@ -293,14 +293,14 @@ public class BilibiliService {
             e.printStackTrace();
             return null;
         }
-        if (cards==null) {
+        if (cards==null||cards.size()==0) {
             return null;
         }
         JSONObject card = cards.getJSONObject(0);
         MsgUtils msgUtils;
         try {
-            msgUtils = BilibiliStrategy.dynamicStrategy(card);
-        } catch (BilibiliException e) {
+            msgUtils = BilibiliStrategy.parsingBID(card.getString("bvid"));
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
