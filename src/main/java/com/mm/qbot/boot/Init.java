@@ -8,6 +8,9 @@ import com.mm.qbot.utils.BilibiliApi;
 import com.mm.qbot.utils.LevelDB;
 import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.units.qual.A;
+import org.quartz.Scheduler;
+import org.quartz.SchedulerException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
@@ -36,7 +39,19 @@ public class Init {
 
     private final UserAgentList userAgentList=UserAgentList.getInstance();
 
+    @Autowired
+    private Scheduler scheduler;
 
+
+
+    @Bean
+    public  void initScheduler(){
+        try {
+            scheduler.start();
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
+    }
     @Bean
     public  void initFilePath(){
 

@@ -50,6 +50,17 @@ public class RenewDynamicTests {
 //        }
     }
 
+    @Test
+    public void d() {
+
+
+//        if (jsonObject.getJSONObject("data").getInteger("update_num")>=1){
+        JSONObject newDynamic = new JSONObject();
+
+        System.out.println(newDynamic.getJSONObject("1").getJSONObject("1"));
+        System.out.println(1);
+//        }
+    }
 
     @Test
     public void RenewDy() {

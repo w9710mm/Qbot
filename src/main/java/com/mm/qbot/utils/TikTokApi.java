@@ -32,7 +32,19 @@ public class TikTokApi {
 
         HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(null, headers);
 
-        ResponseEntity<String> res = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class);
-        return JSONObject.parseObject(res.getBody());
+
+
+        ResponseEntity<String> exchange ;
+
+
+        JSONObject jsonObject=new JSONObject();
+        try {
+            exchange =  restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class);
+            jsonObject=JSONObject.parseObject(exchange.getBody());
+        }catch (Exception e){
+            e.printStackTrace();
+            return jsonObject;
+        }
+        return jsonObject;
     }
 }

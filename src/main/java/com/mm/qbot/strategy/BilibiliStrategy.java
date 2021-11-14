@@ -119,7 +119,7 @@ public class BilibiliStrategy {
 
 //        msgUtils.text(String.format("转发内容：【%s（%s）】的[%s]\n",pack.get("org_username"),pack.get("org_uid"),pack.get("org_type")));
 
-        msgUtils.text(String.format("%s\n",pack.get("org_url")));
+        msgUtils.text(String.format("https://t.bilibili.com/%s\n", desc.getString("orig_dy_id_str")));
 
         List<String> picUrls = new ArrayList<>();
         switch (desc.getInteger("orig_type")) {
@@ -458,7 +458,7 @@ public class BilibiliStrategy {
 
         msg.text(String.format("%s\n",data.getString("title")));
         msg.text(String.format("分区：%s\n",data.getString("tname")));
-        msg.text(String.format("介绍：%s\n",data.getString("desc")));
+        msg.text(String.format("介绍：%s\n",StringUtils.omitString(data.getString("desc"),40)));
         msg.text(String.format("硬币：%d  ",stat.getInteger("coin")));
         msg.text(String.format("点赞：%d  ",stat.getInteger("coin")));
         msg.text(String.format("收藏：%d  ",stat.getInteger("favorite")));
