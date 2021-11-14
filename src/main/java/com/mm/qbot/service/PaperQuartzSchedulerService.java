@@ -1,4 +1,4 @@
-package com.mm.qbot.config;
+package com.mm.qbot.service;
 
 import com.mm.qbot.Scheduler.SchedulerQuartzJob;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +14,7 @@ import org.quartz.TriggerKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
@@ -24,9 +25,9 @@ import java.util.Date;
  * @Description:
  * @date 2021/11/14 14:32
  */
-@Configuration
+@Service
 @Slf4j
-public class PaperQuartzScheduler {
+public class PaperQuartzSchedulerService {
     @Autowired
     private Scheduler scheduler;
 

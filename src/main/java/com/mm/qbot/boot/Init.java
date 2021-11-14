@@ -44,14 +44,7 @@ public class Init {
 
 
 
-    @Bean
-    public  void initScheduler(){
-        try {
-            scheduler.start();
-        } catch (SchedulerException e) {
-            e.printStackTrace();
-        }
-    }
+
     @Bean
     public  void initFilePath(){
 

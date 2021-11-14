@@ -1,5 +1,7 @@
 package com.mm.qbot.Scheduler;
 
+import com.mikuac.shiro.common.utils.MsgUtils;
+import com.mikuac.shiro.core.Bot;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -17,5 +19,10 @@ public class SchedulerQuartzJob implements Job {
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
 
         JobDataMap jobDataMap = jobExecutionContext.getJobDetail().getJobDataMap();
+        Bot bot =(Bot) jobDataMap.get("bot");
+        MsgUtils msg =(MsgUtils) jobDataMap.get("msg");
+        long groupId = jobDataMap.getLong("groupId");
+
+        bot.sendGroupMsg(groupId,msg.build(),false);
     }
 }

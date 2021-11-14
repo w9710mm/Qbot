@@ -1,15 +1,14 @@
 package com.mm.qbot.controller;
 
 import com.mikuac.shiro.annotation.GroupMessageHandler;
-import com.mikuac.shiro.common.utils.ShiroUtils;
 import com.mikuac.shiro.core.Bot;
 import com.mikuac.shiro.core.BotPlugin;
 import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
-import com.mm.qbot.config.PaperQuartzScheduler;
-import org.quartz.SchedulerException;
-import org.quartz.core.QuartzScheduler;
+import com.mm.qbot.service.PaperQuartzScheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+
+import java.util.regex.Matcher;
 
 /**
  * @author meme
@@ -22,10 +21,6 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class QuartzController extends BotPlugin {
 
-    @Autowired
-    private PaperQuartzScheduler quartzScheduler;
-
-
 
 
 
@@ -35,12 +30,12 @@ public class QuartzController extends BotPlugin {
 
     }
     @GroupMessageHandler(cmd = "\b\\[CQ:at,qq=([0-9]+)\\]ddl ([0-9]{4}-[0-9]{2}-[0-9]{2}) (.+)" )
-    public void addQuartzJob(Bot bot, GroupMessageEvent event) {
+    public void addQuartzJob(Bot bot, GroupMessageEvent event, Matcher m) {
         System.out.println(event.getRawMessage());
     }
 
-    @GroupMessageHandler(cmd = "\b删除任务 ([0-9]+)",groupWhiteList ={245530949,706592235} )
-    public void deleteQuartzJob(Bot bot, GroupMessageEvent event) {
+    @GroupMessageHandler(cmd = "\b\\[CQ:at,qq=([0-9]+)\\]del",groupWhiteList ={245530949,706592235} )
+    public void deleteQuartzJob(Bot bot, GroupMessageEvent event,Matcher m) {
 
     }
 
