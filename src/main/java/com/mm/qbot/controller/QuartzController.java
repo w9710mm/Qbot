@@ -4,7 +4,6 @@ import com.mikuac.shiro.annotation.GroupMessageHandler;
 import com.mikuac.shiro.core.Bot;
 import com.mikuac.shiro.core.BotPlugin;
 import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
-import com.mm.qbot.service.PaperQuartzScheduler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
