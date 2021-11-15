@@ -32,7 +32,20 @@ public class WeiBoApi {
 
         HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(null, headers);
 
-        ResponseEntity<String> res = REST_TEMPLATE.exchange(url, HttpMethod.GET, httpEntity, String.class);
-        return JSONObject.parseObject(res.getBody());
+
+
+        ResponseEntity<String> exchange ;
+
+
+        JSONObject jsonObject=new JSONObject();
+        try {
+            exchange =  REST_TEMPLATE.exchange(url, HttpMethod.GET, httpEntity, String.class);
+            jsonObject=JSONObject.parseObject(exchange.getBody());
+        }catch (Exception e){
+            e.printStackTrace();
+            return jsonObject;
+        }
+        return jsonObject;
     }
+
 }

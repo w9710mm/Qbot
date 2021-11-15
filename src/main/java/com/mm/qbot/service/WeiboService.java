@@ -35,6 +35,9 @@ public class WeiboService {
         MsgUtils msgUtils=MsgUtils.builder();
 
         JSONObject jsonObject = WeiBoApi.getNewDynamic(uid,1);
+        if (jsonObject.size()==0){
+            return null;
+        }
 
         JSONArray cards = jsonObject.getJSONObject("data").getJSONArray("cards");
 

@@ -3,6 +3,7 @@ package com.mm.qbot.utils;
 public class StringUtils {
 
     public  static  String omitString(String str,int num){
+         str = str.replaceAll("\\n\\n", "\n");
 
         if (str.length()>num){
             str=str.substring(0,num)+"…………";

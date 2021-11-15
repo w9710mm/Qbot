@@ -117,15 +117,17 @@ public class BilibiliService {
         Matcher matcher = uidPattern.matcher(text);
 
         User uid=new User();
+        try {
 
-        if (matcher.lookingAt()){
+
+        if (matcher.find()){
             JSONObject userInfo = BilibiliApi.getUserInfo(Long.valueOf(text));
             if (userInfo.getInteger("code")!=404){
                 uid.setUid(userInfo.getJSONObject("data").getString("mid"));
                 uid.setUname(userInfo.getJSONObject("data").getString("name"));
             }
         }
-        if (!matcher.lookingAt()){
+        if (!matcher.find()){
             JSONObject result=BilibiliApi.serachUser(text,"bili_user");
             JSONArray datas = result.getJSONObject("data").getJSONArray("result");
             if (datas!=null){
@@ -133,6 +135,9 @@ public class BilibiliService {
                 uid.setUid(data.getString("mid"));
                 uid.setUname(data.getString("uname"));
             }
+        }
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return  uid;
     }
@@ -293,14 +298,14 @@ public class BilibiliService {
             e.printStackTrace();
             return null;
         }
-        if (cards==null) {
+        if (cards==null||cards.size()==0) {
             return null;
         }
         JSONObject card = cards.getJSONObject(0);
         MsgUtils msgUtils;
         try {
-            msgUtils = BilibiliStrategy.dynamicStrategy(card);
-        } catch (BilibiliException e) {
+            msgUtils = BilibiliStrategy.parsingBID(card.getString("bvid"));
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }

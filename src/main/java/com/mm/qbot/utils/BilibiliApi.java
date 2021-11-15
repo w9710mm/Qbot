@@ -5,6 +5,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.mm.qbot.Exception.BilibiliException;
 import com.mm.qbot.enumeration.NeedTopEnum;
 import com.mm.qbot.enumeration.RelationActionEnum;
+import lombok.extern.slf4j.Slf4j;
+import org.openqa.selenium.json.Json;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -19,7 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
+@Slf4j
 public class BilibiliApi {
     private static RestTemplate restTemplate = new RestTemplate();
 
@@ -60,17 +62,17 @@ public class BilibiliApi {
         Map<String, String> paramMaps = new HashMap<>();
         paramMaps.put("type_list", typeList);
         paramMaps.put("offset", offset);
-        ResponseEntity<String> exchange;
         ResponseEntity<String> res;
+        JSONObject jsonObject;
         try {
             res = restTemplate.exchange(dynamicSvr, HttpMethod.GET, httpEntity, String.class, paramMaps);
-
+            jsonObject=JSONObject.parseObject(res.getBody());
         }catch (Exception e){
             e.printStackTrace();
             return null;
         }
+        return jsonObject;
 
-        return JSONObject.parseObject(res.getBody());
     }
 
     public static JSONObject getNewDynamic(String uid, String typeList, String currentDynamicId, String from, String platform) {
@@ -89,9 +91,18 @@ public class BilibiliApi {
         paramMaps.put("from", from);
         paramMaps.put("platform", platform);
 
-        ResponseEntity<String> res = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class, paramMaps);
+        ResponseEntity<String> res ;
 
-        return JSONObject.parseObject(res.getBody());
+
+        JSONObject jsonObject;
+        try {
+            res =  restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class, paramMaps);
+            jsonObject=JSONObject.parseObject(res.getBody());
+        }catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+        return jsonObject;
     }
 
 
@@ -107,8 +118,18 @@ public class BilibiliApi {
         paramMaps.put("keyword", keyword);
         paramMaps.put("search_type", searchType);
 
-        ResponseEntity<String> res = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class, paramMaps);
-        return JSONObject.parseObject(res.getBody());
+
+
+        ResponseEntity<String> res ;
+
+        JSONObject jsonObject=new JSONObject();
+        try {
+            res =  restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class, paramMaps);
+            jsonObject=JSONObject.parseObject(res.getBody());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return jsonObject;
     }
 
 
@@ -124,8 +145,18 @@ public class BilibiliApi {
         paramMaps.put("bvid", bid);
 
 
-        ResponseEntity<String> res = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class, paramMaps);
-        return JSONObject.parseObject(res.getBody());
+
+        ResponseEntity<String> res ;
+
+        JSONObject jsonObject=new JSONObject();
+        try {
+            res =  restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class, paramMaps);
+            jsonObject=JSONObject.parseObject(res.getBody());
+        }catch (Exception e){
+            e.printStackTrace();
+            return jsonObject;
+        }
+        return jsonObject;
 
     }
 
@@ -173,7 +204,8 @@ public class BilibiliApi {
 
 
         } else {
-            throw new BilibiliException("获取动态url错误：不是正确的短链接");
+            log.error(url);
+            throw new BilibiliException("获取动态url错误：不是正确的短链接"+url);
         }
     }
 
@@ -184,8 +216,17 @@ public class BilibiliApi {
         HttpHeaders headers = new HttpHeaders();
         headers.addAll(comHeaders);
         HttpEntity<MultiValueMap<String, Object>> httpEntity = new HttpEntity<>(null, headers);
-        ResponseEntity<String> res = restTemplate.postForEntity(url, httpEntity, String.class);
-        return JSONObject.parseObject(res.getBody());
+        ResponseEntity<String> res ;
+
+        JSONObject jsonObject=new JSONObject();
+        try {
+            res =  restTemplate.postForEntity(url, httpEntity, String.class);
+            jsonObject=JSONObject.parseObject(res.getBody());
+        }catch (Exception e){
+            e.printStackTrace();
+            return jsonObject;
+        }
+        return jsonObject;
 
     }
 
@@ -225,16 +266,17 @@ public class BilibiliApi {
 
         HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(body, headers);
         ResponseEntity<String> exchange;
+        JSONObject jsonObject=new JSONObject();
         try {
             exchange = restTemplate.exchange(url, HttpMethod.POST, httpEntity, String.class);
-
+            jsonObject=JSONObject.parseObject(exchange.getBody());
         }catch (Exception e){
             e.printStackTrace();
-            return null;
+            return jsonObject;
         }
 
 
-        return JSONObject.parseObject(exchange.getBody());
+        return jsonObject;
     }
 
 
@@ -252,9 +294,18 @@ public class BilibiliApi {
         paramMaps.put("offsetDynamicId", offsetDynamicId);
         paramMaps.put("needTopEnum", needTopEnum.getId());
 
-        ResponseEntity<String> exchange = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class, paramMaps);
+        ResponseEntity<String> exchange ;
 
-        return JSONObject.parseObject(exchange.getBody());
+
+        JSONObject jsonObject=new JSONObject();
+        try {
+            exchange =   restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class, paramMaps);
+            jsonObject=JSONObject.parseObject(exchange.getBody());
+        }catch (Exception e){
+            e.printStackTrace();
+            return jsonObject;
+        }
+        return jsonObject;
 
     }
 
@@ -270,9 +321,18 @@ public class BilibiliApi {
         paramMaps.put("hostUid", hostUid);
 
 
-        ResponseEntity<String> exchange = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class, paramMaps);
+        ResponseEntity<String> exchange ;
 
-        return JSONObject.parseObject(exchange.getBody());
+
+        JSONObject jsonObject=new JSONObject();
+        try {
+            exchange =    restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class, paramMaps);
+            jsonObject=JSONObject.parseObject(exchange.getBody());
+        }catch (Exception e){
+            e.printStackTrace();
+            return jsonObject;
+        }
+        return jsonObject;
 
     }
 
@@ -292,9 +352,17 @@ public class BilibiliApi {
 
         paramMaps.put("uid", uid);
 
-        ResponseEntity<String> exchange = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class, paramMaps);
+        ResponseEntity<String> exchange ;
 
-        return JSONObject.parseObject(exchange.getBody());
+        JSONObject jsonObject=new JSONObject();
+        try {
+            exchange =   restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class, paramMaps);
+            jsonObject=JSONObject.parseObject(exchange.getBody());
+        }catch (Exception e){
+            e.printStackTrace();
+            return jsonObject;
+        }
+        return jsonObject;
     }
 
     public static JSONObject getUpStat(String uid){
@@ -307,8 +375,16 @@ public class BilibiliApi {
         HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(null, headers);
         Map<String, Object> paramMaps = new HashMap<>(1);
         paramMaps.put("uid", uid);
-        ResponseEntity<String> exchange = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class, paramMaps);
-        return JSONObject.parseObject(exchange.getBody());
+        ResponseEntity<String> exchange ;
+        JSONObject jsonObject=new JSONObject();
+        try {
+            exchange =   restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class, paramMaps);
+            jsonObject=JSONObject.parseObject(exchange.getBody());
+        }catch (Exception e){
+            e.printStackTrace();
+            return jsonObject;
+        }
+        return jsonObject;
     }
 
 
@@ -320,8 +396,16 @@ public class BilibiliApi {
         HttpEntity<MultiValueMap<String, String>> httpEntity = new HttpEntity<>(null, headers);
         Map<String, Object> paramMaps = new HashMap<>(1);
         paramMaps.put("uid", uid);
-        ResponseEntity<String> exchange = restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class, paramMaps);
-        return JSONObject.parseObject(exchange.getBody());
+        ResponseEntity<String> exchange ;
+        JSONObject jsonObject=new JSONObject();
+        try {
+            exchange =   restTemplate.exchange(url, HttpMethod.GET, httpEntity, String.class, paramMaps);
+            jsonObject=JSONObject.parseObject(exchange.getBody());
+        }catch (Exception e){
+            e.printStackTrace();
+            return jsonObject;
+        }
+        return jsonObject;
     }
 
 

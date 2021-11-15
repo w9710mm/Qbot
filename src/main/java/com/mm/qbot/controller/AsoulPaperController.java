@@ -3,6 +3,7 @@ package com.mm.qbot.controller;
 
 import com.mikuac.shiro.annotation.GroupMessageHandler;
 import com.mikuac.shiro.annotation.PrivateMessageHandler;
+import com.mikuac.shiro.common.utils.MsgUtils;
 import com.mikuac.shiro.core.Bot;
 import com.mikuac.shiro.core.BotPlugin;
 import com.mikuac.shiro.dto.action.common.ActionData;
@@ -73,6 +74,11 @@ public class AsoulPaperController extends BotPlugin {
             return;
         }
         String url = asoulPaperService.weeklyData(userList);
+        if (url==null){
+            MsgUtils msgUtils=MsgUtils.builder().text("数据还没收集完成，请稍后再试");
+            bot.sendGroupMsg(event.getGroupId(),msgUtils.build(),false);
+            return;
+        }
         int i = url.lastIndexOf("\\");
        String s=url.substring(i+1,url.length());
 
@@ -97,6 +103,11 @@ public class AsoulPaperController extends BotPlugin {
         }
         for (User user:userList) {
             String url = asoulPaperService.weeklyImage(user);
+            if (url==null){
+                MsgUtils msgUtils=MsgUtils.builder().text("数据还没收集完成，请稍后再试");
+                bot.sendGroupMsg(event.getGroupId(),msgUtils.build(),false);
+                return;
+            }
             int i = url.lastIndexOf("\\");
 
             String s=url.substring(i+1,url.length());
