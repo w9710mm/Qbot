@@ -8,6 +8,7 @@ shiro:
     - com.mm.qbot.controller.AsoulPaperController
     - com.mm.qbot.controller.TikTokController
     - com.mm.qbot.controller.WeiboController
+    - com.mm.qbot.controller.QuartzController
 #    - com.mikuac.example.plugins.PluginTwo
   # WebSocket 配置
   ws-config:

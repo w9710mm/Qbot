@@ -41,7 +41,7 @@ public class SchedulerService {
     }
 
 
-    private Boolean addJob(String name , String group , Date startTime,Date endTime, Bot bot, MsgUtils msgUtils, Long GroupId) throws SchedulerException {
+    public Boolean addJob(String name , String group , Date startTime,Date endTime, Bot bot, MsgUtils msgUtils, Long GroupId) throws SchedulerException {
 
         try {
 
@@ -63,22 +63,30 @@ public class SchedulerService {
     }
 
 
-    private void showJobs() throws SchedulerException {
-        LinkedHashSet<JobKey> jobKeySet = scheduler.getJobKeys(GroupMatcher.anyGroup());
-        for (JobKey jobKey:jobKeySet) {
-            jobKey.ge
-            JobDetail jobDetail = scheduler.getJobDetail(jobKey);
-            jobDetail.getJobDataMap().
+    public MsgUtils showJobs() throws SchedulerException {
+        MsgUtils msgUtils=MsgUtils.builder();
+        msgUtils.text("任务表\n");
+        Set<JobKey> jobKeySet = scheduler.getJobKeys(GroupMatcher.anyGroup());
+        if (jobKeySet.size()==0){
+            return null;
         }
+        int count=1;
+        for (JobKey jobKey:jobKeySet) {
+
+            msgUtils.text(String.valueOf(count)).text(".").text(jobKey.getName()).text("\n");
+            count++;
+        }
+        return msgUtils;
     }
 
 
-    private void deleteJob(String name ,String group ) throws SchedulerException {
+    public boolean deleteJob(String name ,String group ) throws SchedulerException {
         JobKey jobKey = new JobKey(name, group);
         JobDetail jobDetail = scheduler.getJobDetail(jobKey);
         if (jobDetail == null) {
-            return;
+            return false;
         }
         scheduler.deleteJob(jobKey);
+        return true;
     }
 }
