@@ -2,6 +2,7 @@ package com.mm.qbot.controller;
 
 import com.mikuac.shiro.annotation.GroupMessageHandler;
 import com.mikuac.shiro.common.utils.MsgUtils;
+import com.mikuac.shiro.common.utils.ShiroUtils;
 import com.mikuac.shiro.core.Bot;
 import com.mikuac.shiro.core.BotPlugin;
 import com.mikuac.shiro.dto.event.message.GroupMessageEvent;
@@ -33,9 +34,10 @@ public class QuartzController extends BotPlugin {
 
     private  SimpleDateFormat       sf = new SimpleDateFormat("yyyy-MM-dd");
 
-    @GroupMessageHandler(cmd = "\b任务表",groupWhiteList ={483068702,245530949,706592235,1005018209} )
+    @GroupMessageHandler(cmd = "\\b任务表",groupWhiteList ={483068702,245530949,706592235,1005018209} )
     public void showQuartzJob(Bot bot, GroupMessageEvent event) {
         try {
+
             MsgUtils msgUtils = quartz.showJobs();
             if (msgUtils==null){
                 bot.sendGroupMsg(event.getGroupId(),MsgUtils.builder()
@@ -49,7 +51,7 @@ public class QuartzController extends BotPlugin {
             e.printStackTrace();
         }
     }
-    @GroupMessageHandler(cmd = "\b\\[CQ:at,qq=([0-9]+)\\]ddl ([0-9]{4}-[0-9]{2}-[0-9]{2}) (.+)" ,
+    @GroupMessageHandler(cmd = "\\[CQ:at,qq=([0-9]+)\\] ddl ([0-9]{4}-[0-9]{2}-[0-9]{2}) (.+)" ,
             groupWhiteList ={483068702,1005018209,245530949,706592235})
     public void addQuartzJob(Bot bot, GroupMessageEvent event, Matcher m) {
         Date endTime;
@@ -74,9 +76,9 @@ public class QuartzController extends BotPlugin {
                     .text("输入格式错误，可能是日期不对").build(),false);
             return;
         }
-        MsgUtils msgUtils=MsgUtils.builder().at(Long.parseLong(m.group(1))).text("ddl提醒：").text(m.group(3));
         try {
-            quartz.addJob(m.group(1), String.valueOf(event.getGroupId()),startTime,endTime,bot,msgUtils,event.getGroupId());
+
+            quartz.addJob(m, String.valueOf(event.getGroupId()),startTime,endTime,bot);
         } catch (SchedulerException e) {
             e.printStackTrace();
             bot.sendGroupMsg(event.getGroupId(),MsgUtils.builder()
@@ -87,9 +89,10 @@ public class QuartzController extends BotPlugin {
                 .text("添加定时任务成功").build(),false);
     }
 
-    @GroupMessageHandler(cmd = "\b\\[CQ:at,qq=([0-9]+)\\]del",groupWhiteList ={483068702,245530949,706592235,1005018209} )
+    @GroupMessageHandler(cmd = "\\[CQ:at,qq=([0-9]+)\\] del",groupWhiteList ={483068702,245530949,706592235,1005018209} )
     public void deleteQuartzJob(Bot bot, GroupMessageEvent event,Matcher m) {
         try {
+            ShiroUtils.getAtList(event.getRawMessage());
             boolean b = quartz.deleteJob(m.group(1), String.valueOf(event.getGroupId()));
             if (b){
                 bot.sendGroupMsg(event.getGroupId(),MsgUtils.builder()
@@ -104,6 +107,12 @@ public class QuartzController extends BotPlugin {
                     .text("删除失败，请检查输入是否正确").build(),false);
         }
     }
+    @GroupMessageHandler( )
+    public void d(Bot bot, GroupMessageEvent event,Matcher m) {
+        System.out.println(event.getRawMessage());
+        System.out.println( ShiroUtils.getAtList(event.getRawMessage()));
+    }
+
 
 }
 

@@ -16,8 +16,8 @@ public class regularExpressionTests {
 
     @Test
     void Testbvid(){
-        String line = "[CQ:at,qq=111111]ddl 2021-09-09 111";
-        String pattern = "\\[CQ:at,qq=([0-9]+)\\]ddl ([0-9]{4}-[0-9]{2}-[0-9]{2}) (.+)";
+        String line = "[CQ:at,qq=625773658] ddl 2021-10-10 dd";
+        String pattern = "\\[CQ:at,qq=625773658\\]";
 
         // 创建 Pattern 对象
         Pattern r = Pattern.compile(pattern);
@@ -25,7 +25,7 @@ public class regularExpressionTests {
         // 现在创建 matcher 对象
         Matcher m = r.matcher(line);
         if (m.find( )) {
-            System.out.println("Found value: " + m.group(1) );
+            System.out.println("Found value: " + m.group(0) );
 
         } else {
             System.out.println("NO MATCH");
