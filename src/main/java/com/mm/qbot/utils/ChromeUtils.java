@@ -28,8 +28,9 @@ public class ChromeUtils {
     }
 
     public static BufferedImage getDynamicImage(String dynamicId){
-        driver = new ChromeDriver(chromeOptions);
 
+        driver = new ChromeDriver(chromeOptions);
+        try {
 
         driver.get( String.format("https://t.bilibili.com/%s",dynamicId));
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
@@ -42,11 +43,12 @@ public class ChromeUtils {
 
         WebElement element = driver.findElement(By.cssSelector("#app > div > div.detail-content > div"));
         File screenshotAs = element.getScreenshotAs(OutputType.FILE);
-        driver.close();
-        try {
+
             return ImageIO.read(screenshotAs);
         } catch (IOException e) {
             e.printStackTrace();
+        }finally {
+            driver.close();
         }
         return null;
     }
