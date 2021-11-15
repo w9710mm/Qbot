@@ -16,7 +16,7 @@ import org.quartz.JobExecutionException;
  */
 public class SchedulerQuartzJob implements Job {
     @Override
-    public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+    public void execute(JobExecutionContext jobExecutionContext) {
 
         JobDataMap jobDataMap = jobExecutionContext.getJobDetail().getJobDataMap();
         Bot bot =(Bot) jobDataMap.get("bot");
