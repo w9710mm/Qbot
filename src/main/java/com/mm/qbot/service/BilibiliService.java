@@ -120,14 +120,14 @@ public class BilibiliService {
         try {
 
 
-        if (matcher.find()){
+        if (matcher.lookingAt()){
             JSONObject userInfo = BilibiliApi.getUserInfo(Long.valueOf(text));
             if (userInfo.getInteger("code")!=404){
                 uid.setUid(userInfo.getJSONObject("data").getString("mid"));
                 uid.setUname(userInfo.getJSONObject("data").getString("name"));
             }
         }
-        if (!matcher.find()){
+        if (!matcher.lookingAt()){
             JSONObject result=BilibiliApi.serachUser(text,"bili_user");
             JSONArray datas = result.getJSONObject("data").getJSONArray("result");
             if (datas!=null){
@@ -271,9 +271,10 @@ public class BilibiliService {
 
         msgUtils.img(data.getString("face"));
         msgUtils.text(String.format("\n签名：%s",data.getString("sign")));
-        msgUtils.text( String.format("\n昵称：（%s）:%s生日:%s",data.getString("name"),uid,data.getString("birthday")));
+        msgUtils.text( String.format("\n昵称：%s 生日:%s",data.getString("name"),uid,data.getString("birthday")));
         msgUtils.text(String.format("等级：%s",data.getString("level")));
         msgUtils.text(String.format("性别：%s",data.getString("sex")));
+
         JSONObject upStat = BilibiliApi.getUpStat(uid);
         JSONObject upStatData=upStat.getJSONObject("data");
 
@@ -284,6 +285,7 @@ public class BilibiliService {
         JSONObject relationStatData=relationStat.getJSONObject("data");
 
         msgUtils.text(String.format("\n粉丝：%s 关注:%s ",relationStatData.getString("follower"),relationStatData.getString("following")));
+        msgUtils.text("https://space.bilibili.com/").text(uid);
         return msgUtils;
     }
 

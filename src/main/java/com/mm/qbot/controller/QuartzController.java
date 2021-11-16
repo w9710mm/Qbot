@@ -107,11 +107,6 @@ public class QuartzController extends BotPlugin {
                     .text("删除失败，请检查输入是否正确").build(),false);
         }
     }
-    @GroupMessageHandler( )
-    public void d(Bot bot, GroupMessageEvent event,Matcher m) {
-        System.out.println(event.getRawMessage());
-        System.out.println( ShiroUtils.getAtList(event.getRawMessage()));
-    }
 
 
 }

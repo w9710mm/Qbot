@@ -21,7 +21,7 @@ public class SchedulerQuartzJob implements Job {
         JobDataMap jobDataMap = jobExecutionContext.getJobDetail().getJobDataMap();
         Bot bot =(Bot) jobDataMap.get("bot");
         MsgUtils msg =(MsgUtils) jobDataMap.get("msg");
-        long groupId = jobDataMap.getLong("groupId");
+        long groupId = jobDataMap.getLong("GroupId");
 
         bot.sendGroupMsg(groupId,msg.build(),false);
     }
