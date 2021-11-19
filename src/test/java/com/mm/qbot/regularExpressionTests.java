@@ -16,8 +16,8 @@ public class regularExpressionTests {
 
     @Test
     void Testbvid(){
-        String line = "[CQ:at,qq=625773658] ddl 2021-10-10 dd";
-        String pattern = "\\[CQ:at,qq=625773658\\]";
+        String line = "https://b23.tv/S9c0bcf?share_medium=android&share_source=qq&bbid=XXCEB03C645F7A74BE0EA81195AB9EF224C0C&ts=1637252359908";
+        String pattern = "b23\\.tv/([a-zA-Z0-9]{1,8})";
 
         // 创建 Pattern 对象
         Pattern r = Pattern.compile(pattern);
