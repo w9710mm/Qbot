@@ -198,14 +198,14 @@ public class AsoulPaperService extends ServiceImpl<WeeklyDataMapper, WeeklyData>
        Font f= Font.createFont(0,front);
 //        font.
 
-            Font font = f.deriveFont(180L);
             BufferedImage bufferedImage= ImageIO.read(template);
         Graphics2D graphics = bufferedImage.createGraphics();
         graphics.setPaint(colorMap.get(user.getUid()));
 
         graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        graphics.setFont(font);
         if ("703007996".equals(user.getUid())){
+            Font font = f.deriveFont(100L);
+            graphics.setFont(font);
             graphics.drawString(String.valueOf(weeklyDataEnd.getBFol()-weeklyDataStart.getBFol()),480,850);
             graphics.drawString(String.valueOf(weeklyDataEnd.getBPlay()-weeklyDataStart.getBPlay()),1300,850);
             graphics.drawString(String.valueOf(weeklyDataEnd.getDFol()-weeklyDataStart.getDFol()),3330,850);
@@ -213,6 +213,8 @@ public class AsoulPaperService extends ServiceImpl<WeeklyDataMapper, WeeklyData>
 
 
         }else {
+            Font font = f.deriveFont(180L);
+            graphics.setFont(font);
             graphics.drawString(String.valueOf(weeklyDataEnd.getBFol()-weeklyDataStart.getBFol()),3550,360);
             graphics.drawString(String.valueOf(weeklyDataEnd.getBPlay()-weeklyDataStart.getBPlay()),3667,550);
             graphics.drawString(String.valueOf(weeklyDataEnd.getDFol()-weeklyDataStart.getDFol()),3820,730);

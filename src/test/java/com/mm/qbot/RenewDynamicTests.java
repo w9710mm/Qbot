@@ -12,6 +12,7 @@ import com.mm.qbot.strategy.BilibiliStrategy;
 import com.mm.qbot.utils.BilibiliApi;
 import org.junit.jupiter.api.Test;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,8 +46,14 @@ public class RenewDynamicTests {
 
 
 //        if (jsonObject.getJSONObject("data").getInteger("update_num")>=1){
-        JSONObject newDynamic = BilibiliApi.getSpaceVideo("672328094");
+        JSONObject newDynamic = BilibiliApi.getSpaceVideo("8696421");
         System.out.println(newDynamic);
+        JSONObject o =(JSONObject) newDynamic.getJSONObject("data").getJSONObject("list").getJSONArray("vlist").get(0);
+//        System.Text.Encoding.Default.GetByte(yourstring)
+
+        System.out.println(o.getString("author"));
+        String aa=" ";
+        System.out.println(o.getString("author").getBytes(StandardCharsets.UTF_8));
 //        }
     }
 
@@ -57,7 +64,10 @@ public class RenewDynamicTests {
 //        if (jsonObject.getJSONObject("data").getInteger("update_num")>=1){
         JSONObject newDynamic = new JSONObject();
 
-        System.out.println(newDynamic.getJSONObject("1").getJSONObject("1"));
+
+
+//        System.out.println(System.Text.Encoding.Unicode.GetString(byte数组)o.getString("author"));
+
         System.out.println(1);
 //        }
     }

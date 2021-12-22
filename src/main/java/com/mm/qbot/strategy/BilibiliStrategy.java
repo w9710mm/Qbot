@@ -460,7 +460,7 @@ public class BilibiliStrategy {
         msg.text(String.format("分区：%s\n",data.getString("tname")));
         msg.text(String.format("介绍：%s\n",StringUtils.omitString(data.getString("desc"),40)));
         msg.text(String.format("硬币：%d  ",stat.getInteger("coin")));
-        msg.text(String.format("点赞：%d  ",stat.getInteger("coin")));
+        msg.text(String.format("点赞：%d  ",stat.getInteger("like")));
         msg.text(String.format("收藏：%d  ",stat.getInteger("favorite")));
         msg.text(String.format("转发：%d  ",stat.getInteger("reply")));
         msg.text(String.format("播放：%d  ",stat.getInteger("view")));

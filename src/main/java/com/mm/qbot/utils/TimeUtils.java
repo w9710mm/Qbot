@@ -85,7 +85,7 @@ public class TimeUtils {
 
 
     public static Date getLastWeekMondayStart(){
-        Date date = new Date();
+        Date date = new Date(System.currentTimeMillis());
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         int dayofweek = cal.get(Calendar.DAY_OF_WEEK);

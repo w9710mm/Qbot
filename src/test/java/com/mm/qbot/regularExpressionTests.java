@@ -16,8 +16,9 @@ public class regularExpressionTests {
 
     @Test
     void Testbvid(){
-        String line = "https://b23.tv/S9c0bcf?share_medium=android&share_source=qq&bbid=XXCEB03C645F7A74BE0EA81195AB9EF224C0C&ts=1637252359908";
-        String pattern = "b23\\.tv/([a-zA-Z0-9]{1,8})";
+        String line = "woc，puredye小团体聊天记录曝光了 http://t.cn/A6xQ424X\n" +
+                "恐怖如斯\n";
+        String pattern = "(b23\\.tv/|t\\.cn/)([a-zA-Z0-9]{1,8})";
 
         // 创建 Pattern 对象
         Pattern r = Pattern.compile(pattern);
@@ -25,7 +26,7 @@ public class regularExpressionTests {
         // 现在创建 matcher 对象
         Matcher m = r.matcher(line);
         if (m.find( )) {
-            System.out.println("Found value: " + m.group(0) );
+            System.out.println("Found value: " + m.group(2) );
 
         } else {
             System.out.println("NO MATCH");

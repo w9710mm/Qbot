@@ -58,7 +58,8 @@ public class AsoulPaperController extends BotPlugin {
         userList.add(asoul);
     }
 
-    @GroupMessageHandler(cmd = "本周数据",groupWhiteList = {760322595,959969138})
+    @GroupMessageHandler(cmd = "本周数据",groupWhiteList = {760322595,959969138,1005018209
+    })
     public void asoulDataWeekly(GroupMessageEvent event, Bot bot){
         ActionData<GroupFilesResp> groupRootFiles = bot.getGroupRootFiles(event.getGroupId());
         List<GroupFilesResp.Folders> folders = groupRootFiles.getData().getFolders();
