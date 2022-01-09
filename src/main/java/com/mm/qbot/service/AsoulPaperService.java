@@ -52,12 +52,12 @@ public class AsoulPaperService extends ServiceImpl<WeeklyDataMapper, WeeklyData>
 
     static {
         colorMap=new HashMap<>();
-        colorMap.put("672346917",new Color(227,129,161));
-        colorMap.put("672353429",new Color(43,31,58));
-        colorMap.put("351609538",new Color(202,173,237));
-        colorMap.put("672328094",new Color(247,122,129));
-        colorMap.put("672342685",new Color(247,209,144));
-        colorMap.put("703007996",new Color(251,150,110));
+        colorMap.put("672346917",new Color(155,201,226));
+        colorMap.put("672353429",new Color(189,125,116));
+        colorMap.put("351609538",new Color(184,166,217));
+        colorMap.put("672328094",new Color(247,153,176));
+        colorMap.put("672342685",new Color(87,102,144));
+        colorMap.put("703007996",new Color(252,150,110));
 
     }
 
@@ -204,30 +204,30 @@ public class AsoulPaperService extends ServiceImpl<WeeklyDataMapper, WeeklyData>
 
         graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         if ("703007996".equals(user.getUid())){
-            Font font = f.deriveFont(100L);
+            Font font = f.deriveFont(39L);
             graphics.setFont(font);
-            graphics.drawString(String.valueOf(weeklyDataEnd.getBFol()-weeklyDataStart.getBFol()),480,850);
-            graphics.drawString(String.valueOf(weeklyDataEnd.getBPlay()-weeklyDataStart.getBPlay()),1300,850);
-            graphics.drawString(String.valueOf(weeklyDataEnd.getDFol()-weeklyDataStart.getDFol()),3330,850);
-            graphics.drawString(String.valueOf(weeklyDataEnd.getDFav()-weeklyDataStart.getDFol()),4170,850);
+            graphics.drawString(String.valueOf(weeklyDataEnd.getBFol()-weeklyDataStart.getBFol()),237,80);
+            graphics.drawString(String.valueOf(weeklyDataEnd.getBPlay()-weeklyDataStart.getBPlay()),825,74);
+//            graphics.drawString(String.valueOf(weeklyDataEnd.getDFol()-weeklyDataStart.getDFol()),3330,850);
+//            graphics.drawString(String.valueOf(weeklyDataEnd.getDFav()-weeklyDataStart.getDFol()),4170,850);
 
 
         }else {
-            Font font = f.deriveFont(180L);
+            Font font = f.deriveFont(55L);
             graphics.setFont(font);
-            graphics.drawString(String.valueOf(weeklyDataEnd.getBFol()-weeklyDataStart.getBFol()),3550,360);
-            graphics.drawString(String.valueOf(weeklyDataEnd.getBPlay()-weeklyDataStart.getBPlay()),3667,550);
-            graphics.drawString(String.valueOf(weeklyDataEnd.getDFol()-weeklyDataStart.getDFol()),3820,730);
-            graphics.drawString(String.valueOf(weeklyDataEnd.getDFav()-weeklyDataStart.getDFol()),3820,900);
+            graphics.drawString(String.valueOf(weeklyDataEnd.getBFol()-weeklyDataStart.getBFol()),840,120);
+            graphics.drawString(String.valueOf(weeklyDataEnd.getBPlay()-weeklyDataStart.getBPlay()),890,177);
+//            graphics.drawString(String.valueOf(weeklyDataEnd.getDFol()-weeklyDataStart.getDFol()),3820,730);
+//            graphics.drawString(String.valueOf(weeklyDataEnd.getDFav()-weeklyDataStart.getDFol()),3820,900);
 
         }
 
-          float ratio = Math.min(4500L / dynamicImage.getWidth(),  1900L / dynamicImage.getHeight());
+          float ratio = Math.min(1150L / (float)dynamicImage.getWidth(), 450L / (float)dynamicImage.getHeight());
             AffineTransformOp op = new AffineTransformOp(AffineTransform.getScaleInstance(ratio, ratio), AffineTransformOp.TYPE_BILINEAR);
             dynamicImage = op.filter(dynamicImage, null);
 
 
-            graphics.drawImage(dynamicImage,2400-dynamicImage.getWidth()/2,2500-dynamicImage.getHeight()/2,null);
+            graphics.drawImage(dynamicImage,550-dynamicImage.getWidth()/2,600-dynamicImage.getHeight()/2,null);
 
             graphics.dispose();
 

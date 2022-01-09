@@ -25,4 +25,10 @@ public class SerchUserTests {
         System.out.println(object);
     }
 
+    @Test
+    public void getRelation(){
+        JSONObject jsonObject = BilibiliApi.getUserInfo(672328094L);
+
+        System.out.println(jsonObject);
+    }
 }

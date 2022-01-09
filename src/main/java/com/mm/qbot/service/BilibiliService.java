@@ -39,6 +39,11 @@ public class BilibiliService {
         if (uid==null){
             return null;
         }
+        JSONObject relation=BilibiliApi.getUserInfo(Long.valueOf(uid.getUid()));
+        Boolean followed = relation.getJSONObject("data").getBoolean("is_followed");
+        if (followed){
+            return MsgUtils.builder().text("订阅成功！");
+        }
         JSONObject res = BilibiliApi.modifyRelation(Long.valueOf(uid.getUid()), RelationActionEnum.SUBSCRIBE);
         if (res==null||res.getInteger("message")!=0) {
             return null;

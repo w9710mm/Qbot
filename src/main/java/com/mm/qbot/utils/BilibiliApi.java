@@ -31,7 +31,8 @@ public class BilibiliApi {
         add("bili_jct=f410d9ad7c7166593db1a8078d728891");
     }};
 
-    private static String csrf = "f410d9ad7c7166593db1a8078d728891";
+    private static String csrf = "f410d9ad7c7166593db1a8078d728891" +
+            "";
     private static MultiValueMap<String, String> comHeaders = new LinkedMultiValueMap<>() {
         {
             add("user-agent", "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36");
